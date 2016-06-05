@@ -1,0 +1,8 @@
+---
+- name: Istall beets tool
+  become: yes
+  pip: name=beets
+  tags:
+    - beets
+    - tool
+

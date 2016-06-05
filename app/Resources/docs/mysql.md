@@ -1,0 +1,1 @@
+SELECT m.fullPath, substring_index(m.fullPath, '/', -1) FROM sf_audio.Media m

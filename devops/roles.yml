@@ -1,0 +1,15 @@
+#ansible-galaxy install -r roles.yml -p devops/roles/
+
+- src: https://github.com/nodesource/ansible-nodejs-role.git
+  name: node
+  version: master
+
+- src: https://github.com/ansible-roles/ansible-role-bash_aliases.git
+  name: bash-aliases
+  version: master
+
+- src: https://github.com/geerlingguy/ansible-role-apache.git
+  name: apache
+
+- src: https://github.com/geerlingguy/ansible-role-php.git
+  name: php2

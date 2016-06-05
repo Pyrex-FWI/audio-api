@@ -1,0 +1,8 @@
+- shell: hostname
+  register: current_hostname
+
+- name: install id3v2
+  become: yes
+  apt: pkg={{ item }} state=latest
+  with_items:
+    - id3v2

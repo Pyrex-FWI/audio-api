@@ -1,0 +1,92 @@
+# Learn more about services, parameters and containers at
+# http://symfony.com/doc/current/book/service_container.html
+parameters:
+#    parameter_name: value
+
+services:
+    resource.media.search_filter:
+        parent: "api.doctrine.orm.search_filter"
+        arguments:
+            -
+                id: "exact"
+                artist: "partial"
+                score: "exact"
+                bpm: "exact"
+                genres: "exact"
+                provider: "exact"
+                exist: "exact"
+                title: "partial"
+                providerId: "exact"
+                fileName: "partial"
+                fullPath: "partial"
+                type: "exact"
+                year: "exact"
+                tagged: "exact"
+
+    resource.media.order_filter:
+        parent: "api.doctrine.orm.order_filter"
+        arguments:
+            -
+                id: ~
+                artist: ~
+                score: ~
+                bpm: ~
+
+    resource.media.date_filter:
+        parent:    "api.doctrine.orm.date_filter"
+        arguments:
+            -
+                releaseDate: ~
+
+    resource.media.untaged:
+        class: 'AppBundle\Doctrine\Orm\MediaUntagedFilter'
+        arguments:
+            - '@doctrine'
+
+    resource.media:
+        parent:    "api.resource"
+        arguments: [ 'AudioCoreEntity\Entity\Media' ]
+        calls:
+            -      method:    "initFilters"
+                   arguments:
+                       -
+                           - '@resource.media.search_filter'
+                           - '@resource.media.order_filter'
+                           - '@resource.media.date_filter'
+                           - '@resource.media.untaged'
+            -      method:    "initNormalizationContext"
+                   arguments: [ { groups: ["media-read" ] } ]
+            #-      method:    "initDenormalizationContext"
+            #       arguments: [ { groups: [ "media" ] } ]
+        tags:      [ { name: "api.resource" } ]
+
+
+    #Genre endpoint
+    resource.genre.search_filter:
+        parent: "api.doctrine.orm.search_filter"
+        arguments:
+            -
+                id: "exact"
+                name: "partial"
+                media: "exact"
+
+    resource.genre:
+        parent:    "api.resource"
+        arguments: [ 'AudioCoreEntity\Entity\Genre' ]
+        calls:
+            -      method:    "initFilters"
+                   arguments:
+                       -
+                           - '@resource.genre.search_filter'
+            -      method:    "initNormalizationContext"
+                   arguments: [ { groups: ["genre-read"] } ]
+        tags:      [ { name: "api.resource" } ]
+
+    resource.artist:
+        parent:    "api.resource"
+        arguments: [ 'AudioCoreEntity\Entity\Artist' ]
+        calls:
+            -      method:    "initNormalizationContext"
+                   arguments: [ { groups: ["artist-read"] } ]
+        tags:      [ { name: "api.resource" } ]
+

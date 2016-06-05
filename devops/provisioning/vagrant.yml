@@ -1,0 +1,24 @@
+---
+
+- name: Provisioning the vagrant
+  hosts: vagrant
+  sudo: true
+  vars_files:
+    - vars/main.yml
+    - vars/apt.yml
+    - vars/users.yml
+    #- vars/supervisor.yml
+  roles:
+    - ubuntu-apt
+    - create-www-data-user
+    - ssh-keys # need create-www-data-user
+    - ubuntu-php
+    - composer
+    - ubuntu-symfony-nginx
+    - ubuntu-postgresql
+    - ubuntu-xdebug
+    - ubuntu-rabbitmq
+    - ubuntu-redis
+    - ubuntu-mongodb
+    - ubuntu-mysql
+    - ubuntu-aliases

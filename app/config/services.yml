@@ -1,0 +1,44 @@
+# Learn more about services, parameters and containers at
+# http://symfony.com/doc/current/book/service_container.html
+parameters:
+#    parameter_name: value
+
+services:
+
+    media_wrapper:
+        class: Cpyree\Id3\Wrapper\BinWrapper\MediainfoWrapper
+        calls:
+            - [ setBinPath, ['%id3tool.mediainfo.bin%'] ]
+    eyed3_wrapper:
+        class: Cpyree\Id3\Wrapper\BinWrapper\Eyed3Wrapper
+        calls:
+            - [ setBinPath, ['%id3tool.eyed3.bin%'] ]
+    id3v2_wrapper:
+        class: Cpyree\Id3\Wrapper\BinWrapper\Id3v2Wrapper
+        calls:
+            - [ setBinPath, ['%id3tool.id3v2.bin%'] ]
+    metaflac_wrapper:
+        class: Cpyree\Id3\Wrapper\BinWrapper\MetaflacWrapper
+        calls:
+            - [ setBinPath, ['%id3tool.metaflac.bin%'] ]
+    id3_manager:
+        class: AppBundle\Id3\Id3Manager
+        arguments: ['@?logger']
+        calls:
+            - [ addWrapper, ['@media_wrapper'] ]
+            - [ addWrapper, ['@eyed3_wrapper'] ]
+            - [ addWrapper, ['@id3v2_wrapper'] ]
+            - [ addWrapper, ['@metaflac_wrapper'] ]
+
+    subscriber.app:
+        class:     AppBundle\EventListener\AppEventSubscriber
+        arguments: [ '@doctrine', '@serializer', '@logger']
+        tags:
+          -        { name: kernel.event_subscriber }
+
+    faker.avd_item_provider:
+        class: AppBundle\Tests\Faker\AvItemProvider
+        public: false # useless if used alone
+        arguments: ['@faker']
+        tags:
+          -        { name: faker.provider }

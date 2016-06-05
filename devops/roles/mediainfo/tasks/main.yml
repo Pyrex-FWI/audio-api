@@ -1,0 +1,14 @@
+---
+- name: Install mediainfo
+  become: yes
+  apt: pkg=mediainfo state=latest
+  tags:
+    - mediainfo
+    - tool
+
+- name: Create mediainfo symlink
+  become: yes
+  file: src=/usr/bin/mediainfo dest=/usr/local/bin/mediainfo state=link
+  tags:
+    - mediainfo
+    - tool

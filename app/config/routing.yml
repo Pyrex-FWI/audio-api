@@ -1,0 +1,24 @@
+#demo:
+#    resource: "@AcmeDemoBundle/Controller/"
+#    type:     annotation
+app:
+    resource: "@AppBundle/Controller/"
+    type:     annotation
+#AcmeDemoBundle routes (to be removed)
+#admin_lte:
+#    resource: "@AvanzuAdminThemeBundle/Resources/config/routing.yml"
+api:
+    resource: "."
+    type:     "api"
+    prefix:   "/api" # Optional
+
+NelmioApiDocBundle:
+    resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
+    prefix:   /api/doc
+
+PyrexDupeBundle:
+    resource: "@PyrexDupeBundle/Resources/config/routing.yml"
+    prefix:   /dupe
+
+api_login_check:
+   path: /api/login_check

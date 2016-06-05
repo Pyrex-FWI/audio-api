@@ -1,0 +1,45 @@
+language: php
+php:
+  - 5.6
+  - 7.0
+
+services:
+  - rabbitmq
+
+before_script:
+  - composer self-update
+  - wget http://get.sensiolabs.org/php-cs-fixer.phar
+  - mkdir -p src/AppBundle/Tests/TestData/root_path
+  - rm -rf app/cache/*
+  #- cat app/config/parameters.yml.travis > app/config/parameters_dev.yml
+  #- mysql -e 'create database IF NOT EXISTS sf_audio_dev;' -u travis
+  - sudo apt-get update -qq
+  - sudo apt-get install python -y
+  - sudo apt-get install  -y mediainfo
+  - sudo apt-get install  -y id3v2
+  - sudo apt-get install  -y flac
+  - whereis mediainfo
+  - mediainfo --version || true
+  - wget https://bootstrap.pypa.io/get-pip.py
+  - sudo python get-pip.py
+  - sudo pip install eyeD3
+  - sudo pip show eyeD3
+  - /usr/local/bin/eyeD3 --version || true
+  - sudo ls -al /usr/local/lib/python2.7/dist-packages/
+  - sudo chmod a+x /usr/local/bin/eyeD3
+  - sudo chmod a+x /usr/local/lib/python2.7/dist-packages/eyed3
+  #- php app/console d:s:c --env=test
+
+
+install:
+  #- composer install --prefer-dist --no-interaction
+
+script:
+  - composer install -v
+  - php app/console debug:container | grep id3
+  - composer ci:test-travis
+  #- phpunit -c app --debug --verbose
+  #- php php-cs-fixer.phar fix --no-interaction --dry-run --diff -vvv ./
+
+notifications:
+  #mail: false

@@ -1,0 +1,23 @@
+---
+
+- name: Provisioning fansible-tywin
+  hosts: all
+  become: true
+  vars_files:
+    - vars/main.yml
+
+  roles:
+    - ubuntu-apt
+    - create-www-data-user
+    #- nodejs
+    #- ubuntu-nodejs-nginx
+    - ubuntu-php
+    - composer
+    - ubuntu-symfony-nginx
+    #- ubuntu-postgresql
+    - ubuntu-xdebug
+    - ubuntu-rabbitmq
+    #- ubuntu-redis
+    #- ubuntu-mongodb
+    - ubuntu-mysql
+    - ubuntu-aliases

@@ -1,0 +1,20 @@
+---
+
+- name: Include OS-specific variables.
+  include_vars: "{{ ansible_os_family }}.yml"
+
+- include: install.deb.yml
+  when: ansible_os_family == 'Debian'
+  tags: [redis, redis-install]
+
+- include: install.yum.yml
+  when: ansible_os_family == 'RedHat'
+  tags: [redis, redis-install]
+
+- include: configure.yml
+  tags: [redis, redis-configure]
+
+- name: Ensure the redis started
+  service: name={{redis_service}} state=started enabled=yes
+  changed_when: false
+  when: redis_manage_service

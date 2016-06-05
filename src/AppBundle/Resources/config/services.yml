@@ -1,0 +1,57 @@
+parameters:
+    command.collection_dumper.class: AppBundle\Command\CollectionDumperCommand
+
+
+services:
+
+    app.command.collection_dumper:
+        class: %command.collection_dumper.class%
+        arguments:
+            - '@?logger'
+        tags:
+            - { name: 'console.command'}
+
+    #Files Organizer
+    app.media.media_organizer.manager:
+        class: AppBundle\Organizer\MediaOrganizerManager
+        arguments:
+            - '@event_dispatcher'
+            - '@logger'
+
+    app.media.organizer.file_genre.rule:
+        class: AppBundle\Organizer\Rules\FileGenreRule
+        tags: [ { name: organizer.rule } ]
+
+    app.media.organizer.file_month.rule:
+        class: AppBundle\Organizer\Rules\FileMonthRule
+        tags: [ { name: organizer.rule } ]
+
+    app.media.organizer.file_year.rule:
+        class: AppBundle\Organizer\Rules\FileYearRule
+        tags: [ { name: organizer.rule } ]
+
+    app.media.organizer.release_month.rule:
+        class: AppBundle\Organizer\Rules\MediaReleaseMonthRule
+        tags: [ { name: organizer.rule } ]
+
+    app.media.organizer.release_year.rule:
+        class: AppBundle\Organizer\Rules\MediaReleaseYearRule
+        tags: [ { name: organizer.rule } ]
+
+    app.media.organizer.genre:
+        class: AppBundle\Organizer\Rules\MediaGenreRule
+        tags: [ { name: organizer.rule } ]
+
+    app.media.organizer.type:
+        class: AppBundle\Organizer\Rules\MediaTypeRule
+        tags: [ { name: organizer.rule } ]
+
+    genre_stack:
+        class: AppBundle\Service\GenreStack
+        arguments:
+            - '@doctrine'
+
+    streamer:
+        class: AppBundle\Service\Streamer
+#        arguments:
+#            - @logger

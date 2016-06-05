@@ -1,0 +1,9 @@
+---
+- name: Install xDebug
+  become: yes
+  apt: pkg=php5-xdebug state=latest
+
+- name: Copy xdebug INI
+  template: src=xdebug.ini.j2 dest=/etc/php5/cli/conf.d/20-xdebug.ini owner=root group=root mode=644
+  tags:
+    - xdebug
