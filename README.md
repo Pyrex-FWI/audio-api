@@ -4,6 +4,8 @@
 
 - Symfony: 2.8
 
+Add php-cs-fixer to pre-commit hook php-cs-fixer fix src/ --level=symfony --fixers= align_double_arrow,align_equals
+
 ## Install dev environnement
 
 ### Pre require

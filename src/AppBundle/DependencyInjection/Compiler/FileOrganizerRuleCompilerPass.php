@@ -2,14 +2,12 @@
 
 namespace AppBundle\DependencyInjection\Compiler;
 
-use AppBundle\DeejayFilesOrganizerBundle;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
 class FileOrganizerRuleCompilerPass implements CompilerPassInterface
 {
-
     /**
      * You can modify the container here before it is dumped to PHP code.
      *
@@ -19,8 +17,8 @@ class FileOrganizerRuleCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $tagName        = 'organizer.rule';
-        $mediaFileOrg   = 'app.media.organizer.manager';
+        $tagName      = 'organizer.rule';
+        $mediaFileOrg = 'app.media.organizer.manager';
 
         if (!$container->hasDefinition($mediaFileOrg)) {
             return;
@@ -33,7 +31,7 @@ class FileOrganizerRuleCompilerPass implements CompilerPassInterface
             $providerManager->addMethodCall(
                 'addRule',
                 [
-                    new Reference($id)
+                    new Reference($id),
                 ]
             );
         }

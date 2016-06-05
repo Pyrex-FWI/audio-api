@@ -2,10 +2,8 @@
 
 namespace AppBundle\Organizer\Rules;
 
-
 class FileYearRule implements RuleInterface
 {
-
     public function apply(\AppBundle\Organizer\MediaMoveStack $mover)
     {
         $newPart = (new \DateTime('@'.$mover->getFsys()->getCTime()))->format('Y');

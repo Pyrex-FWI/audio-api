@@ -2,10 +2,8 @@
 
 namespace AppBundle\Organizer\Rules;
 
-
 class FileMonthRule implements RuleInterface
 {
-
     public function apply(\AppBundle\Organizer\MediaMoveStack $mover)
     {
         $newPart = (new \DateTime('@'.$mover->getFsys()->getCTime()))->format('F');

@@ -12,7 +12,7 @@ class FileDumperReader implements \Iterator, \Countable
     public function __construct($filePath)
     {
         $this->filePath = $filePath;
-        $this->handle = fopen($filePath, 'r');
+        $this->handle   = fopen($filePath, 'r');
     }
     public function __destruct()
     {
@@ -36,8 +36,8 @@ class FileDumperReader implements \Iterator, \Countable
         if (!$this->count) {
             $output = null;
             $return = null;
-            $match = null;
-            $com = (sprintf('wc -l %s', $this->filePath));
+            $match  = null;
+            $com    = (sprintf('wc -l %s', $this->filePath));
             exec($com, $output, $return);
             $output = (trim($output[0]));
             $patern = sprintf('#^(?P<lines>\d{1,8})#', $this->filePath);
@@ -65,9 +65,9 @@ class FileDumperReader implements \Iterator, \Countable
             if (count($matches) == 0) {
                 return;
             }
-            $file = new \SplFileInfo($matches[1]);
-            $provider = $matches[2];
-            $line = trim($line);
+            $file       = new \SplFileInfo($matches[1]);
+            $provider   = $matches[2];
+            $line       = trim($line);
             $lineObject = (new FileDumperRow($file, $provider));
 
             return $lineObject;

@@ -2,15 +2,11 @@
 
 namespace AppBundle\Organizer\Rules;
 
-
-
-
 use AppBundle\Entity\Media;
 use AppBundle\Organizer\MediaMoveStack;
 
 class MediaTypeRule implements RuleInterface
 {
-
     public function apply(MediaMoveStack $mover)
     {
         $part = 'UnknowType';

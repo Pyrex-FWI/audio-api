@@ -2,7 +2,6 @@
 
 namespace AppBundle\EventListener;
 
-use AudioCoreEntity\EntityArtist;
 use AudioCoreEntity\Entity\Genre;
 use AppBundle\Entity\Media;
 use AppBundle\Service\GenreStack;
@@ -16,7 +15,6 @@ use Dunglas\ApiBundle\Event\Events;
 use Monolog\Logger;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\VarDumper\VarDumper;
 
 /**
  * ApiEventSubscriber.
@@ -46,14 +44,14 @@ class ApiEventSubscriber implements EventSubscriberInterface
 
     public function __construct(Registry $doctrine, RequestStack $request_stack, Mediainfo $mediaInfo, Logger $logger)
     {
-        $this->doctrine = $doctrine;
-        $this->eManager = $doctrine->getManager();
-        $this->logger = $logger;
+        $this->doctrine      = $doctrine;
+        $this->eManager      = $doctrine->getManager();
+        $this->logger        = $logger;
         $this->request_stack = $request_stack;
-        $this->mediainfo = $mediaInfo;
-        $this->genreRepo = $this->eManager->getRepository(\AudioCoreEntity\Entity\Genre::class);
-        $this->mediaRepo = $this->eManager->getRepository(\AppBundle\Entity\Media::class);
-        $this->artistRepo = $this->eManager->getRepository(\AudioCoreEntity\Entity\Artist::class);
+        $this->mediainfo     = $mediaInfo;
+        $this->genreRepo     = $this->eManager->getRepository(\AudioCoreEntity\Entity\Genre::class);
+        $this->mediaRepo     = $this->eManager->getRepository(\AppBundle\Entity\Media::class);
+        $this->artistRepo    = $this->eManager->getRepository(\AudioCoreEntity\Entity\Artist::class);
     }
 
     /**
@@ -92,12 +90,12 @@ class ApiEventSubscriber implements EventSubscriberInterface
         }
 
         /** @var Paginator $items */
-        $items = $event->getData();
+        $items         = $event->getData();
         $entityManager = $this->doctrine->getManager();
-        $artistRepo = $entityManager->getRepository('AppBundle\Entity\Artist');
+        $artistRepo    = $entityManager->getRepository('AppBundle\Entity\Artist');
 
         foreach ($items->getIterator() as $media) {
-            /** @var Media $media */
+            /* @var Media $media */
             $this->mediainfo->read($media->getFullPath());
             if ($media->isUntaged()) {
                 $media
@@ -152,6 +150,7 @@ class ApiEventSubscriber implements EventSubscriberInterface
 
     /**
      * @param $genres
+     *
      * @return array
      */
     private function getOrCreateGenres($genres)
@@ -169,7 +168,9 @@ class ApiEventSubscriber implements EventSubscriberInterface
 
     /**
      * @param $artists
+     *
      * @return array
+     *
      * @throws \Doctrine\DBAL\ConnectionException
      * @throws \Exception
      */
@@ -220,17 +221,19 @@ class ApiEventSubscriber implements EventSubscriberInterface
         /** @var Media[] $mediaFiles */
         $mediaFiles = [];
         foreach ($items->getIterator() as $media) {
-            if (!$media->isUntaged()) continue;
+            if (!$media->isUntaged()) {
+                continue;
+            }
             /* @var Media $media */
             $mediaFiles[$media->getFullPath()] = $media;
         }
-        $mediaTags = $this->mediainfo->readMultiple(array_keys($mediaFiles));
+        $mediaTags  = $this->mediainfo->readMultiple(array_keys($mediaFiles));
         $mediaCount = count($mediaFiles);
-        $tagsCount = count($mediaTags);
+        $tagsCount  = count($mediaTags);
         for ($i = 0; $i < $tagsCount; ++$i) {
-            $tag = $this->mediainfo->eq($i);
-            $genres = $this->getOrCreateGenres($tag->getGenres());
-            $artists =$this->getOrCreateArtists($tag->getArtists());
+            $tag     = $this->mediainfo->eq($i);
+            $genres  = $this->getOrCreateGenres($tag->getGenres());
+            $artists = $this->getOrCreateArtists($tag->getArtists());
             $mediaFiles[$tag->getFileName()]
                 ->setTitle($tag->getTitle())
                 ->setArtist($tag->getArtist())

@@ -2,7 +2,6 @@
 
 namespace AppBundle\Organizer;
 
-
 use AppBundle\Entity\Media;
 use Deejay\Id3ToolBundle\Wrapper\Id3Manager;
 
@@ -27,9 +26,9 @@ class MediaMoveStack
 
     public function __construct($outPath, Media $media, Id3Manager $Id3Tool)
     {
-        $this->media = $media;
+        $this->media          = $media;
         $this->Id3ToolManager = $Id3Tool;
-        $file = $this->media->getFullPath();
+        $file                 = $this->media->getFullPath();
         $this->setOrigin($this->media->getFullPath());
         if (!is_file($file)) {
             throw new \Exception(sprintf('File %s not exist', $file));
@@ -37,7 +36,6 @@ class MediaMoveStack
         $this->fsys = new \SplFileInfo($file);
         $this->setOrigin($file);
         $this->outPath = $outPath;
-
     }
     /**
      * @return mixed
@@ -49,16 +47,19 @@ class MediaMoveStack
 
     /**
      * @param mixed $origin
+     *
      * @return MediaMoveStack
      */
     public function setOrigin($origin)
     {
         $this->origin = $origin;
+
         return $this;
     }
 
     /**
      * @param $part
+     *
      * @return $this
      */
     public function addPathPart($part)
@@ -66,7 +67,9 @@ class MediaMoveStack
         if (is_array($part)) {
             $part = $part[0];
         }
-        if (preg_match('/\./', $part) > 0) return $this;
+        if (preg_match('/\./', $part) > 0) {
+            return $this;
+        }
 
         $this->finalPathFileParts [] = trim($part);
 
@@ -79,6 +82,7 @@ class MediaMoveStack
     }
     /**
      * @param mixed $destination
+     *
      * @return MediaMoveStack
      */
     public function getFinalDestination()
@@ -91,8 +95,9 @@ class MediaMoveStack
             DIRECTORY_SEPARATOR,
             $this->getFsys()->getBasename()
         );
-        $pattern = '#('.DIRECTORY_SEPARATOR.')\1+#';
+        $pattern     = '#('.DIRECTORY_SEPARATOR.')\1+#';
         $replacement = DIRECTORY_SEPARATOR;
+
         return preg_replace($pattern, $replacement, $destination);
     }
 
@@ -104,6 +109,7 @@ class MediaMoveStack
         if ($this->tagIsReaded === false) {
             $this->Id3ToolManager->readTags($this->media->getFullPath());
         }
+
         return $this->Id3ToolManager->getReaderWrapper();
     }
 
@@ -122,5 +128,4 @@ class MediaMoveStack
     {
         return $this->media;
     }
-
 }

@@ -4,7 +4,6 @@ namespace AppBundle\Tests\EventListener;
 
 use AppBundle\Entity\Media;
 use AppBundle\Event\DirectoryEvent;
-use AppBundle\Service\TempDir;
 use DeejayPoolBundle\Entity\AvdItem;
 use DeejayPoolBundle\Entity\FranchisePoolItem;
 use DeejayPoolBundle\Entity\SvItem;
@@ -21,7 +20,6 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
  */
 class AppEventSubscriberTest extends KernelTestCase
 {
-
     private static function createItem($provider)
     {
         /** @var Generator $faker */
@@ -36,12 +34,12 @@ class AppEventSubscriberTest extends KernelTestCase
                 ->addRelatedGenre($faker->genre)
                 ->addRelatedGenre($faker->genre)
                 ->setDownloadlink($faker->url)
-                ->setFullPath(static::$kernel->getContainer()->getParameter('av_district.configuration.root_path') . '/'.uniqid('file_'))
+                ->setFullPath(static::$kernel->getContainer()->getParameter('av_district.configuration.root_path').'/'.uniqid('file_'))
                 ->setVersion($faker->version)
                 ->setReleaseDate($faker->dateTime);
         }
 
-        if($provider === Media::PROVIDER_FRP_AUDIO  || $provider === Media::PROVIDER_FRP_VIDEO) {
+        if ($provider === Media::PROVIDER_FRP_AUDIO  || $provider === Media::PROVIDER_FRP_VIDEO) {
             $item = new FranchisePoolItem();
             $item->setItemId($faker->id);
             $item->setArtist($faker->artist)
@@ -56,7 +54,6 @@ class AppEventSubscriberTest extends KernelTestCase
                 $item->setAudio(false);
                 $item->setVideo(true);
             }
-
         }
         if ($provider === Media::PROVIDER_SMASHVISION) {
             $item = new SvItem();
@@ -68,7 +65,7 @@ class AppEventSubscriberTest extends KernelTestCase
                 ->addRelatedGenre($faker->genre)
                 ->addRelatedGenre($faker->genre)
                 ->setDownloadlink($faker->url)
-                ->setFullPath(static::$kernel->getContainer()->getParameter('av_district.configuration.root_path') . '/'.uniqid('file_'))
+                ->setFullPath(static::$kernel->getContainer()->getParameter('av_district.configuration.root_path').'/'.uniqid('file_'))
                 ->setVersion($faker->version)
                 ->setReleaseDate($faker->dateTime);
         }
@@ -85,16 +82,17 @@ class AppEventSubscriberTest extends KernelTestCase
     public function testAllProviders()
     {
         /** @var EventDispatcher $evtDispatch */
-        $evtDispatch    = static::$kernel->getContainer()->get('event_dispatcher');
+        $evtDispatch = static::$kernel->getContainer()->get('event_dispatcher');
         /** @var  Registry $doctrine */
-        $doctrine       = static::$kernel->getContainer()->get('doctrine');
+        $doctrine  = static::$kernel->getContainer()->get('doctrine');
         $providers = Media::getProviders();
         foreach ($providers as $provider) {
+            if ($provider == Media::PROVIDER_DIGITAL_DJ_POOL) {
+                continue;
+            }
 
-            if ($provider == Media::PROVIDER_DIGITAL_DJ_POOL) continue;
-
-            for ($i = 0; $i < 20; $i++) {
-                $item = self::createItem($provider);
+            for ($i = 0; $i < 20; ++$i) {
+                $item  = self::createItem($provider);
                 $exist = $doctrine->getRepository(Media::getProviderEntityClass($provider))->findOneBy(['providerId' => $item->getItemId()]);
                 if ($exist) {
                     $doctrine->getManager()->remove($exist);
@@ -110,26 +108,26 @@ class AppEventSubscriberTest extends KernelTestCase
         }
     }
 
-    public function testDuplicate() {
+    public function testDuplicate()
+    {
         /** @var EventDispatcher $evtDispatch */
-        $evtDispatch    = static::$kernel->getContainer()->get('event_dispatcher');
+        $evtDispatch = static::$kernel->getContainer()->get('event_dispatcher');
         /** @var  Registry $doctrine */
-        $doctrine       = static::$kernel->getContainer()->get('doctrine');
+        $doctrine = static::$kernel->getContainer()->get('doctrine');
 
         $items = [];
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 20; ++$i) {
             $items[] = self::createItem(Media::PROVIDER_AV_DISTRICT);
         }
 
-        $this->assertCount(20,$items);
+        $this->assertCount(20, $items);
         $event = new ItemDownloadEvent($items[0]);
         $evtDispatch->dispatch(ProviderEvents::ITEM_SUCCESS_DOWNLOAD, $event);
 
         $eventList = new PostItemsListEvent($items);
         $evtDispatch->dispatch(ProviderEvents::ITEMS_POST_GETLIST, $eventList);
 
-        $this->assertEquals(count($eventList->getItems()) + 1 , count($items));
-
+        $this->assertEquals(count($eventList->getItems()) + 1, count($items));
     }
 
     /**
@@ -138,23 +136,22 @@ class AppEventSubscriberTest extends KernelTestCase
     public static function getSubscribedEvents()
     {
         return array(
-            ProviderEvents::ITEM_SUCCESS_DOWNLOAD => ['OnAvdSuccessDownload', 64]
+            ProviderEvents::ITEM_SUCCESS_DOWNLOAD => ['OnAvdSuccessDownload', 64],
         );
     }
 
     /**
      * @param ItemDownloadEvent $event
-     *
      */
     public function OnAvdSuccessDownload(ItemDownloadEvent $event)
     {
         $avdItem = $event->getItem();
     }
 
-    static public function createFrpAudioItem()
+    public static function createFrpAudioItem()
     {
         /** @var Generator $faker */
-        $faker = static::$kernel->getContainer()->get('faker');
+        $faker    = static::$kernel->getContainer()->get('faker');
         $frpAudio = new FranchisePoolItem();
         $frpAudio->setItemId($faker->id);
         $frpAudio->setArtist($faker->artist)
@@ -169,11 +166,11 @@ class AppEventSubscriberTest extends KernelTestCase
         return $frpAudio;
     }
 
-    static public function createAvItem()
+    public static function createAvItem()
     {
         /** @var Generator $faker */
         $faker = static::$kernel->getContainer()->get('faker');
-        $avd = new AvdItem();
+        $avd   = new AvdItem();
         $avd->setItemId($faker->id);
         $avd->setArtist($faker->artist)
             ->setTitle($faker->title)
@@ -192,11 +189,11 @@ class AppEventSubscriberTest extends KernelTestCase
     public function testDirectoryPostDelete()
     {
         /** @var EventDispatcher $evtDispatch */
-        $evtDispatch    = static::$kernel->getContainer()->get('event_dispatcher');
+        $evtDispatch = static::$kernel->getContainer()->get('event_dispatcher');
         /** @var  Registry $doctrine */
-        $doctrine       = static::$kernel->getContainer()->get('doctrine');
+        $doctrine   = static::$kernel->getContainer()->get('doctrine');
         $dirEvent   = new DirectoryEvent(new \SplFileInfo('/volume3/temp/Jus_Shane-Stronger-WEB-2015-JAH'), 'Dance Hall', 'Some album', 'Some artist', 2011);
-        $getDeleted = function () use ($doctrine, $dirEvent){
+        $getDeleted = function () use ($doctrine, $dirEvent) {
             return $doctrine->getRepository('\AudioCoreEntity\Entity\DeletedRelease')->findByRawName($dirEvent->getDirName());
         };
         $doctrine->getManager()->createQuery('DELETE FROM \AudioCoreEntity\Entity\DeletedRelease')->execute();
@@ -206,5 +203,4 @@ class AppEventSubscriberTest extends KernelTestCase
         $evtDispatch->dispatch(\AppBundle\Event\Event::DIRECTORY_POST_DELETE, $dirEvent);
         $this->assertEquals(1, count($getDeleted()));
     }
-
 }

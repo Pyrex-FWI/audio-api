@@ -98,7 +98,7 @@ EOT
     {
         ini_set('memory_limit', '-1');
         gc_enable();
-        $this->input = $input;
+        $this->input  = $input;
         $this->output = $output;
 
         if ($this->input->getOption('info')) {
@@ -154,7 +154,7 @@ EOT
     private function insertDatabase($provider, $stack)
     {
         /** @var Registry $doctrine */
-        $doctrine = $this->getContainer()->get('doctrine');
+        $doctrine      = $this->getContainer()->get('doctrine');
         $entityManager = $doctrine->getManager();
         $entityManager->getConnection()->getConfiguration()->setSQLLogger(null);
 
@@ -184,10 +184,10 @@ EOT
     {
         /** @var Registry $doctrine */
         /* @var EntityRepository $mediaRepository */
-        $doctrine = $this->getContainer()->get('doctrine');
+        $doctrine        = $this->getContainer()->get('doctrine');
         $mediaRepository = $doctrine->getRepository('\AppBundle\Entity\Media');
-        $existing = $mediaRepository->findBy(['fullFilePathMd5' => array_map('md5', $stack)]);
-        $founded = count($existing);
+        $existing        = $mediaRepository->findBy(['fullFilePathMd5' => array_map('md5', $stack)]);
+        $founded         = count($existing);
 
         if ($founded == count($stack)) {
             $stack = [];
@@ -235,9 +235,9 @@ EOT
     {
         foreach ($this->fileDumperWriters as $fdw) {
             $this->output->writeln(sprintf("<info>FileDumperWriter: </info>\n\t- %s", $fdw->getName()));
-            $this->output->writeln("<info>Paths:</info>");
+            $this->output->writeln('<info>Paths:</info>');
             $this->output->writeln("\t- ".implode(PHP_EOL."\t- ", $fdw->getPaths()));
-            $this->output->writeln("");
+            $this->output->writeln('');
             $this->output->writeln(sprintf("<info>Output file: </info>\n\t- %s", $fdw->getFilePathName()));
         }
 
@@ -251,9 +251,9 @@ EOT
     {
         foreach ($this->getCollectionFileName() as $provider => $fp) {
             $reader = new FileDumperReader($fp);
-            $ctn = $reader->count();
-            $i = 0;
-            $stack = [];
+            $ctn    = $reader->count();
+            $i      = 0;
+            $stack  = [];
             $this->output->writeln(sprintf('Reading file \'<info>%s</info>\'', $fp));
             $this->output->writeln(sprintf('Try insert: <info>%s</info> media(s)', $ctn));
             $this->progressBar = new ProgressBar($this->output, $ctn);
@@ -275,22 +275,21 @@ EOT
     /**
      * Update tags.
      * This command iterate on api calls from Media endpoint filtered by "Untaged".
-     *
      */
     protected function updateTags()
     {
         $apiBase = $this->getContainer()->getParameter('api.base');
-        $result = (json_decode(file_get_contents(sprintf('%s/media?order[id]=desc&untaged=1&_=%s', $apiBase, time())), true));
+        $result  = (json_decode(file_get_contents(sprintf('%s/media?order[id]=desc&untaged=1&_=%s', $apiBase, time())), true));
         if (intval($result['hydra:totalItems']) === 0) {
             return;
         }
-        $pageCount = (ceil(intval($result['hydra:totalItems']) / intval($result['hydra:itemsPerPage'])));
+        $pageCount   = (ceil(intval($result['hydra:totalItems']) / intval($result['hydra:itemsPerPage'])));
         $concurrency = 15;
         if ($pageCount == 0) {
             return;
         }
-        $maxIteration = ceil($pageCount / $concurrency);
-        $client = new Client();
+        $maxIteration      = ceil($pageCount / $concurrency);
+        $client            = new Client();
         $this->progressBar = new ProgressBar($this->output, $result['hydra:totalItems']);
         //for ($i = 1; $i <= $maxIteration; ++$i) {
         $this->runAsyncUpdate($client, $concurrency, $apiBase, $result['hydra:totalItems']);

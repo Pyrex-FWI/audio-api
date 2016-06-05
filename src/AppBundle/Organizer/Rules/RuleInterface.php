@@ -2,8 +2,6 @@
 
 namespace AppBundle\Organizer\Rules;
 
-
-
 use AppBundle\Organizer\MediaMoveStack;
 
 interface RuleInterface

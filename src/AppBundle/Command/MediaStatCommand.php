@@ -29,9 +29,9 @@ use Symfony\Component\VarDumper\VarDumper;
  */
 class MediaStatCommand extends ContainerAwareCommand
 {
-    private $exist = 0;
+    private $exist    = 0;
     private $notExist = 0;
-    private $total = 0;
+    private $total    = 0;
     /** @var  OutputInterface */
     private $output;
     /** @var  InputInterface */
@@ -62,8 +62,8 @@ EOF
 
     private function init(InputInterface $input, OutputInterface $output)
     {
-        $this->output = $output;
-        $this->input = $input;
+        $this->output   = $output;
+        $this->input    = $input;
         $this->doctrine = $this->getContainer()->get('doctrine');
     }
 
@@ -149,10 +149,10 @@ EOF
         $providers = $this->input->getOption('provider') ? (array) $this->input->getOption('provider') : Media::getProviders();
 
         foreach ($providers as $provider) {
-            $this->stats[$provider]['items'] = $this->getTotalItems($provider);
-            $this->stats[$provider]['noFileName'] = $this->getItemsWithoutFileName($provider);
-            $this->stats[$provider]['exist'] = $this->getExitItems($provider);
-            $this->stats[$provider]['version'] = $this->getVersions($provider);
+            $this->stats[$provider]['items']         = $this->getTotalItems($provider);
+            $this->stats[$provider]['noFileName']    = $this->getItemsWithoutFileName($provider);
+            $this->stats[$provider]['exist']         = $this->getExitItems($provider);
+            $this->stats[$provider]['version']       = $this->getVersions($provider);
             $this->stats[$provider]['noReleaseDate'] = $this->getNoDated($provider);
         }
         VarDumper::dump($this->stats);

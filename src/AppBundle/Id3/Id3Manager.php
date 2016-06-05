@@ -2,7 +2,6 @@
 
 namespace AppBundle\Id3;
 
-
 use Cpyree\Id3\Metadata\Id3Metadata;
 use Cpyree\Id3\Wrapper\Id3WrapperInterface;
 use Psr\Log\LoggerInterface;
@@ -30,6 +29,7 @@ class Id3Manager
 
     /**
      * @param Id3Metadata $id3Metadata
+     *
      * @return bool
      */
     public function read(Id3Metadata $id3Metadata)
@@ -47,20 +47,19 @@ class Id3Manager
         }
         $this->logger->error(sprintf('Read error for %s', $id3Metadata->getFile()));
 
-
         return false;
     }
 
     /**
      * @param Id3Metadata $id3Metadata
+     *
      * @return bool
      */
     public function write(Id3Metadata $id3Metadata)
     {
-        foreach($this->wrappers as $wrapper) {
+        foreach ($this->wrappers as $wrapper) {
             /** @var Id3WrapperInterface $wrapper */
             if ($wrapper->supportWrite($id3Metadata) && $wrapper->write($id3Metadata)) {
-
                 $this->logger->info(sprintf('Write success for %s with %s', $id3Metadata->getFile(), get_class($wrapper)));
 
                 return true;
@@ -93,5 +92,4 @@ class Id3Manager
 
         return $found;
     }
-
 }

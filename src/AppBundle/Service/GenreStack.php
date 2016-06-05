@@ -2,7 +2,6 @@
 
 namespace AppBundle\Service;
 
-
 use AudioCoreEntity\Entity\Genre;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\ORM\EntityManager;
@@ -22,19 +21,20 @@ class GenreStack
 
     public function __construct(Registry $doctrine)
     {
-        $this->doctrine = $doctrine;
+        $this->doctrine        = $doctrine;
         $this->genreRepository = $this->doctrine->getRepository(\AudioCoreEntity\Entity\Genre::class);
-        $this->eManager = $this->doctrine->getManager();
+        $this->eManager        = $this->doctrine->getManager();
     }
 
     private function loadGenres()
     {
-        $this->genres = $this->genreRepository->findAll();
+        $this->genres   = $this->genreRepository->findAll();
         $this->isLoaded = true;
     }
 
     /**
      * @param $name
+     *
      * @return Genre|bool
      */
     protected function findOne($name)
@@ -54,7 +54,9 @@ class GenreStack
 
     /**
      * @param $name
+     *
      * @return Genre
+     *
      * @throws \Exception
      * @throws \Doctrine\DBAL\ConnectionException
      */
@@ -69,17 +71,17 @@ class GenreStack
             $this->genres[] = $genre;
 
             return $genre;
-
         } catch (\Exception $e) {
             $this->eManager->getConnection()->rollback();
             throw $e;
         }
     }
 
-
     /**
      * @param $name
+     *
      * @return Genre|bool
+     *
      * @throws Exception
      */
     public function getOrCreateIfNotExist($name)
@@ -88,6 +90,7 @@ class GenreStack
         if (!$existGenre) {
             return $this->create($name);
         }
+
         return $existGenre;
     }
 }

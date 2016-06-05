@@ -30,7 +30,7 @@
         "doctrine/doctrine-fixtures-bundle": "~2.2",
         "beberlei/DoctrineExtensions": "~1.0",
         "stof/doctrine-extensions-bundle": "^1.2",
-        "pyrex-fwi/id3": "dev-master",
+        "pyrex-fwi/sapar-id3": "dev-master",
         "videlalvaro/php-amqplib": "v2.6.0",
         "oldsound/rabbitmq-bundle": "v1.8.0",
         "pyrex-fwi/sapar-organizer": "^1.0",

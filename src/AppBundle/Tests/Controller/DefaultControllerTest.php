@@ -8,9 +8,9 @@ class DefaultControllerTest extends WebTestCase
 {
     public function testIndex()
     {
-        $client = static::createClient();
+        $client  = static::createClient();
         $crawler = $client->request('GET', '/');
-        $this->assertContains("Api", $crawler->text());
+        $this->assertContains('Api', $crawler->text());
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
 }

@@ -4,12 +4,8 @@ namespace AppBundle\Service;
 
 use AudioCoreEntity\Entity\Genre;
 use Deejay\Id3ToolBundle\Wrapper\Id3Manager;
-use Doctrine\Bundle\DoctrineBundle\Registry;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
-use Symfony\Component\VarDumper\VarDumper;
 
 class TempDir
 {
@@ -23,13 +19,13 @@ class TempDir
     private $strictMode = false;
     /** @var bool  */
     private $countFilesFromSvf = false;
-    private $errors = [];
+    private $errors            = [];
 
     /** @var  id3Manager */
     private $id3Manager;
-    private $tempDirectoryId3Genres = [];
-    private $tempDirectoryId3Years = [];
-    private $tempDirectoryId3Albums = [];
+    private $tempDirectoryId3Genres  = [];
+    private $tempDirectoryId3Years   = [];
+    private $tempDirectoryId3Albums  = [];
     private $tempDirectoryId3Artists = [];
 
     public function __construct(Id3Manager $id3Manager)
@@ -37,22 +33,23 @@ class TempDir
         $this->id3Manager = $id3Manager;
     }
 
-
     /**
      * @param $getTempDir
+     *
      * @return $this
      */
     public function setTempDirectory($getTempDir)
     {
-        $this->errors = [];
-        $this->tempDirectory = new \SplFileInfo($getTempDir);
-        $this->directoryFiles =(iterator_to_array(Finder::create()->depth('== 0')->in($this->getTempDirectory()->getRealPath())->files()->getIterator()));
+        $this->errors         = [];
+        $this->tempDirectory  = new \SplFileInfo($getTempDir);
+        $this->directoryFiles = (iterator_to_array(Finder::create()->depth('== 0')->in($this->getTempDirectory()->getRealPath())->files()->getIterator()));
 
         return $this;
     }
 
     /**
      * @param $rootTemp
+     *
      * @return $this
      */
     public function setRootDirectory($rootTemp)
@@ -72,62 +69,68 @@ class TempDir
 
     public function readTempDirectoryMeta()
     {
-        $genres     = [];
-        $years      = [];
-        $albums     = [];
-        $artists    = [];
+        $genres       = [];
+        $years        = [];
+        $albums       = [];
+        $artists      = [];
         $filesToCheck = ($this->id3Manager->keepReadablesFiles(array_keys($this->directoryFiles)));
         if (count($filesToCheck) == 0) {
             return false;
         }
-        $result = $this->id3Manager->readMultipleTags($filesToCheck);
+        $result   = $this->id3Manager->readMultipleTags($filesToCheck);
         $nbResult = count($result);
 
-        for ($i = 0; $i < $nbResult; $i++) {
-            $genres = array_merge($genres, $this->id3Manager->getReaderWrapper()->eq($i)->getGenres());
-            $years[] = $this->id3Manager->getReaderWrapper()->eq($i)->getYear();
-            $albums[] = $this->id3Manager->getReaderWrapper()->eq($i)->getAlbum();
+        for ($i = 0; $i < $nbResult; ++$i) {
+            $genres    = array_merge($genres, $this->id3Manager->getReaderWrapper()->eq($i)->getGenres());
+            $years[]   = $this->id3Manager->getReaderWrapper()->eq($i)->getYear();
+            $albums[]  = $this->id3Manager->getReaderWrapper()->eq($i)->getAlbum();
             $artists[] = $this->id3Manager->getReaderWrapper()->eq($i)->getArtist();
         }
-        $this->tempDirectoryId3Genres   = array_filter(array_unique($genres), 'strlen');
-        $this->tempDirectoryId3Years    = array_filter(array_unique($years), 'strlen');
-        $this->tempDirectoryId3Albums   = array_filter(array_unique($albums), 'strlen');
-        $this->tempDirectoryId3Artists  = array_filter(array_unique($artists), 'strlen');
+        $this->tempDirectoryId3Genres  = array_filter(array_unique($genres), 'strlen');
+        $this->tempDirectoryId3Years   = array_filter(array_unique($years), 'strlen');
+        $this->tempDirectoryId3Albums  = array_filter(array_unique($albums), 'strlen');
+        $this->tempDirectoryId3Artists = array_filter(array_unique($artists), 'strlen');
+
         return true;
     }
 
     public function setStrictMode($val)
     {
         $this->strictMode = $val;
+
         return $this;
     }
 
     /**
      * @param $path
+     *
      * @return bool
      */
     private function containNoEmptySubDirs($path)
     {
         //$haveSubDirs =  Finder::create()->in($path)->directories()->count() > 0 ? true : false;
-        $notEmpty = Finder::create()->depth('>=1')->in($path)->files()->size( '>= 1Mi')->count() > 0 ? true : false;
+        $notEmpty = Finder::create()->depth('>=1')->in($path)->files()->size('>= 1Mi')->count() > 0 ? true : false;
         //dump(iterator_to_array(Finder::create()->depth('>=1')->in($path)->files()->size( '>= 1Mi')->getIterator()));
         return $notEmpty;
     }
 
-    public  function canBeMoved()
+    public function canBeMoved()
     {
         if ($this->strictMode && $this->containNoEmptySubDirs($this->getTempDirectory()->getRealPath())) {
             $this->addError('Path contain no empty subdir');
+
             return false;
         }
-        
+
         if (count($this->getTempDirectoryId3Genres()) == 0 || count($this->getTempDirectoryId3Years()) == 0) {
             $this->addError('No Genre or No Year');
+
             return false;
         }
 
         if (!$this->genreIsUnique() || !$this->yearIsUnique() || !$this->albumIssUnique()) {
             $this->addError('Multiple Genres, Year or Album name');
+
             return false;
         }
 
@@ -198,7 +201,7 @@ class TempDir
         return $newDir = (sprintf(
             '%s/%s/%s/',
             $this->getRootDirectory()->getRealPath(),
-            str_replace('/', ' - ',$this->getTempDirectoryId3Genres()[0]),
+            str_replace('/', ' - ', $this->getTempDirectoryId3Genres()[0]),
             $this->getTempDirectoryId3Years()[0]
         ));
     }
@@ -216,18 +219,20 @@ class TempDir
 
         $command = sprintf('cp -rf %s %s', escapeshellarg($this->getTempDirectory()->getRealPath()), escapeshellarg($newDir));
         exec($command, $out, $returnVar);
+
         return !boolval($returnVar);
     }
 
     private function removeTempDir()
     {
-        $command = "rm -rf ". escapeshellarg($this->getTempDirectory()->getRealPath());
+        $command = 'rm -rf '.escapeshellarg($this->getTempDirectory()->getRealPath());
         exec($command, $out, $returnVar);
+
         return !boolval($returnVar);
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getCountFilesFromSvf()
     {
@@ -235,12 +240,14 @@ class TempDir
     }
 
     /**
-     * @param boolean $countFileFromSvf
+     * @param bool $countFileFromSvf
+     *
      * @return TempDir
      */
     public function setCountFilesFromSvf($countFileFromSvf)
     {
         $this->countFilesFromSvf = $countFileFromSvf;
+
         return $this;
     }
 
@@ -256,8 +263,8 @@ class TempDir
 
     private function removeParentTempDirFolderIFEmpty()
     {
-        if( count(scandir($this->getTempDirectory()->getPath())) < 3) {
-            $command = "rm -rf ". escapeshellarg($this->getTempDirectory()->getPath());
+        if (count(scandir($this->getTempDirectory()->getPath())) < 3) {
+            $command = 'rm -rf '.escapeshellarg($this->getTempDirectory()->getPath());
             exec($command, $out, $returnVar);
         }
     }
@@ -266,5 +273,4 @@ class TempDir
     {
         return $this->tempDirectoryId3Artists;
     }
-
 }

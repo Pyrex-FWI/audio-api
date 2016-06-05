@@ -27,7 +27,6 @@ class AppKernel extends Kernel
             new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new OldSound\RabbitMqBundle\OldSoundRabbitMqBundle(),
-            new Pyrex\DupeBundle\PyrexDupeBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

@@ -6,10 +6,10 @@ use AppBundle\Entity\Media;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Media
+ * Media.
  *
  * @ORM\Entity
  */
-class AvDistrictMedia extends Media {
-
+class AvDistrictMedia extends Media
+{
 }

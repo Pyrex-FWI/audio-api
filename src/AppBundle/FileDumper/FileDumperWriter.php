@@ -12,8 +12,7 @@
 namespace AppBundle\FileDumper;
 
 /**
- * Class FileDumperWriter
- * @package AppBundle\FileDumper
+ * Class FileDumperWriter.
  */
 class FileDumperWriter
 {
@@ -32,6 +31,7 @@ class FileDumperWriter
 
     /**
      * FileDumperWriter constructor.
+     *
      * @param $name
      * @param $provider
      * @param $cmdPatern
@@ -41,9 +41,9 @@ class FileDumperWriter
      */
     public function __construct($name, $provider, $cmdPatern, $paths = [], $filePatern, $output)
     {
-        $this->name = $name;
-        $this->provider = $provider;
-        $this->cmdPatern = $cmdPatern;
+        $this->name       = $name;
+        $this->provider   = $provider;
+        $this->cmdPatern  = $cmdPatern;
         $this->outpuPatht = $output;
         $this->filePatern = $filePatern;
         $this->setPaths($paths);
@@ -61,6 +61,7 @@ class FileDumperWriter
 
     /**
      * Set paths.
+     *
      * @param array $paths
      */
     private function setPaths($paths)
@@ -75,8 +76,10 @@ class FileDumperWriter
     }
 
     /**
-     * Build and return command line stringfro $path
+     * Build and return command line stringfro $path.
+     *
      * @param $path
+     *
      * @return string
      */
     public function getCmd($path)
@@ -86,6 +89,7 @@ class FileDumperWriter
 
     /**
      * Return ouput filename.
+     *
      * @return string
      */
     public function getFilePathName()
@@ -103,6 +107,7 @@ class FileDumperWriter
 
     /**
      * Get Name.
+     *
      * @return mixed
      */
     public function getName()
@@ -112,6 +117,7 @@ class FileDumperWriter
 
     /**
      * Get paths.
+     *
      * @return array
      */
     public function getPaths()

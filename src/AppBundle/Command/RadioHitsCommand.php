@@ -51,8 +51,8 @@ EOF
 
     private function init(InputInterface $input, OutputInterface $output)
     {
-        $this->output = $output;
-        $this->input = $input;
+        $this->output   = $output;
+        $this->input    = $input;
         $this->doctrine = $this->getContainer()->get('doctrine');
     }
 

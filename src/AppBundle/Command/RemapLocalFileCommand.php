@@ -87,9 +87,9 @@ EOF
         $this->em = $doctrine->getManager();
         $this->em->getConnection()->getConfiguration()->setSQLLogger(null);
 
-        $files = Finder::create()->in($this->inputDir)->name('/\.mp(3|4)$/')->files();
+        $files       = Finder::create()->in($this->inputDir)->name('/\.mp(3|4)$/')->files();
         $this->total = $files->count();
-        $size = 1000;
+        $size        = 1000;
 
         $output->writeln($this->inputDir);
 
@@ -149,7 +149,7 @@ EOF
     private function showMissingSample()
     {
         $tableHelper = new Table($this->output);
-        $max = 50 >= count($this->notExist) ? count($this->notExist) : 50;
+        $max         = 50 >= count($this->notExist) ? count($this->notExist) : 50;
         for ($i = 0; $i < $max; ++$i) {
             $tableHelper->addRow([$this->notExist[$i]]);
         }
@@ -165,7 +165,7 @@ EOF
     private function init(InputInterface $input, OutputInterface $output)
     {
         $this->inputDir = $input->getArgument('inputDir');
-        $this->output = $output;
-        $this->input = $input;
+        $this->output   = $output;
+        $this->input    = $input;
     }
 }

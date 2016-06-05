@@ -2,11 +2,9 @@
 /**
  * User: chpyr
  * Date: 04/09/15
- * Time: 20:09
+ * Time: 20:09.
  */
-
 namespace AppBundle\Tests\Faker;
-
 
 use Faker\Provider\Base;
 
@@ -117,6 +115,7 @@ class AvItemProvider extends Base
         if ($min && $max) {
             return static::numberBetween(intval($min), intval($max));
         }
+
         return static::numberBetween(static::$id[0], static::$id[1]);
     }
 
@@ -126,8 +125,9 @@ class AvItemProvider extends Base
         if ($identifierRange) {
             self::$id = [$identifierRange[0], $identifierRange[1]];
         }
-        $result = $this->generator->parse(static::$trackFileNameFormats);
+        $result        = $this->generator->parse(static::$trackFileNameFormats);
         self::$trackId = $old;
+
         return $result;
     }
 }

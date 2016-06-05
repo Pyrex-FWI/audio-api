@@ -1,18 +1,15 @@
 <?php
 /**
  * Date: 06/09/15
- * Time: 11:56
+ * Time: 11:56.
  */
-
 namespace AppBundle\Organizer;
-
 
 use AppBundle\Entity\Media;
 use AppBundle\Organizer\Rules\RuleInterface;
 use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\VarDumper\VarDumper;
 
 class MediaOrganizerManager
 {
@@ -29,8 +26,8 @@ class MediaOrganizerManager
         $eventDispatcher,
         Logger $logger = null)
     {
-        $this->logger               = $logger ? $logger : new NullLogger();
-        $this->eventDispatcher      = $eventDispatcher;
+        $this->logger          = $logger ? $logger : new NullLogger();
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function addRule(RuleInterface $rule)
@@ -40,7 +37,9 @@ class MediaOrganizerManager
 
     /**
      * @param $name
+     *
      * @return RuleInterface
+     *
      * @throws \Exception
      */
     public function get($name)
@@ -80,14 +79,13 @@ class MediaOrganizerManager
         $fSys = new Filesystem();
 
         try {
-
             if (count($rules) != count($moveInstruc->getPathParts())) {
                 $this->logger->warning(sprintf('Possible error because final part count doesn\'t equal rules count. %s -> %s',
                     $moveInstruc->getOrigin(), $moveInstruc->getFinalDestination()), [$moveInstruc, $media]);
             }
-            $fileNameOrg = basename($moveInstruc->getOrigin());
+            $fileNameOrg  = basename($moveInstruc->getOrigin());
             $fileNameDest = basename($moveInstruc->getFinalDestination());
-            if ( $fileNameOrg !== $fileNameDest) {
+            if ($fileNameOrg !== $fileNameDest) {
                 throw new \Exception(sprtinf('File name \'%s\' are modified in \'%s\' for %s file', $fileNameOrg, $fileNameDest, $moveInstruc->getOrigin()));
             }
 
@@ -96,13 +94,11 @@ class MediaOrganizerManager
             }
 
             $fSys->rename($moveInstruc->getOrigin(), $moveInstruc->getFinalDestination(), true);
-            $this->logger->info('Move: '.$moveInstruc->getOrigin() .' to '. $moveInstruc->getFinalDestination(), [$moveInstruc, $media] );
+            $this->logger->info('Move: '.$moveInstruc->getOrigin().' to '.$moveInstruc->getFinalDestination(), [$moveInstruc, $media]);
             $media->setFullPath($moveInstruc->getFinalDestination());
 
             return true;
-
         } catch (\Exception $e) {
-
             $this->logger->error(sprintf('can move  %s to %s',
                 $moveInstruc->getOrigin(),
                 $moveInstruc->getFinalDestination()

@@ -6,10 +6,10 @@ use AppBundle\Entity\Media;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Media
+ * Media.
  *
  * @ORM\Entity
  */
-class FranchiseVideoMedia extends Media {
-
+class FranchiseVideoMedia extends Media
+{
 }

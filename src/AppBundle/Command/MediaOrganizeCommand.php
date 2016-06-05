@@ -111,9 +111,9 @@ EOF
         $query = $em->createQuery('SELECT COUNT(m.id) FROM \AppBundle\Entity\Media m WHERE m.exist = 1 and m.provider = :provider');
         $query->setParameter('provider', $this->providerId);
 
-        $this->total = $query->getSingleScalarResult();
-        $from = 0;
-        $size = 1000;
+        $this->total  = $query->getSingleScalarResult();
+        $from         = 0;
+        $size         = 1000;
         $queryBuilder = $mediaRepository->createQueryBuilder('m');
         $queryBuilder
             ->select('m')
@@ -164,10 +164,10 @@ EOF
      */
     private function init(InputInterface $input, OutputInterface $output)
     {
-        $this->outputDir = $input->getArgument('outputDir');
+        $this->outputDir    = $input->getArgument('outputDir');
         $this->providerName = $input->getArgument('providerName');
-        $this->output = $output;
-        $this->input = $input;
+        $this->output       = $output;
+        $this->input        = $input;
 
         if (!in_array($this->providerName, array_keys(Media::getProviders()))) {
             throw new \Exception(

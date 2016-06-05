@@ -8,7 +8,7 @@ class ApiControllerTest extends WebTestCase
 {
     public function testIndex()
     {
-        $client = $this->createAuthenticatedClient();
+        $client  = $this->createAuthenticatedClient();
         $crawler = $client->request('GET', '/api/');
         $this->assertTrue($client->getResponse()->headers->contains('Content-Type', 'application/ld+json'));
         $result = json_decode($client->getResponse()->getContent(), true);
@@ -45,5 +45,4 @@ class ApiControllerTest extends WebTestCase
 
         return $client;
     }
-
 }

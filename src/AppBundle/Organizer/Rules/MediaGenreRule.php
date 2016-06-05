@@ -2,13 +2,10 @@
 
 namespace AppBundle\Organizer\Rules;
 
-
-use AppBundle\Entity\Media;
 use AppBundle\Organizer\MediaMoveStack;
 
 class MediaGenreRule extends FileGenreRule
 {
-
     public function apply(MediaMoveStack $mover)
     {
         $part = null;

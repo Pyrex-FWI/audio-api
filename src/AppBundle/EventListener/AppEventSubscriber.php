@@ -32,11 +32,11 @@ class AppEventSubscriber implements EventSubscriberInterface
 
     public function __construct(Registry $doctrine, Serializer $serializer, Logger $logger, $config = [])
     {
-        $this->doctrine = $doctrine;
+        $this->doctrine   = $doctrine;
         $this->serializer = $serializer;
-        $this->logger = $logger;
-        $this->config = array_merge(
-            ['database_check'   => false],
+        $this->logger     = $logger;
+        $this->config     = array_merge(
+            ['database_check' => false],
             $config
         );
     }
@@ -47,23 +47,23 @@ class AppEventSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            ProviderEvents::ITEM_SUCCESS_DOWNLOAD   => ['OnSuccessDownload', 64],
-            ProviderEvents::ITEMS_POST_GETLIST      => ['removeAlreadyDownloaded', 120],
-            ProviderEvents::SEARCH_ITEM_LOCALY      => ['findItemLocaly', 64],
-            Event::DIRECTORY_POST_MOVE              => ['directoryPostMove', 64],
-            Event::DIRECTORY_POST_DELETE            => ['directoryPostDelete', 64],
+            ProviderEvents::ITEM_SUCCESS_DOWNLOAD => ['OnSuccessDownload', 64],
+            ProviderEvents::ITEMS_POST_GETLIST    => ['removeAlreadyDownloaded', 120],
+            ProviderEvents::SEARCH_ITEM_LOCALY    => ['findItemLocaly', 64],
+            Event::DIRECTORY_POST_MOVE            => ['directoryPostMove', 64],
+            Event::DIRECTORY_POST_DELETE          => ['directoryPostDelete', 64],
         );
     }
 
     public function findItemLocaly(ItemLocalExistenceEvent $itemEvent)
     {
-        $manager = $this->doctrine->getManager();
+        $manager  = $this->doctrine->getManager();
         $provider = Media::getProviderFromItem($itemEvent->getItem());
         /** @var EntityRepository $mediaRepo */
         $mediaRepo = $manager->getRepository(Media::getProviderEntityClass($provider));
         $localItem = $mediaRepo->findOneBy(
             [
-                'providerId'    => $itemEvent->getItem()->getItemId()
+                'providerId' => $itemEvent->getItem()->getItemId(),
             ]
         );
 
@@ -73,7 +73,8 @@ class AppEventSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * This function remove all items was already downloaded
+     * This function remove all items was already downloaded.
+     *
      * @param PostItemsListEvent $postList
      */
     public function removeAlreadyDownloaded(PostItemsListEvent $postList)
@@ -87,12 +88,12 @@ class AppEventSubscriber implements EventSubscriberInterface
         }
 
         $mustDownload = [];
-        $provider = null;
-        $itemIds = [];
-        $existIds = [];
+        $provider     = null;
+        $itemIds      = [];
+        $existIds     = [];
 
         foreach ($postList->getItems() as $sampleItem) {
-            $provider = Media::getProviderFromItem($sampleItem);
+            $provider  = Media::getProviderFromItem($sampleItem);
             $itemIds[] = $sampleItem->getItemId();
         }
 
@@ -131,12 +132,12 @@ class AppEventSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $avdItem = $event->getItem();
-        $manager = $this->doctrine->getManager();
+        $avdItem   = $event->getItem();
+        $manager   = $this->doctrine->getManager();
         $genreRepo = $manager->getRepository(\AudioCoreEntity\Entity\Genre::class);
 
         $provider = null;
-        $type = null;
+        $type     = null;
         if ($avdItem instanceof \DeejayPoolBundle\Entity\AvdItem) {
             $provider = Media::PROVIDER_AV_DISTRICT;
         } elseif ($avdItem instanceof \DeejayPoolBundle\Entity\FranchisePoolItem) {
@@ -147,6 +148,8 @@ class AppEventSubscriber implements EventSubscriberInterface
             }
         } elseif ($avdItem  instanceof \DeejayPoolBundle\Entity\SvItem) {
             $provider = Media::PROVIDER_SMASHVISION;
+        } elseif ($avdItem  instanceof \DeejayPoolBundle\Entity\DdpItem) {
+            $provider = Media::PROVIDER_DIGITAL_DJ_POOL;
         } else {
             throw new \Exception('Undetermined PROVIDER');
         }
@@ -154,7 +157,7 @@ class AppEventSubscriber implements EventSubscriberInterface
         $mediaRepo = $manager->getRepository(Media::getProviderEntityClass($provider));
         $mediaItem = $mediaRepo->findOneBy(['providerId' => $avdItem->getItemId()]);
         if (!$mediaItem) {
-            $media = (new ItemConverter())->getMediaFromProviderItem($avdItem);
+            $media  = (new ItemConverter())->getMediaFromProviderItem($avdItem);
             $genres = $media->getGenres();
             foreach ($genres as $genre) {
                 $existGenre = $genreRepo->findOneBy(['name' => $genre->getName()]);
@@ -176,11 +179,10 @@ class AppEventSubscriber implements EventSubscriberInterface
 
     public function directoryPostDelete(DirectoryEvent $directoryEvent)
     {
-        $manager = $this->doctrine->getManager();
+        $manager        = $this->doctrine->getManager();
         $deletedDirRepo = $manager->getRepository('\AudioCoreEntity\Entity\DeletedRelease');
 
         if (!$deletedDirRepo->findOneByRawName($directoryEvent->getDirName())) {
-
             $deletedDir = new DeletedRelease();
             $deletedDir
                 ->setArtistName($directoryEvent->getArtist())

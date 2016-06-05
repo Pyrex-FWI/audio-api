@@ -2,23 +2,17 @@
 
 namespace AppBundle\RabbitMq\Consumer;
 
-
-use AppBundle\Command\TempDirOrganizeCommand;
 use AppBundle\Event\DirectoryEvent;
 use AppBundle\Service\TempDir;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
 class DirectoryRemoveConsumer implements ConsumerInterface
 {
-
     use ContainerAwareTrait;
 
     /**
@@ -30,12 +24,13 @@ class DirectoryRemoveConsumer implements ConsumerInterface
     private $eventDispatcher;
     public function __construct(LoggerInterface $logger, EventDispatcherInterface $eventDispatcher)
     {
-        $this->logger = $logger;
+        $this->logger          = $logger;
         $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
      * @param AMQPMessage $msg The message
+     *
      * @return mixed false to reject and requeue, any other value to acknowledge
      */
     public function execute(AMQPMessage $msg)
@@ -44,7 +39,7 @@ class DirectoryRemoveConsumer implements ConsumerInterface
             return;
         }
 
-        $fs = new \SplFileInfo($msg->body);
+        $fs       = new \SplFileInfo($msg->body);
         $dirEvent = new DirectoryEvent($fs);
 
         /** @var TempDir $tmpDirManager */
@@ -53,15 +48,15 @@ class DirectoryRemoveConsumer implements ConsumerInterface
             ->setTempDirectory($fs->getRealPath())
             ->setStrictMode(true);
         if ($tmpDirManager->readTempDirectoryMeta()) {
-            $year       = implode(' ,', $tmpDirManager->getTempDirectoryId3Years());
-            $genres     = implode(' ,', $tmpDirManager->getTempDirectoryId3Genres());
-            $artists    = implode(' ,', $tmpDirManager->getTempDirectoryId3Artists());
-            $albums     = implode(' ,', $tmpDirManager->getTempDirectoryId3Albums());
-            $dirEvent   = new DirectoryEvent($fs, $genres, $albums, $artists, $year);
+            $year     = implode(' ,', $tmpDirManager->getTempDirectoryId3Years());
+            $genres   = implode(' ,', $tmpDirManager->getTempDirectoryId3Genres());
+            $artists  = implode(' ,', $tmpDirManager->getTempDirectoryId3Artists());
+            $albums   = implode(' ,', $tmpDirManager->getTempDirectoryId3Albums());
+            $dirEvent = new DirectoryEvent($fs, $genres, $albums, $artists, $year);
         }
-        $command = "rm -rf ". escapeshellarg($fs->getRealPath());
+        $command = 'rm -rf '.escapeshellarg($fs->getRealPath());
         exec($command, $out, $returnVar);
-        echo sprintf('%s - %s: %s ', date('d/m/y H:i:s'), $command, boolval(!$returnVar)). "\n";
+        echo sprintf('%s - %s: %s ', date('d/m/y H:i:s'), $command, boolval(!$returnVar))."\n";
         if (!$returnVar) {
             $this->logger->info(sprintf('%s has been removed correctly', $msg->body));
         }
@@ -70,8 +65,8 @@ class DirectoryRemoveConsumer implements ConsumerInterface
         $doctrine->resetManager();
         try {
             $this->eventDispatcher->dispatch(\AppBundle\Event\Event::DIRECTORY_POST_DELETE, $dirEvent);
-        } catch(\Exception $e) {
-            echo sprintf('%s - %s: %s ', date('d/m/y H:i:s'), $e->getMessage()). "\n";
+        } catch (\Exception $e) {
+            echo sprintf('%s - %s: %s ', date('d/m/y H:i:s'), $e->getMessage())."\n";
 
             return false;
         }

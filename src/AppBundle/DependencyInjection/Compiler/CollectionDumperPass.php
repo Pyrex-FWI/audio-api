@@ -2,7 +2,6 @@
 
 namespace AppBundle\DependencyInjection\Compiler;
 
-use AppBundle\DeejayFilesOrganizerBundle;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -10,7 +9,6 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class CollectionDumperPass implements CompilerPassInterface
 {
-
     /**
      * You can modify the container here before it is dumped to PHP code.
      *
@@ -31,9 +29,8 @@ class CollectionDumperPass implements CompilerPassInterface
         $collectionDumperCommand = $container->getDefinition('app.command.collection_dumper');
 
         if ($fPaths && $findCmd && $outputPath) {
-
             foreach ($fPaths as $name => $bag) {
-                $name = 'filedumper.writer.'.$name;
+                $name     = 'filedumper.writer.'.$name;
                 $fdWriter = (new Definition(
                     'AppBundle\\FileDumper\\FileDumperWriter',
                     [$name, $bag['provider'], $findCmd, $bag['paths'], $bag['match'], $outputPath]

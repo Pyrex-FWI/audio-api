@@ -197,8 +197,3 @@ old_sound_rabbit_mq:
             queue_options:
                 name: 'sapar_folder_media_indexer'
             callback: media_indexer.consumer
-
-pyrex_dupe:
-    dupe_dump_file: '/volume4/Pool/SmashVision/fdupe_log.txt'
-    database:
-        path: '%kernel.root_dir%//dupe.db'
