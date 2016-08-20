@@ -102,6 +102,14 @@ deejay_pool:
             root_path: %franchise_pool.configuration.root_path%
 
     smashvision:
+    ddp:
+        credentials:
+            login:    %digital_dj_pool.credentials.login%
+            password: %digital_dj_pool.credentials.password%
+        configuration:
+            root_path: %digital_dj_pool.configuration.root_path%
+
+    smashvision:
         credentials:
             login:    %smashvision.credentials.login%
             password: %smashvision.credentials.password%
