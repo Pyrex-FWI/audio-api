@@ -25,3 +25,6 @@ Tests/TestData/root_path
 .vagrant
 .ssh
 /app/dupe.db
+/var/logs/
+/var/cache/
+/var/sessions/
