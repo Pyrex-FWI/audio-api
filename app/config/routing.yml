@@ -1,6 +1,3 @@
-#demo:
-#    resource: "@AcmeDemoBundle/Controller/"
-#    type:     annotation
 app:
     resource: "@AppBundle/Controller/"
     type:     annotation
@@ -15,6 +12,3 @@ api:
 NelmioApiDocBundle:
     resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
     prefix:   /api/doc
-
-php Te  api_login_check:
-   path: /api/login_check

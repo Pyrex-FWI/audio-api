@@ -14,6 +14,3 @@ web_profiler:
 
 swiftmailer:
     disable_delivery: true
-
-faker:
-    locale: 'en_US'

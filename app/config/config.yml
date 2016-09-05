@@ -21,7 +21,7 @@ framework:
     form:            ~
     csrf_protection: ~
     validation:      { enable_annotations: true }
-    serializer:       { enable_annotations: true }
+    serializer:      { enable_annotations: true }
     templating:
         engines: ['twig']
         #assets_version: SomeVersionScheme
@@ -29,10 +29,12 @@ framework:
     trusted_hosts:   ~
     trusted_proxies: ~
     session:
-        # handler_id set to null will use default session handler from php.ini
-        handler_id:  ~
+        # http://symfony.com/doc/current/reference/configuration/framework.html#handler-id
+        handler_id:  session.handler.native_file
+        save_path:   "%kernel.root_dir%/../var/sessions/%kernel.environment%"
     fragments:       ~
     http_method_override: true
+    assets: ~
 
 # Twig Configuration
 twig:
@@ -115,93 +117,3 @@ deejay_pool:
             password: %smashvision.credentials.password%
         configuration:
             root_path: %smashvision.configuration.root_path%
-
-dunglas_api:
-    title:       "Audio API"
-    description: "Pyrex API"
-    collection:
-        pagination:
-            items_per_page:
-                number: 100
-
-nelmio_api_doc:
-    sandbox:
-        accept_type:        "application/json"
-        body_format:
-            formats:        [ "json" ]
-            default_format: "json"
-        request_format:
-            formats:
-                json:       "application/json"
-
-nelmio_cors:
-    paths:
-        '^/':
-            allow_origin:  ["*"]
-            allow_methods: ["OPTIONS", "POST", "PUT", "GET", "DELETE"]
-            allow_headers: ['content-type']
-
-lexik_jwt_authentication:
-    private_key_path:    %kernel.root_dir%/var/jwt/private.pem   # ssh private key path
-    public_key_path:     %kernel.root_dir%/var/jwt/public.pem    # ssh public key path
-    pass_phrase:         xerypjd                                 # ssh key pass phrase
-    token_ttl:           86400                                   # token ttl - defaults to 86400
-    encoder_service:     lexik_jwt_authentication.jwt_encoder    # token encoder / decoder service - defaults to the jwt encoder (based on the namshi/jose library)
-    user_identity_field: username                                # key under which the user identity will be stored in the token payload - defaults to username
-
-
-old_sound_rabbit_mq:
-    connections:
-        default:
-            host:     localhost
-            port:     5672
-            user:     guest
-            password: guest
-            vhost:    /
-            lazy:     false
-    producers:
-        sapar_folder_move:
-            connection: default
-            exchange_options:
-                name: 'sapar.folder.move'
-                type: topic
-
-        sapar_folder_remove:
-            connection: default
-            exchange_options:
-                name: 'sapar.folder.remove'
-                type: topic
-
-        sapar_media_indexer:
-            connection: default
-            exchange_options:
-                name: 'sapar.media.indexer'
-                type: topic
-    consumers:
-        sapar_folder_move:
-            connection: default
-            exchange_options:
-                name: 'sapar.folder.move'
-                type: topic
-            queue_options:
-                name: 'sapar_folder_move_queue'
-            callback: directory_move.consumer
-            #idle_timeout: 60
-
-        sapar_folder_remove:
-            connection: default
-            exchange_options:
-                name: 'sapar.folder.remove'
-                type: topic
-            queue_options:
-                name: 'sapar_folder_remove_queue'
-            callback: directory_remove.consumer
-
-        media_indexer:
-            connection: default
-            exchange_options:
-                name: 'sapar.media.indexer'
-                type: topic
-            queue_options:
-                name: 'sapar_folder_media_indexer'
-            callback: media_indexer.consumer

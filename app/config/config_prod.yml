@@ -1,10 +1,6 @@
 imports:
     - { resource: config.yml }
 
-#framework:
-#    validation:
-#        cache: apc
-
 #doctrine:
 #    orm:
 #        metadata_cache_driver: apc
@@ -20,9 +16,6 @@ monolog:
         nested:
             type:  stream
             path:  "%kernel.logs_dir%/%kernel.environment%.log"
-            #level: debug
+            level: debug
         console:
             type:  console
-
-dunglas_api:
-    cache: api.mapping.cache.apc
