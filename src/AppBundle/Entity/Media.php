@@ -22,11 +22,11 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ORM\DiscriminatorColumn(name="provider", type="integer", fieldName="provider")
  * @ORM\DiscriminatorMap({
  *          100 = "AppBundle\Entity\Media",
- *          1 = "AppBundle\Entity\Provider\DigitalDjPoolMedia",
- *          2 = "AppBundle\Entity\Provider\AvDistrictMedia",
- *          3 = "AppBundle\Entity\Provider\FranchiseAudioMedia",
- *          4 = "AppBundle\Entity\Provider\FranchiseVideoMedia",
- *          5 = "AppBundle\Entity\Provider\SmashVidzMedia"
+ *          1   = "AppBundle\Entity\Provider\DigitalDjPoolMedia",
+ *          2   = "AppBundle\Entity\Provider\AvDistrictMedia",
+ *          3   = "AppBundle\Entity\Provider\FranchiseAudioMedia",
+ *          4   = "AppBundle\Entity\Provider\FranchiseVideoMedia",
+ *          5   = "AppBundle\Entity\Provider\SmashVidzMedia"
  *     })
  * @ORM\Entity(repositoryClass="AudioCoreEntity\Repository\MediaRepository")
  */

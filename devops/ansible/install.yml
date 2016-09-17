@@ -1,0 +1,32 @@
+---
+- hosts: vagrant
+  become: yes
+  vars:
+    #toto: val
+  roles:
+    - { role: geerlingguy.apache, sudo: yes }
+    - { role: geerlingguy.php, sudo: yes }
+    - { role: geerlingguy.apache-php-fpm, sudo: yes }
+    - { role: geerlingguy.mysql }
+    - { role: geerlingguy.git }
+    - { role: geerlingguy.composer }
+    - { role: geerlingguy.php-xdebug }
+  tasks:
+    - name: Audio Binaries
+      apt: name={{item}} state=installed
+      with_items:
+           - python
+           - mediainfo
+           - id3v2
+           - flac
+           - python-pip
+           - python-dev
+           - build-essential
+    - name: Audio Binaries (python)
+      pip: name={{item}}
+      with_items:
+           - eyeD3
+
+    #todo // varDumper, auto_preprend, remote_host
+    #phpcs
+    #alias php='php -dzend_extension="/usr/lib/php5/modules/xdebug.so"'

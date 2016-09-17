@@ -15,17 +15,18 @@ def which(cmd)
 end
 
 Vagrant.configure("2") do |config|
-
-  config.vm.synced_folder "/Users/yemistikris/PhpstormProjects/sapar-project/audio-api/", "/var/www/audio-api/current", type: "nfs"
-  config.vm.synced_folder "/Users/yemistikris/PhpstormProjects/sapar-project/radio/", "/var/www/radio/current", type: "nfs"
-  config.vm.synced_folder "/Volumes/Extend/", "/Volumes/Extend", type: "nfs"
-  config.vm.synced_folder "/Volumes/SSD_MAC/ddj", "/Volumes/SSD_MAC/ddj", type: "nfs"
+  config.vm.synced_folder "/Users/yemistikris/Documents/sapar-project/audio-api", "/var/www/html/audio",:owner => 'vagrant', :group => 'www-data', :mount_options => ["dmode=775","fmode=776"]
+  config.vm.synced_folder "/Users/yemistikris/Documents/sapar-project", "/sapar-project",:owner => 'vagrant', :group => 'www-data', :mount_options => ["dmode=775","fmode=766"]
+  #config.vm.synced_folder "/Users/yemistikris/PhpstormProjects/sapar-project/audio-api/", "/var/www/audio-api/current", type: "nfs"
+  #config.vm.synced_folder "/Users/yemistikris/PhpstormProjects/sapar-project/radio/", "/var/www/radio/current", type: "nfs"
+  #config.vm.synced_folder "/Volumes/", "/Volumes/"
+  #config.vm.synced_folder "/Volumes/SSD_MAC/ddj", "/Volumes/SSD_MAC/ddj", type: "nfs"
 
     config.vm.provider :virtualbox do |v|
-        v.name = "sapar.dev"
+        v.name = "sapar-audio.dev"
         v.customize [
             "modifyvm", :id,
-            "--name", "sapar.dev",
+            "--name", "sapar-audio.dev",
             "--memory", 2048,
             "--natdnshostresolver1", "on",
             "--cpus", 2,
@@ -33,9 +34,9 @@ Vagrant.configure("2") do |config|
         #v.gui = true
     end
 
-    config.vm.box = "ubuntu/trusty64"
+    config.vm.box = "bento/ubuntu-16.04"
     config.vm.box_check_update = true
-    config.vm.network :private_network, ip: "10.0.0.5"
+    config.vm.network :private_network, ip: "10.10.10.10"
     config.ssh.forward_agent = true
     #config.ssh.private_key_path = "~/.ssh/id_rsa"
     #config.ssh.username = "yemistikris"
@@ -44,8 +45,8 @@ Vagrant.configure("2") do |config|
     # If ansible is not found in the path it will be instaled in the VM and provisioned from there
     if which('ansible-playbook')
         config.vm.provision "ansible" do |ansible|
-            ansible.playbook = "devops/playbook.yml"
-            #ansible.inventory_path = "devops/hosts/vagrant"
+            ansible.playbook = "devops/ansible/install.yml"
+            #ansible.inventory_path = "devops/hosts"
             ansible.limit = 'all'
         end
     else

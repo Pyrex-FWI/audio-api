@@ -1,14 +1,6 @@
+pyrex_radio:
+    resource: "@PyrexRadioBundle/Resources/config/routing.yml"
+    prefix:   /
 app:
     resource: "@AppBundle/Controller/"
     type:     annotation
-#AcmeDemoBundle routes (to be removed)
-#admin_lte:
-#    resource: "@AvanzuAdminThemeBundle/Resources/config/routing.yml"
-api:
-    resource: "."
-    type:     "api"
-    prefix:   "/api" # Optional
-
-NelmioApiDocBundle:
-    resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
-    prefix:   /api/doc

@@ -42,13 +42,13 @@ parameters:
     ###########################
     id3tool.eyed3.bin: /usr/local/bin/eyeD3
     id3tool.eyed3.bin: '/usr/bin/python -m eyed3.main'
-    id3tool.mediainfo.bin: /usr/local/bin/mediainfo
-    id3tool.id3v2.bin: /usr/local/bin/id3v2
+    id3tool.mediainfo.bin: /usr/bin/mediainfo
+    id3tool.id3v2.bin: /usr/bin/id3v2
     id3tool.metaflac.bin: /usr/local/bin/metaflac
 
     #organize.temp.root_output: /volume1/archives/
     allowed_directories:
-        - /volume3/temp/
+        - '%kernel.root_dir%/../src/AppBundle/Tests/TestData/'
         - /volume3/ddj/
 
     api.base: http://sapar/audio_api/web/api/
