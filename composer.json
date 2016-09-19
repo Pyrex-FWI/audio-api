@@ -24,10 +24,6 @@
         {
             "type": "path",
             "url": "../HitsBundle"
-        },
-        {
-            "type": "path",
-            "url": "../audio-core-entities"
         }
     ],
     "require": {
@@ -49,7 +45,6 @@
         "pyrex-fwi/deejaypool-bundle": "^2.0",
         "pyrex-fwi/sapar-id3": "dev-master",
         "pyrex-fwi/sapar-mfo": "^3.0",
-        "pyrex-fwi/audio-core-entities": "dev-master",
         "pyrex-fwi/hits-bundle": "dev-master",
         "fza/mysql-doctrine-levenshtein-function": "^0.3.0"
     },

@@ -1,0 +1,5 @@
+database_host: localhost
+database_user: root
+database_password: yqpo4x
+database_driver: pdo_mysql
+database_dbname: core_entities

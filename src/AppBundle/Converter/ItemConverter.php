@@ -7,7 +7,7 @@ use AppBundle\Entity\Provider\DigitalDjPoolMedia;
 use AppBundle\Entity\Provider\FranchiseAudioMedia;
 use AppBundle\Entity\Provider\FranchiseVideoMedia;
 use AppBundle\Entity\Provider\SmashVidzMedia;
-use AudioCoreEntity\Entity\Genre;
+use Pyrex\CoreModelBundle\Entity\Genre;
 use AppBundle\Entity\Media;
 use DeejayPoolBundle\Entity\FranchisePoolItem;
 use DeejayPoolBundle\Entity\ProviderItemInterface;

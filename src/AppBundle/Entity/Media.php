@@ -28,9 +28,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *          4   = "AppBundle\Entity\Provider\FranchiseVideoMedia",
  *          5   = "AppBundle\Entity\Provider\SmashVidzMedia"
  *     })
- * @ORM\Entity(repositoryClass="AudioCoreEntity\Repository\MediaRepository")
+ * @ORM\Entity(repositoryClass="Pyrex\CoreModelBundle\Repository\MediaRepository")
  */
-class Media extends \AudioCoreEntity\Entity\Media
+class Media extends \Pyrex\CoreModelBundle\Entity\Media
 {
     const PROVIDER_DIGITAL_DJ_POOL = 1;
     const PROVIDER_AV_DISTRICT     = 2;

@@ -6,7 +6,7 @@ use AppBundle\Converter\ItemConverter;
 use AppBundle\Entity\Media;
 use AppBundle\Event\DirectoryEvent;
 use AppBundle\Event\Event;
-use AudioCoreEntity\Entity\DeletedRelease;
+use Pyrex\CoreModelBundle\Entity\DeletedRelease;
 use DeejayPoolBundle\Event\ItemLocalExistenceEvent;
 use DeejayPoolBundle\Event\ItemDownloadEvent;
 use DeejayPoolBundle\Event\PostItemsListEvent;
@@ -134,7 +134,7 @@ class AppEventSubscriber implements EventSubscriberInterface
 
         $avdItem   = $event->getItem();
         $manager   = $this->doctrine->getManager();
-        $genreRepo = $manager->getRepository(\AudioCoreEntity\Entity\Genre::class);
+        $genreRepo = $manager->getRepository(\Pyrex\CoreModelBundle\Entity\Genre::class);
 
         $provider = null;
         $type     = null;
@@ -180,7 +180,7 @@ class AppEventSubscriber implements EventSubscriberInterface
     public function directoryPostDelete(DirectoryEvent $directoryEvent)
     {
         $manager        = $this->doctrine->getManager();
-        $deletedDirRepo = $manager->getRepository('\AudioCoreEntity\Entity\DeletedRelease');
+        $deletedDirRepo = $manager->getRepository('\Pyrex\CoreModelBundle\Entity\DeletedRelease');
 
         if (!$deletedDirRepo->findOneByRawName($directoryEvent->getDirName())) {
             $deletedDir = new DeletedRelease();

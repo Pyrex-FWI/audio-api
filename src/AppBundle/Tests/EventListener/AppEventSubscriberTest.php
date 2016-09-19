@@ -193,9 +193,9 @@ class AppEventSubscriberTest extends KernelTestCase
         $doctrine   = static::$kernel->getContainer()->get('doctrine');
         $dirEvent   = new DirectoryEvent(new \SplFileInfo('/volume3/temp/Jus_Shane-Stronger-WEB-2015-JAH'), 'Dance Hall', 'Some album', 'Some artist', 2011);
         $getDeleted = function () use ($doctrine, $dirEvent) {
-            return $doctrine->getRepository('\AudioCoreEntity\Entity\DeletedRelease')->findByRawName($dirEvent->getDirName());
+            return $doctrine->getRepository('\Pyrex\CoreModelBundle\Entity\DeletedRelease')->findByRawName($dirEvent->getDirName());
         };
-        $doctrine->getManager()->createQuery('DELETE FROM \AudioCoreEntity\Entity\DeletedRelease')->execute();
+        $doctrine->getManager()->createQuery('DELETE FROM \Pyrex\CoreModelBundle\Entity\DeletedRelease')->execute();
         $this->assertEquals(0, count($getDeleted()));
         $evtDispatch->dispatch(\AppBundle\Event\Event::DIRECTORY_POST_DELETE, $dirEvent);
         $this->assertEquals(1, count($getDeleted()));

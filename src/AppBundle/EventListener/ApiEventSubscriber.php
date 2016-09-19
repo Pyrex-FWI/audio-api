@@ -2,7 +2,7 @@
 
 namespace AppBundle\EventListener;
 
-use AudioCoreEntity\Entity\Genre;
+use Pyrex\CoreModelBundle\Entity\Genre;
 use AppBundle\Entity\Media;
 use AppBundle\Service\GenreStack;
 use Deejay\Id3ToolBundle\Wrapper\Mediainfo;
@@ -28,7 +28,7 @@ class ApiEventSubscriber implements EventSubscriberInterface
     /** @var  Logger */
     private $logger;
     /** @var RequestStack  */
-    private $request_stack;
+    private $requestStack;
     /** @var  Mediainfo */
     private $mediainfo;
     /** @var  EntityManager */
@@ -42,16 +42,23 @@ class ApiEventSubscriber implements EventSubscriberInterface
     /** @var  GenreStack */
     private $genreStack;
 
-    public function __construct(Registry $doctrine, RequestStack $request_stack, Mediainfo $mediaInfo, Logger $logger)
+    /**
+     * ApiEventSubscriber constructor.
+     * @param Registry     $doctrine
+     * @param RequestStack $requestStack
+     * @param Mediainfo    $mediaInfo
+     * @param Logger       $logger
+     */
+    public function __construct(Registry $doctrine, RequestStack $requestStack, Mediainfo $mediaInfo, Logger $logger)
     {
         $this->doctrine      = $doctrine;
         $this->eManager      = $doctrine->getManager();
         $this->logger        = $logger;
-        $this->request_stack = $request_stack;
+        $this->requestStack  = $requestStack;
         $this->mediainfo     = $mediaInfo;
-        $this->genreRepo     = $this->eManager->getRepository(\AudioCoreEntity\Entity\Genre::class);
+        $this->genreRepo     = $this->eManager->getRepository(\Pyrex\CoreModelBundle\Entity\Genre::class);
         $this->mediaRepo     = $this->eManager->getRepository(\AppBundle\Entity\Media::class);
-        $this->artistRepo    = $this->eManager->getRepository(\AudioCoreEntity\Entity\Artist::class);
+        $this->artistRepo    = $this->eManager->getRepository(\Pyrex\CoreModelBundle\Entity\Artist::class);
     }
 
     /**
@@ -83,7 +90,7 @@ class ApiEventSubscriber implements EventSubscriberInterface
         }
 
         $queryString = [];
-        parse_str($this->request_stack->getMasterRequest()->getQueryString(), $queryString);
+        parse_str($this->requestStack->getMasterRequest()->getQueryString(), $queryString);
 
         if (!isset($queryString['_trigger_update'])) {
             return;
@@ -210,7 +217,7 @@ class ApiEventSubscriber implements EventSubscriberInterface
         }
 
         $queryString = [];
-        parse_str($this->request_stack->getMasterRequest()->getQueryString(), $queryString);
+        parse_str($this->requestStack->getMasterRequest()->getQueryString(), $queryString);
 
         if (!isset($queryString['_trigger_update'])) {
             return;

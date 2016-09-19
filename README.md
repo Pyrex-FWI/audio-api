@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/Pyrex-FWI/audio_api.svg?branch=master)](https://travis-ci.org/Pyrex-FWI/audio_api)
+[![Build Status](https://travis-ci.org/Pyrex-FWI/audio-api.svg?branch=master)](https://travis-ci.org/Pyrex-FWI/audio-api)
 
 # Sapar Audio-api
 

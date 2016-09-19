@@ -2,7 +2,6 @@
 
 namespace AppBundle\Service;
 
-use AudioCoreEntity\Entity\Genre;
 use Deejay\Id3ToolBundle\Wrapper\Id3Manager;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
