@@ -79,16 +79,12 @@ doctrine:
         default_entity_manager: default
         auto_generate_proxy_classes: "%kernel.debug%"
         resolve_target_entities:
-            AudioCoreEntity\Entity\Media: AppBundle\Entity\Media
+            Pyrex\CoreModelBundle\Entity\Media: AppBundle\Entity\Media
         entity_managers:
             default:
                 auto_mapping: true
                 mappings:
-                    custom_mapping:
-                        type: annotation
-                        prefix: AudioCoreEntity\Entity\
-                        dir: "%kernel.root_dir%/../vendor/pyrex-fwi/audio-core-entities/src/Entity/"
-                        is_bundle: false
+                  PyrexCoreModelBundle: ~
                 dql:
                   numeric_functions:
                     levenshtein: Fza\MysqlDoctrineLevenshteinFunction\DQL\LevenshteinFunction

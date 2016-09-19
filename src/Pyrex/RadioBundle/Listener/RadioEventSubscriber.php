@@ -2,7 +2,7 @@
 
 namespace Pyrex\RadioBundle\Listener;
 
-use AudioCoreEntity\Entity\RadioHit;
+use Pyrex\CoreModelBundle\Entity\RadioHit;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use HitsBundle\Event\HitsBundleEvent;
 use HitsBundle\Event\SourceItemEvent;
@@ -46,8 +46,8 @@ class RadioEventSubscriber implements EventSubscriberInterface
         $hit = new RadioHit();
         $hit->setArtist($itemEvent->getItem()->getArtist());
         $hit->setTitle($itemEvent->getItem()->getTitle());
-        //dump($manager->getClassMetadata('AudioCoreEntity\Entity\RadioHit'));
-        $similarHit = $manager->getRepository('\AudioCoreEntity\Entity\RadioHit')->getSimilar($hit->getArtist(), $hit->getTitle(), 75);
+        //dump($manager->getClassMetadata('Pyrex\CoreModelBundle\Entity\RadioHit'));
+        $similarHit = $manager->getRepository('\Pyrex\CoreModelBundle\Entity\RadioHit')->getSimilar($hit->getArtist(), $hit->getTitle(), 75);
 //
 //        if ($similarHit) {
 //            dump('Similar for '. $hit->getArtist().' '.$hit->getTitle());

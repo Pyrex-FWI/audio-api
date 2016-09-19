@@ -2,7 +2,7 @@
 
 namespace AppBundle\Service;
 
-use AudioCoreEntity\Entity\Genre;
+use Pyrex\CoreModelBundle\Entity\Genre;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
@@ -19,10 +19,14 @@ class GenreStack
     protected $genres = [];
     private $isLoaded = false;
 
+    /**
+     * GenreStack constructor.
+     * @param Registry $doctrine
+     */
     public function __construct(Registry $doctrine)
     {
         $this->doctrine        = $doctrine;
-        $this->genreRepository = $this->doctrine->getRepository(\AudioCoreEntity\Entity\Genre::class);
+        $this->genreRepository = $this->doctrine->getRepository(\Pyrex\CoreModelBundle\Entity\Genre::class);
         $this->eManager        = $this->doctrine->getManager();
     }
 
