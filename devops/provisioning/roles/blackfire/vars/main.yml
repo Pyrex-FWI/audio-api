@@ -1,6 +1,0 @@
----
-# vars file for .
-
-blackfire_package_cloud_key_url: https://packagecloud.io/gpg.key
-
-blackfire_directory: /etc/blackfire

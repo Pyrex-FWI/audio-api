@@ -1,4 +1,4 @@
-FROM php:7.0.2-apache
+FROM php:7.0.10-apache
 RUN apt-get update \
 && apt-get install -y --no-install-recommends git \
 wget zlib1g-dev vim sudo \
@@ -54,7 +54,7 @@ RUN ln -s /usr/bin/mediainfo /usr/local/bin/
 #RUN git config --global user.email "you@example.com"
 #RUN git config --global user.name "Your Name"
 
-RUN chown -R www-data: /var/www/html && chmod -R 777 /var/www/html
+#RUN chown -R www-data: /var/www/html && chmod -R 777 /var/www/html
 
 #RUN ls -al /var/www/html/ 
 
@@ -69,9 +69,9 @@ RUN chown -R www-data: /var/www/html && chmod -R 777 /var/www/html
 #RUN grep -ri 'id3tool.mediainfo.bin' /var/www/html/app/
 
 RUN export
-ADD app/config/parameters.yml app/config/
+#ADD app/config/parameters.yml app/config/
 
-RUN mkdir -p /volume4/Pool/Franchise/Audio/Sandbox && mkdir -p /volume4/Pool/SmashVision/Sandbox
+#RUN mkdir -p /volume4/Pool/Franchise/Audio/Sandbox && mkdir -p /volume4/Pool/SmashVision/Sandbox
 
 #RUN composer install -nq --no-dev --optimize-autoloader --prefer-source
 #RUN composer install -nq --no-dev --optimize-autoloader
@@ -81,5 +81,5 @@ RUN mkdir -p /volume4/Pool/Franchise/Audio/Sandbox && mkdir -p /volume4/Pool/Sma
 #chown -R www-data: /var/www/html/app/cache/ && chown -R www-data: /var/www/html/app/logs/
 
 RUN echo "date.timezone = Europe/Paris" >/usr/local/etc/php/php.ini
-RUN usermod -u 1024 www-data
+#RUN usermod -u 1024 www-data
 #find / -user <OLDUID> -exec chown -h <NEWUID> {} \;

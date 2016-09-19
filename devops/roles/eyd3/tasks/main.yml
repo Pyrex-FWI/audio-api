@@ -1,8 +1,0 @@
----
-- name: Istall eyeD3 tool
-  become: yes
-  pip: name=eyed3
-  tags:
-    - eyed3
-    - tool
-

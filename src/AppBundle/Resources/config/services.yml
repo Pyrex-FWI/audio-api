@@ -5,7 +5,7 @@ parameters:
 services:
 
     app.command.collection_dumper:
-        class: %command.collection_dumper.class%
+        class: '%command.collection_dumper.class%'
         arguments:
             - '@?logger'
         tags:

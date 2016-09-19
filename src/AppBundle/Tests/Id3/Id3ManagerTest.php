@@ -2,7 +2,7 @@
 
 namespace AppBundle\Id3;
 
-use Cpyree\Id3\Metadata\Id3Metadata;
+use Sapar\Id3\Metadata\Id3Metadata;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\Container;
 

@@ -1,0 +1,10 @@
+services:
+#    pyrex_radio.example:
+#        class: Pyrex\RadioBundle\Example
+#        arguments: ["@service_id", "plain_value", %parameter%]
+
+    radio_event:
+        class:     Pyrex\RadioBundle\Listener\RadioEventSubscriber
+        arguments: [ '@doctrine', '@serializer', '@logger']
+        tags:
+          -        { name: kernel.event_subscriber }

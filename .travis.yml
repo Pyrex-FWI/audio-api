@@ -32,11 +32,11 @@ before_script:
 
 
 install:
-  #- composer install --prefer-dist --no-interaction
+  #- composer install --prefer-dist --no-interaction --ignore-platform-reqs
 
 script:
-  - composer install -v
-  - php app/console debug:container | grep id3
+  - composer install --prefer-dist --no-interaction --ignore-platform-reqs
+  #- php app/console debug:container | grep id3
   - composer ci:test-travis
   #- phpunit -c app --debug --verbose
   #- php php-cs-fixer.phar fix --no-interaction --dry-run --diff -vvv ./

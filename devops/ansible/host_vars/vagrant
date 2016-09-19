@@ -1,0 +1,27 @@
+---
+php_enable_webserver: true
+php_packages:
+  - php7.0-mysql
+
+apache_vhosts:
+  - servername: "sapar-audio.dev"
+    documentroot: "/var/www/html/audio/web"
+    extra_parameters: |
+          ProxyPassMatch ^/(.*\.php(/.*)?)$ "unix:/var/run/php/php7.0-fpm.sock|fcgi://localhost/var/www/html/audio/web"
+
+mysql_root_password: sigipsr
+mysql_databases:
+- name: sf_audio_test
+  encoding: utf8mb4
+  collation: utf8mb4_unicode_ci
+mysql_users:
+- name: sf_audio
+  host: "%"
+  password: sf_audio
+  priv: "sf_audio_test.*:ALL"
+
+
+
+php_xdebug_remote_enable: "true"
+php_xdebug_idekey: XDEBUG
+php_xdebug_remote_connect_back: "true"

@@ -6,19 +6,19 @@ parameters:
 services:
 
     media_wrapper:
-        class: Cpyree\Id3\Wrapper\BinWrapper\MediainfoWrapper
+        class: Sapar\Id3\Wrapper\BinWrapper\MediainfoWrapper
         calls:
             - [ setBinPath, ['%id3tool.mediainfo.bin%'] ]
     eyed3_wrapper:
-        class: Cpyree\Id3\Wrapper\BinWrapper\Eyed3Wrapper
+        class: Sapar\Id3\Wrapper\BinWrapper\Eyed3Wrapper
         calls:
             - [ setBinPath, ['%id3tool.eyed3.bin%'] ]
     id3v2_wrapper:
-        class: Cpyree\Id3\Wrapper\BinWrapper\Id3v2Wrapper
+        class: Sapar\Id3\Wrapper\BinWrapper\Id3v2Wrapper
         calls:
             - [ setBinPath, ['%id3tool.id3v2.bin%'] ]
     metaflac_wrapper:
-        class: Cpyree\Id3\Wrapper\BinWrapper\MetaflacWrapper
+        class: Sapar\Id3\Wrapper\BinWrapper\MetaflacWrapper
         calls:
             - [ setBinPath, ['%id3tool.metaflac.bin%'] ]
     id3_manager:
@@ -39,6 +39,6 @@ services:
     faker.avd_item_provider:
         class: AppBundle\Tests\Faker\AvItemProvider
         public: false # useless if used alone
-        arguments: ['@faker']
+        arguments: ['@faker.generator']
         tags:
-          -        { name: faker.provider }
+            - { name: bazinga_faker.provider }

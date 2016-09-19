@@ -1,6 +1,0 @@
----
-
-- include: install.yml
-- include: test.yml
-- include: configure.yml
-- include: oauth.yml

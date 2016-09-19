@@ -22,8 +22,7 @@ class AppEventSubscriberTest extends KernelTestCase
 {
     private static function createItem($provider)
     {
-        /** @var Generator $faker */
-        $faker = static::$kernel->getContainer()->get('faker');
+        $faker = static::$kernel->getContainer()->get('faker.generator');
         if ($provider === Media::PROVIDER_AV_DISTRICT) {
             $item = new AvdItem();
             $item->setItemId($faker->id);

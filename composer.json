@@ -19,15 +19,15 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/Pyrex-FWI/DeejayPoolBundle"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/Pyrex-FWI/HitsBundle"
-        },
-        {
-            "type": "vcs",
             "url": "https://github.com/Pyrex-FWI/sapar-mfo"
+        },
+        {
+            "type": "path",
+            "url": "../HitsBundle"
+        },
+        {
+            "type": "path",
+            "url": "../audio-core-entities"
         }
     ],
     "require": {
@@ -43,11 +43,15 @@
         "sensio/framework-extra-bundle": "^3.0.2",
         "incenteev/composer-parameter-handler": "^2.0",
         "symfony/assetic-bundle": "~2.8",
-        "pyrex-fwi/deejaypool-bundle": "dev-sf3",
+        "nelmio/cors-bundle": "^1.4",
+        "nelmio/api-doc-bundle": "^2.10",
+        "phpdocumentor/reflection-docblock": "^3.0",
+        "pyrex-fwi/deejaypool-bundle": "^2.0",
         "pyrex-fwi/sapar-id3": "dev-master",
-        "pyrex-fwi/sapar-mfo": "dev-sf3",
+        "pyrex-fwi/sapar-mfo": "^3.0",
         "pyrex-fwi/audio-core-entities": "dev-master",
-        "pyrex-fwi/hits-bundle": "dev-sf3"
+        "pyrex-fwi/hits-bundle": "dev-master",
+        "fza/mysql-doctrine-levenshtein-function": "^0.3.0"
     },
     "scripts": {
         "post-install-cmd": [
@@ -74,28 +78,28 @@
             "mysql  -u travis  -e 'ALTER TABLE `Media` ADD `provider` int(10) NOT NULL;' sf_audio_dev"
         ],
         "doctrine:reset:test": [
-            "php app/console doctrine:database:drop -vvv --env test --force && true",
-            "php app/console doctrine:database:create -vvv --env test && true",
-            "php app/console doctrine:schema:update -vvv --env test --force && true"
+            "php bin/console doctrine:database:drop -vvv --env test --force && true",
+            "php bin/console doctrine:database:create -vvv --env test && true",
+            "php bin/console doctrine:schema:update -vvv --env test --force && true"
         ],
         "ci:test": [
             "@reset-db:test",
             "composer doctrine:reset:test",
-            "phpunit -c app/   --debug -v --stop-on-failure --coverage-html app/cache/coverage"
+            "vendor/bin/phpunit --debug -v --stop-on-failure --coverage-html app/cache/coverage"
         ],
         "ci:test-travis": [
             "/usr/local/bin/eyeD3 'src/AppBundle/Tests/TestData/dir01/01.mp3'  --genre '56adde2bd657c' --release-year '1999' --orig-release-date='1999' && echo $?",
             "/usr/local/bin/eyeD3 'src/AppBundle/Tests/TestData/dir01/01.mp3' ",
             "mysql -e 'create database IF NOT EXISTS sf_audio_dev;' -u travis",
             "composer doctrine:reset:test",
-            "phpunit -c app/  --debug -v --stop-on-failure --exclude-group travis-fail --coverage-html app/cache/coverage"
+            "vendor/bin/phpunit --debug -v --stop-on-failure --exclude-group travis-fail --coverage-html app/cache/coverage"
         ]
     },
     "require-dev": {
         "sensio/generator-bundle"   : "~3.0",
         "symfony/phpunit-bridge": "^3.0",
         "phpunit/phpunit"           : "~5.2",
-        "emanueleminotto/faker-bundle": "^1.0",
+        "willdurand/faker-bundle": "@stable",
         "behat/behat": "~3.0",
         "behat/symfony2-extension": "~2.1",
         "behat/mink": "~1.7",

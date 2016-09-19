@@ -1,0 +1,17 @@
+<div class="col-md-12">
+    {{ file.pathFile }}
+</div>
+<div class="col-md-12">
+    <p>{{ file.getFile().getFilename() }}</p>
+    <p>Size: {{ size.bytesToSize(file.getSize()) }}</p>
+    <p>Crc32: {{ file.getCrc32() }}</p>
+    <audio controls="controls">
+        <source src="{{ path('stream', {'file': file.pathFile }) }}" type="audio/mpeg">
+    </audio>
+    {% if not file.deleteFlag %}
+    <p>
+        <a href="{{ path('markToDelete', {'fileId': file.id}) }}">Flag For delete</a>
+    </p>
+    {% endif %}
+
+</div>

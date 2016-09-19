@@ -2,9 +2,10 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: services.yml }
-    - { resource: services_dunglas_api.yml }
-    - { resource: services_consumers.yml }
+    #- { resource: services_dunglas_api.yml }
+    #- { resource: services_consumers.yml }
     #- { resource: "@AppBundle/Resources/config/services.yml" }
+    #- { resource: "@ApiPlatformCoreBundle/Resources/config/config.yml" }
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
@@ -30,8 +31,8 @@ framework:
     trusted_proxies: ~
     session:
         # http://symfony.com/doc/current/reference/configuration/framework.html#handler-id
-        handler_id:  session.handler.native_file
-        save_path:   "%kernel.root_dir%/../var/sessions/%kernel.environment%"
+        handler_id:  ~
+        #save_path:   "%kernel.root_dir%/../var/sessions/%kernel.environment%"
     fragments:       ~
     http_method_override: true
     assets: ~
@@ -63,7 +64,10 @@ doctrine:
         dbname:   "%database_name%"
         user:     "%database_user%"
         password: "%database_password%"
-        charset:  utf8mb4
+        charset: utf8mb4
+        default_table_options:
+            charset: utf8
+            collate: utf8_unicode_ci
         # if using pdo_sqlite as your database driver:
         #   1. add the path in parameters.yml
         #     e.g. database_path: "%kernel.root_dir%/data/data.db3"
@@ -85,6 +89,13 @@ doctrine:
                         prefix: AudioCoreEntity\Entity\
                         dir: "%kernel.root_dir%/../vendor/pyrex-fwi/audio-core-entities/src/Entity/"
                         is_bundle: false
+                dql:
+                  numeric_functions:
+                    levenshtein: Fza\MysqlDoctrineLevenshteinFunction\DQL\LevenshteinFunction
+                    levenshtein_ratio: Fza\MysqlDoctrineLevenshteinFunction\DQL\LevenshteinRatioFunction
+#            api_manager:
+#                mappings:
+#                    ApiPlatformCoreBundle: ~
 
 # Swiftmailer Configuration
 swiftmailer:
@@ -98,22 +109,24 @@ swiftmailer:
 deejay_pool:
     franchise_pool_audio:
         credentials:
-            login:    %franchise_pool.credentials.login%
-            password: %franchise_pool.credentials.password%
+            login:    '%franchise_pool.credentials.login%'
+            password: '%franchise_pool.credentials.password%'
         configuration:
-            root_path: %franchise_pool.configuration.root_path%
+            root_path: '%franchise_pool.configuration.root_path%'
 
     smashvision:
     ddp:
         credentials:
-            login:    %digital_dj_pool.credentials.login%
-            password: %digital_dj_pool.credentials.password%
+            login:    '%digital_dj_pool.credentials.login%'
+            password: '%digital_dj_pool.credentials.password%'
         configuration:
-            root_path: %digital_dj_pool.configuration.root_path%
+            root_path: '%digital_dj_pool.configuration.root_path%'
 
     smashvision:
         credentials:
-            login:    %smashvision.credentials.login%
-            password: %smashvision.credentials.password%
+            login:    '%smashvision.credentials.login%'
+            password: '%smashvision.credentials.password%'
         configuration:
-            root_path: %smashvision.configuration.root_path%
+            root_path: '%smashvision.configuration.root_path%'
+
+bazinga_faker: ~

@@ -2,8 +2,8 @@
 
 namespace AppBundle\Id3;
 
-use Cpyree\Id3\Metadata\Id3Metadata;
-use Cpyree\Id3\Wrapper\Id3WrapperInterface;
+use Sapar\Id3\Metadata\Id3Metadata;
+use Sapar\Id3\Wrapper\Id3WrapperInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 

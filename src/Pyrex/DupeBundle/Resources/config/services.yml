@@ -1,0 +1,22 @@
+parameters:
+    pyrex_dump.dupe_databsee: '%kernel.cache_dir%/dupe.db'
+    pyrex_dump.command.update_db.class: 'Pyrex\DupeBundle\Command\UpdateDbCommand'
+    pyrex_dupe.subscriber.read_dump.class: 'Pyrex\DupeBundle\Command\UpdateDbCommand'
+
+services:
+    pyrex_dupe.command.update_db:
+        class: %pyrex_dump.command.update_db.class%
+        tags:
+            - { name: 'console.command'}
+
+    pyrex_dupe.database_import:
+        class: Pyrex\DupeBundle\DatabaseImport
+        arguments: ['%pyrex_dupe.dupe_dump_file%', '@event_dispatcher', '@?logger']
+        calls:
+            - [ setAllowedExtensions, ['%pyrex_dupe.extensions%'] ]
+
+    pyrex_dupe.subscriber.read_dump:
+        class:     Pyrex\DupeBundle\EventListener\DumpEventListener
+        arguments: [ "@=service('doctrine').getManager('pyrex_dupe')", '@logger']
+        tags:
+          -        { name: kernel.event_listener, event: dump.read.duplicate.group }
