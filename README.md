@@ -2,9 +2,7 @@
 
 # Sapar Audio-api
 
-- Symfony: 2.8
-
-Add php-cs-fixer to pre-commit hook php-cs-fixer fix src/ --level=symfony --fixers= align_double_arrow,align_equals
+- Symfony: 3.0
 
 ## Install dev environnement
 
@@ -12,14 +10,23 @@ Add php-cs-fixer to pre-commit hook php-cs-fixer fix src/ --level=symfony --fixe
 
 - [Virtualbox](https://www.virtualbox.org) (>= 5.0.12)
 - [Ansible](https://github.com/ansible/ansible) (>= 2.0.0.2)
-
+- Vagrant
 
 - Run ```vagrant up```
-- Run ```vagrant provision``` or ```ansible-playbook -i devops/hosts/vagrant devops/playbook.yml -v ```
+- Run ```vagrant provision``` or ```ansible-playbook -i devops/ansible/hosts devops/ansible/install.yml -v ```
 
 ## Commands
 
-### media:dump:collection
+### Show configuration
+`media:dump:collection --info`
+### Create dump
+`php bin/console media:dump:collection --dump`
+
+`sudo php bin/console rabbitmq-supervisor:rebuild -vvv`
+
+`php bin/console media:dump:collection --async-insert -vvv`
+`php bin/console rabbit:consumer media_read_tag  -vvv -w`
+`php bin/console rabbit:consumer media_update_tag  -vvv -w`
 
 This command allow:
 

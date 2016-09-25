@@ -1,7 +1,7 @@
 services:
     directory_move.consumer:
         class: AppBundle\RabbitMq\Consumer\DirectoryMoveConsumer
-        arguments: ['@logger', '@event_dispatcher']
+        arguments: ['@monolog.logger.consumer', '@event_dispatcher']
         tags:
           - { name: monolog.logger, channel: directory.move }
         calls:
@@ -9,15 +9,23 @@ services:
 
     directory_remove.consumer:
         class: AppBundle\RabbitMq\Consumer\DirectoryRemoveConsumer
-        arguments: ['@logger', '@event_dispatcher']
+        arguments: ['@monolog.logger.consumer', '@event_dispatcher']
         tags:
           - { name: monolog.logger, channel: directory.remove }
         calls:
             - [ setContainer, [ '@service_container' ] ]
 
-    media_indexer.consumer:
-        class: AppBundle\RabbitMq\Consumer\MediaIndexerConsumer
-        arguments: ['@logger', '@event_dispatcher']
+    media_read_tag.consumer:
+        class: AppBundle\RabbitMq\Consumer\MediaReadTagConsumer
+        arguments: ['@monolog.logger.consumer', '@event_dispatcher']
+        tags:
+          - { name: monolog.logger }
+        calls:
+            - [ setContainer, [ '@service_container' ] ]
+
+    media_update_tag.consumer:
+        class: AppBundle\RabbitMq\Consumer\MediaUpdateTagConsumer
+        arguments: ['@monolog.logger.consumer']
         tags:
           - { name: monolog.logger }
         calls:

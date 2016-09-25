@@ -11,7 +11,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * Genre
  *
  * @ORM\Table(uniqueConstraints={@ORM\UniqueConstraint(name="name_idx", columns={"name"})}, options={"collate"="utf8mb4_unicode_ci", "charset"="utf8mb4"})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Pyrex\CoreModelBundle\Repository\GenreRepository")
  */
 class Genre
 {

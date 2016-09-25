@@ -20,10 +20,6 @@
         {
             "type": "vcs",
             "url": "https://github.com/Pyrex-FWI/sapar-mfo"
-        },
-        {
-            "type": "path",
-            "url": "../HitsBundle"
         }
     ],
     "require": {
@@ -46,7 +42,9 @@
         "pyrex-fwi/sapar-id3": "dev-master",
         "pyrex-fwi/sapar-mfo": "^3.0",
         "pyrex-fwi/hits-bundle": "dev-master",
-        "fza/mysql-doctrine-levenshtein-function": "^0.3.0"
+        "fza/mysql-doctrine-levenshtein-function": "^0.3.0",
+        "php-amqplib/rabbitmq-bundle": "^1.11",
+        "phobetor/rabbitmq-supervisor-bundle": "^1.5"
     },
     "scripts": {
         "post-install-cmd": [

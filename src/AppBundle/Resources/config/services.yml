@@ -46,10 +46,30 @@ services:
         class: AppBundle\Organizer\Rules\MediaTypeRule
         tags: [ { name: organizer.rule } ]
 
+    app.media_tag_reader:
+        class: AppBundle\Service\MediaTagReader
+        arguments: ['@id3_manager']
+
+    app.media_tag_update:
+        class: AppBundle\Service\MediaTagUpdate
+        arguments: ['@repository.media', '@serializer']
+
+    app.media_create_reference:
+        class: AppBundle\Service\MediaCreateReference
+        arguments: ['@repository.media']
+
     genre_stack:
         class: AppBundle\Service\GenreStack
         arguments:
             - '@doctrine'
+
+    app.serializer_normalizer.id3metadata_normalizer:
+        class: AppBundle\Serializer\Normalizer\Id3MetadataNormalizer
+        public: false
+        calls:
+            - [ setGenreRepository, ['@repository.genre']]
+        tags:
+            - { name: serializer.normalizer }
 
     streamer:
         class: AppBundle\Service\Streamer

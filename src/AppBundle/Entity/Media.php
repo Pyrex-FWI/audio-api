@@ -18,6 +18,11 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * Media.
  *
  * @ORM\Entity
+ * @ORM\Table(
+ *      indexes={@ORM\Index(name="provider_filename", columns={"fileName"})},
+ *      uniqueConstraints={@ORM\UniqueConstraint(name="full_file_path_md5", columns={"fullFilePathMd5"})},
+ *      options={"collate"="utf8mb4_unicode_ci", "charset"="utf8mb4"}
+ * )
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="provider", type="integer", fieldName="provider")
  * @ORM\DiscriminatorMap({
@@ -56,6 +61,9 @@ class Media extends \Pyrex\CoreModelBundle\Entity\Media
         self::PROVIDER_MEDIA           => self::class,
     ];
 
+    /**
+     * @return array
+     */
     public static function getProviders()
     {
         return self::$providerMapCodeToId;

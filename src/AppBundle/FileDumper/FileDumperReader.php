@@ -2,6 +2,10 @@
 
 namespace AppBundle\FileDumper;
 
+/**
+ * Class FileDumperReader
+ * @package AppBundle\FileDumper
+ */
 class FileDumperReader implements \Iterator, \Countable
 {
     private $filePath;
@@ -9,11 +13,18 @@ class FileDumperReader implements \Iterator, \Countable
     private $pos = 0;
     private $count;
 
+    /**
+     * FileDumperReader constructor.
+     * @param string $filePath
+     */
     public function __construct($filePath)
     {
         $this->filePath = $filePath;
         $this->handle   = fopen($filePath, 'r');
     }
+
+    /**
+     */
     public function __destruct()
     {
         if ($this->handle) {

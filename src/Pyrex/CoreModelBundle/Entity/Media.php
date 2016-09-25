@@ -12,7 +12,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * Media
  *
  * @ORM\Table(
- *      indexes={@ORM\Index(name="profider_filename", columns={"fileName"})},
+ *      indexes={@ORM\Index(name="provider_filename", columns={"fileName"})},
  *      uniqueConstraints={@UniqueConstraint(name="full_file_path_md5", columns={"fullFilePathMd5"})},
  *      options={"collate"="utf8mb4_unicode_ci", "charset"="utf8mb4"}
  * )
@@ -186,6 +186,17 @@ class Media
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @param $id
+     * @return $this
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     /**
@@ -397,9 +408,17 @@ class Media
      */
     public function addGenre(Genre $genre)
     {
-        if (!$this->genres->contains($genre)) {
-            $this->genres->add($genre);
+        if ($this->genres->contains($genre)) {
+            return;
         }
+
+        foreach ($this->genres->getIterator() as $_genre) {
+            /** @var Genre $_genre */
+            if ($_genre->getName() === $genre) {
+                return;
+            }
+        }
+        $this->genres->add($genre);
 
         return $this;
     }

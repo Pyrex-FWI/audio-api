@@ -1,0 +1,7 @@
+---
+- hosts: rabbitmq
+  become: yes
+  vars:
+    #toto: val
+  roles:
+    - { role: Stouts.rabbitmq }

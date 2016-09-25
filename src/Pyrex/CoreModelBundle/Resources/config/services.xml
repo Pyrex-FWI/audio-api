@@ -13,4 +13,34 @@
         </service>
     </services>
     -->
+    <services>
+        <service id="core_repository" class="Pyrex\CoreModelBundle\Repository\AbstractCoreRepository" abstract="true">
+            <factory service="doctrine.orm.entity_manager" method="getRepository" />
+            <call method="setLogger">
+                <argument type="service" id="monolog.logger.core_entity" on-invalid="ignore"/>
+            </call>
+            <call method="setValidator">
+                <argument type="service" id="validator"/>
+            </call>
+        </service>
+
+        <service id="repository.media" class="Pyrex\CoreModelBundle\Repository\MediaRepository" parent="core_repository" >
+            <argument>AppBundle:Media</argument>
+        </service>
+        <service id="repository.genre" class="Pyrex\CoreModelBundle\Repository\GenreRepository" parent="core_repository" >
+            <argument>PyrexCoreModelBundle:Genre</argument>
+        </service>
+        <service id="repository.album" class="Pyrex\CoreModelBundle\Repository\AlbumRepository" parent="core_repository" >
+            <argument>PyrexCoreModelBundle:Album</argument>
+        </service>
+        <service id="repository.artist" class="Pyrex\CoreModelBundle\Repository\ArtistRepository" parent="core_repository" >
+            <argument>PyrexCoreModelBundle:Artist</argument>
+        </service>
+        <service id="repository.radio" class="Pyrex\CoreModelBundle\Repository\RadioRepository" parent="core_repository" >
+            <argument>PyrexCoreModelBundle:Radio</argument>
+        </service>
+        <service id="repository.radio_hit" class="Pyrex\CoreModelBundle\Repository\RadioHitRepository" parent="core_repository" >
+            <argument>PyrexCoreModelBundle:RadioHit</argument>
+        </service>
+    </services>
 </container>

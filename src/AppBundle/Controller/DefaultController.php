@@ -20,7 +20,7 @@ class DefaultController extends Controller
     {
         $parts = explode('/', file_get_contents($this->getParameter('kernel.root_dir').'/../.git/HEAD'));
 
-        return new Response('Audio Api Version:'.trim(end($parts)));
+        return new Response('<html><body>Audio Api Version:'.trim(end($parts).'</body></html>'));
     }
 
     /**

@@ -10,7 +10,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * Radio.
  *
  * @ORM\Table()
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Pyrex\CoreModelBundle\Repository\RadioRepository")
  * @UniqueEntity("name")
  */
 class Radio

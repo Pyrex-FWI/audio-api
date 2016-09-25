@@ -9,18 +9,22 @@ services:
         class: Sapar\Id3\Wrapper\BinWrapper\MediainfoWrapper
         calls:
             - [ setBinPath, ['%id3tool.mediainfo.bin%'] ]
+            - [ setLogger, ['@?monolog.logger.id3_reader'] ]
     eyed3_wrapper:
         class: Sapar\Id3\Wrapper\BinWrapper\Eyed3Wrapper
         calls:
             - [ setBinPath, ['%id3tool.eyed3.bin%'] ]
+            - [ setLogger, ['@?monolog.logger.id3_reader'] ]
     id3v2_wrapper:
         class: Sapar\Id3\Wrapper\BinWrapper\Id3v2Wrapper
         calls:
             - [ setBinPath, ['%id3tool.id3v2.bin%'] ]
+            - [ setLogger, ['@?monolog.logger.id3_reader'] ]
     metaflac_wrapper:
         class: Sapar\Id3\Wrapper\BinWrapper\MetaflacWrapper
         calls:
             - [ setBinPath, ['%id3tool.metaflac.bin%'] ]
+            - [ setLogger, ['@?monolog.logger.id3_reader'] ]
     id3_manager:
         class: AppBundle\Id3\Id3Manager
         arguments: ['@?logger']

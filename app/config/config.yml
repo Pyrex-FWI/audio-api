@@ -2,8 +2,10 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: services.yml }
+    - { resource: bundles/old_sound_rabbit_mq.yml }
+    - { resource: services_consumers.yml }
+    - { resource: bundles/rabbit_mq_supervisor.yml }
     #- { resource: services_dunglas_api.yml }
-    #- { resource: services_consumers.yml }
     #- { resource: "@AppBundle/Resources/config/services.yml" }
     #- { resource: "@ApiPlatformCoreBundle/Resources/config/config.yml" }
 
@@ -101,7 +103,6 @@ swiftmailer:
     password:  "%mailer_password%"
     spool:     { type: memory }
 
-
 deejay_pool:
     franchise_pool_audio:
         credentials:
@@ -125,4 +126,11 @@ deejay_pool:
         configuration:
             root_path: '%smashvision.configuration.root_path%'
 
-bazinga_faker: ~
+
+app:
+    library:
+        indexing_workflow:
+            create_media_reference_before_read_tag: false
+
+monolog:
+    channels: ['consumer', 'producer', 'ID3_READER' ]

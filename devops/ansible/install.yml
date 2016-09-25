@@ -11,6 +11,7 @@
     - { role: geerlingguy.git }
     - { role: geerlingguy.composer }
     - { role: geerlingguy.php-xdebug }
+    - { role: futurice.supervisor }
   tasks:
     - name: Audio Binaries
       apt: name={{item}} state=installed

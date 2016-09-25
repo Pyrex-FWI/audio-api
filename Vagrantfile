@@ -17,9 +17,7 @@ end
 Vagrant.configure("2") do |config|
   config.vm.synced_folder "/Users/yemistikris/Documents/sapar-project/audio-api", "/var/www/html/audio",:owner => 'vagrant', :group => 'www-data', :mount_options => ["dmode=775","fmode=776"]
   config.vm.synced_folder "/Users/yemistikris/Documents/sapar-project", "/sapar-project",:owner => 'vagrant', :group => 'www-data', :mount_options => ["dmode=775","fmode=766"]
-  #config.vm.synced_folder "/Users/yemistikris/PhpstormProjects/sapar-project/audio-api/", "/var/www/audio-api/current", type: "nfs"
-  #config.vm.synced_folder "/Users/yemistikris/PhpstormProjects/sapar-project/radio/", "/var/www/radio/current", type: "nfs"
-  #config.vm.synced_folder "/Volumes/", "/Volumes/"
+  config.vm.synced_folder "/Volumes/Extend/", "/Volumes/Extend/"
   #config.vm.synced_folder "/Volumes/SSD_MAC/ddj", "/Volumes/SSD_MAC/ddj", type: "nfs"
 
     config.vm.provider :virtualbox do |v|

@@ -2,6 +2,7 @@
 php_enable_webserver: true
 php_packages:
   - php7.0-mysql
+  - php7.0-bcmath
 
 apache_vhosts:
   - servername: "sapar-audio.dev"
@@ -25,3 +26,9 @@ mysql_users:
 php_xdebug_remote_enable: "true"
 php_xdebug_idekey: XDEBUG
 php_xdebug_remote_connect_back: "true"
+
+
+supervisor_group:
+supervisor_user_group: "supervisor" # a linux usergroup whose members may manage supervisor without sudo
+supervisor_group_users: # a list of linux users to add to the control group
+    - "vagrant"

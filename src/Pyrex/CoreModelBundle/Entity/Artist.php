@@ -10,7 +10,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * Artist
  *
  * @ORM\Table(uniqueConstraints={@ORM\UniqueConstraint(name="name_idx", columns={"name"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Pyrex\CoreModelBundle\Repository\ArtistRepository")
  */
 class Artist
 {

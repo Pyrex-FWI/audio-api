@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Album
  *
  * @ORM\Table()
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Pyrex\CoreModelBundle\Repository\AlbumRepository")
  */
 class Album
 {
