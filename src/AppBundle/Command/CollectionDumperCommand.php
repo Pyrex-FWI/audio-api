@@ -209,7 +209,7 @@ EOT
             $this->output->writeln(sprintf('Try insert: <info>%s</info> media(s)', $ctn));
             $this->progressBar = new ProgressBar($this->output, $ctn);
             /** @var Producer $mediaIndexer */
-            $mediaIndexer = $this->getContainer()->get('old_sound_rabbit_mq.media_read_tag_producer');
+            $mediaIndexer = $this->getContainer()->get('old_sound_rabbit_mq.media_create_media_reference_producer');
             $mediaIndexer->setContentType('application/json');
             foreach ($reader as $line) {
                 $producerData = [
@@ -221,14 +221,6 @@ EOT
                 $stack[] = $line->getFile()->getPathname();
                 ++$i;
                 $this->progressBar->advance();
-
-                if ($this->getContainer()->getParameter('app.library.indexing.workflow.create_media_reference_before_read_tag')) {
-                    $media = $this->getContainer()->get('app.media_create_reference')->createReferenceIfNotExist(
-                        $line->getFile()->getPathname(),
-                        $provider
-                    );
-                    $producerData['mediaRef'] = $media->getId();
-                }
 
                 $mediaIndexer->publish($this->getContainer()->get('serializer')->serialize($producerData, 'json'));
                 gc_collect_cycles();

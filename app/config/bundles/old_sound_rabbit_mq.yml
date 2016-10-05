@@ -31,6 +31,13 @@ old_sound_rabbit_mq:
                 name: 'sapar.folder.remove'
                 type: direct
 
+        media_create_media_reference:
+            connection: default
+            exchange_options:
+                name: 'media_create_media_reference'
+                #type: topic
+                type: direct
+
         media_read_tag:
             connection: default
             exchange_options:
@@ -63,6 +70,16 @@ old_sound_rabbit_mq:
             queue_options:
                 name: 'sapar_folder_remove_queue'
             callback: directory_remove.consumer
+
+        media_create_media_reference:
+            connection: default
+            exchange_options:
+                name: 'media_create_media_reference'
+                type: direct
+            queue_options:
+                name: 'sapar_media_create_media_reference'
+            qos_options:      {prefetch_size: 0, prefetch_count: 1, global: false}
+            callback: 'media_create_media_reference.consumer'
 
         media_read_tag:
             connection: default

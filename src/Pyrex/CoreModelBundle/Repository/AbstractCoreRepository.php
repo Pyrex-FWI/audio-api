@@ -69,6 +69,7 @@ abstract class AbstractCoreRepository extends EntityRepository
         $this->_em->merge($entity);
         //$this->_em->persist($entity);
         $this->_em->flush();
+        $this->logger->info(sprintf('#%d was %s', $entity->getId(), 'merged'), (array) $entity);
     }
 
     /**
@@ -98,4 +99,5 @@ abstract class AbstractCoreRepository extends EntityRepository
             throw new ValidatorException((string) $errors);
         }
     }
+
 }

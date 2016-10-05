@@ -135,7 +135,7 @@ class Media
      **/
     protected $genres;
     /**
-     * @ORM\ManyToMany(targetEntity="\Pyrex\CoreModelBundle\Entity\Artist", inversedBy="medias", cascade={"persist", "detach", "refresh"}, fetch="EXTRA_LAZY")
+     * @ORM\ManyToMany(targetEntity="\Pyrex\CoreModelBundle\Entity\Artist", inversedBy="medias", cascade={"all"}, fetch="EXTRA_LAZY")
      * @ORM\JoinTable(
      *      joinColumns={@ORM\JoinColumn(name="media_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="artist_id", referencedColumnName="id")}
@@ -414,7 +414,7 @@ class Media
 
         foreach ($this->genres->getIterator() as $_genre) {
             /** @var Genre $_genre */
-            if ($_genre->getName() === $genre) {
+            if ($_genre->getName() === $genre->getName()) {
                 return;
             }
         }

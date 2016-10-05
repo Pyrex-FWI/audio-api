@@ -49,16 +49,19 @@ class MediaTagUpdate
             $existMedia->setId($mediaRef);
         }
         $media = $this->serializer->denormalize($id3Metadata, get_class($existMedia), Id3Metadata::class, [Id3MetadataNormalizer::ORIGINAL_OBJECT => $existMedia]);
-
+        foreach($media->getGenres() as $genre) {
+            var_dump($genre->getId());
+            var_dump($genre->getName());
+        }
         try {
-            $this->mediaRepository->merge($media);
+            $this->mediaRepository->save($media);
         } catch (\Exception $e) {
             var_dump($e->getMessage());
 
             return false;
         }
 
-        return true;
+        return false;
     }
 
 }

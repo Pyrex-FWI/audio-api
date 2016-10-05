@@ -30,3 +30,11 @@ services:
           - { name: monolog.logger }
         calls:
             - [ setContainer, [ '@service_container' ] ]
+
+    media_create_media_reference.consumer:
+        class: AppBundle\RabbitMq\Consumer\MediaCreateReferenceConsumer
+        arguments: ['@monolog.logger.consumer']
+        tags:
+          - { name: monolog.logger }
+        calls:
+            - [ setContainer, [ '@service_container' ] ]
