@@ -1,3 +1,16 @@
+pyrex_admin:
+    resource: "@PyrexAdminBundle/Controller/"
+    type:     annotation
+    prefix:   /admin
+
+logout:
+    path: /admin/logout
+
+certification:
+    resource: "@CertificationBundle/Controller/"
+    type:     annotation
+    prefix:   /certification
+
 app:
     resource: "@AppBundle/Controller/"
     type:     annotation

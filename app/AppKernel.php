@@ -32,6 +32,8 @@ class AppKernel extends Kernel
             new OldSound\RabbitMqBundle\OldSoundRabbitMqBundle(),
             new Bazinga\Bundle\FakerBundle\BazingaFakerBundle(),
             new Phobetor\RabbitMqSupervisorBundle\RabbitMqSupervisorBundle(),
+            new CertificationBundle\CertificationBundle(),
+            new Pyrex\AdminBundle\PyrexAdminBundle(),
         ];
 
 
@@ -41,6 +43,7 @@ class AppKernel extends Kernel
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
             $bundles[] = new \Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle();
+            $bundles[] = new Hautelook\AliceBundle\HautelookAliceBundle();
         }
 
         return $bundles;

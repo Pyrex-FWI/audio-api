@@ -44,7 +44,8 @@
         "pyrex-fwi/hits-bundle": "dev-master",
         "fza/mysql-doctrine-levenshtein-function": "^0.3.0",
         "php-amqplib/rabbitmq-bundle": "^1.11",
-        "phobetor/rabbitmq-supervisor-bundle": "^1.5"
+        "phobetor/rabbitmq-supervisor-bundle": "^1.5",
+        "twbs/bootstrap": "^3.3"
     },
     "scripts": {
         "post-install-cmd": [

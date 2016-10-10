@@ -5,6 +5,8 @@ imports:
     - { resource: bundles/old_sound_rabbit_mq.yml }
     - { resource: services_consumers.yml }
     - { resource: bundles/rabbit_mq_supervisor.yml }
+    - { resource: "@CertificationBundle/Resources/config/services.yml" }
+    - { resource: "@PyrexAdminBundle/Resources/config/services.yml" }
     #- { resource: services_dunglas_api.yml }
     #- { resource: "@AppBundle/Resources/config/services.yml" }
     #- { resource: "@ApiPlatformCoreBundle/Resources/config/config.yml" }
@@ -43,6 +45,8 @@ framework:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
+    form_themes:
+        - 'bootstrap_3_layout.html.twig'
 
 # Assetic Configuration
 assetic:

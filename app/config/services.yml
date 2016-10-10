@@ -46,3 +46,8 @@ services:
         arguments: ['@faker.generator']
         tags:
             - { name: bazinga_faker.provider }
+
+    alice.processor.user:
+        class: AppBundle\DataFixtures\Processor\UserProcessor
+        arguments: ["@security.password_encoder"]
+        tags: [ { name: hautelook_alice.alice.processor } ]

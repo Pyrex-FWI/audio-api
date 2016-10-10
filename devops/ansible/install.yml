@@ -4,14 +4,18 @@
   vars:
     #toto: val
   roles:
-    - { role: geerlingguy.apache, sudo: yes }
-    - { role: geerlingguy.php, sudo: yes }
-    - { role: geerlingguy.apache-php-fpm, sudo: yes }
-    - { role: geerlingguy.mysql }
-    - { role: geerlingguy.git }
-    - { role: geerlingguy.composer }
-    - { role: geerlingguy.php-xdebug }
-    - { role: futurice.supervisor }
+#    - { role: geerlingguy.apache, sudo: yes }
+#    - { role: geerlingguy.php, sudo: yes }
+#    - { role: geerlingguy.apache-php-fpm, sudo: yes }
+#    - { role: geerlingguy.mysql }
+#    - { role: geerlingguy.git }
+#    - { role: geerlingguy.composer }
+#    - { role: geerlingguy.php-xdebug }
+#    - { role: futurice.supervisor }
+#    - { role: Stouts.rabbitmq }
+#    - { role: Stouts.mongodb }
+#    - { role: martinmicunda.nodejs }
+
   tasks:
     - name: Audio Binaries
       apt: name={{item}} state=installed
@@ -27,6 +31,8 @@
       pip: name={{item}}
       with_items:
            - eyeD3
+    - name: bower
+      command: npm install -g bower
 
     #todo // varDumper, auto_preprend, remote_host
     #phpcs

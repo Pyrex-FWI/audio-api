@@ -42,5 +42,8 @@
         <service id="repository.radio_hit" class="Pyrex\CoreModelBundle\Repository\RadioHitRepository" parent="core_repository" >
             <argument>PyrexCoreModelBundle:RadioHit</argument>
         </service>
+        <service id="repository.deejay" class="Pyrex\CoreModelBundle\Repository\DeejayRepository" parent="core_repository" >
+            <argument>PyrexCoreModelBundle:Deejay</argument>
+        </service>
     </services>
 </container>

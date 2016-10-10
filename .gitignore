@@ -28,3 +28,4 @@ Tests/TestData/root_path
 /var/sessions/
 /devops/ansible/roles/*/
 *.retry
+web/assets/vendor

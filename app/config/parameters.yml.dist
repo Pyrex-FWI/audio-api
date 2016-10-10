@@ -96,3 +96,10 @@ parameters:
     # Donwload configuration  #
     ###########################
     database_check: true
+
+    old_sound_rabbit_mq.host: localhost
+    old_sound_rabbit_mq.user: guest
+    old_sound_rabbit_mq.pwd: guest
+
+    rb.pid_file: /run/supervisord.pid
+    rb.sock_file: /run/supervisord.sock

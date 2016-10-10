@@ -32,3 +32,18 @@ supervisor_group:
 supervisor_user_group: "supervisor" # a linux usergroup whose members may manage supervisor without sudo
 supervisor_group_users: # a list of linux users to add to the control group
     - "vagrant"
+
+rabbitmq_enabled: yes
+
+rabbitmq_plugins:                       # Ensure the plugins is installed
+  - rabbitmq_management
+
+rabbitmq_users:                         # Ensure the users added
+  - user: guest
+    password: guest
+    vhost: /
+    configure_priv: .*
+    read_priv: .*
+    write_priv: .*
+    tags: administrator
+
