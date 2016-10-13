@@ -1,7 +1,7 @@
 pyrex_admin:
     resource: "@PyrexAdminBundle/Controller/"
     type:     annotation
-    prefix:   /admin
+    prefix:   /
 
 logout:
     path: /admin/logout

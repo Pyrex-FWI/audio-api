@@ -9,18 +9,16 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class DefaultController extends Controller
+class HomeController extends Controller
 {
     /**
      * @Route("/", name="home")
-     *
+     * @Template()
      * @return Response
      */
     public function indexAction()
     {
         $parts = explode('/', file_get_contents($this->getParameter('kernel.root_dir').'/../.git/HEAD'));
-
-        return new Response('<html><body>Audio Api Version:'.trim(end($parts).'</body></html>'));
     }
 
     /**

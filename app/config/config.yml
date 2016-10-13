@@ -105,7 +105,12 @@ swiftmailer:
     host:      "%mailer_host%"
     username:  "%mailer_user%"
     password:  "%mailer_password%"
-    spool:     { type: memory }
+    #spool:     { type: memory }
+    port: 587
+    encryption: tls
+    #auth_mode: plain
+    delivery_whitelist:
+        - yemistikris@hotmail.fr
 
 deejay_pool:
     franchise_pool_audio:

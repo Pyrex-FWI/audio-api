@@ -2,3 +2,8 @@ services:
 #    pyrex_admin.example:
 #        class: Pyrex\AdminBundle\Example
 #        arguments: ["@service_id", "plain_value", %parameter%]
+    deejay_new_registration:
+        class: Pyrex\AdminBundle\EventListener\NewRegistrationEventListener
+        arguments: [ '@mailer']
+        tags:
+            - { name: doctrine.event_listener, event: postPersist }

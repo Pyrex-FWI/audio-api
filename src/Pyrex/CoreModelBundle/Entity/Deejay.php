@@ -63,7 +63,7 @@ class Deejay implements \Symfony\Component\Security\Core\User\AdvancedUserInterf
      *
      * @ORM\Column(type="string")
      */
-    private $plainPassword;
+    private $plainPassword = '';
     /**
      * @var \DateTime
      *
@@ -132,12 +132,23 @@ class Deejay implements \Symfony\Component\Security\Core\User\AdvancedUserInterf
     }
 
     /**
-     * @param string $roles
+     * @param array $roles
      * @return $this
      */
-    public function setRoles($roles)
+    public function setRoles(array $roles)
     {
         $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * @param sstring $role
+     * @return $this
+     */
+    public function addRole($role)
+    {
+        $this->roles[] = $role;
 
         return $this;
     }

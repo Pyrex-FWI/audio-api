@@ -9,6 +9,9 @@
 
 namespace Pyrex\AdminBundle\Controller;
 
+use Pyrex\AdminBundle\Form\Type\DeejayRegistrationType;
+use Pyrex\CoreModelBundle\Entity\Deejay;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -21,6 +24,7 @@ use Symfony\Component\HttpFoundation\Request;
  * Class SecurityController
  * @author Christophe Pyree <christophe.pyree@gmail.com>
  * @package CertificationBundle\Controller
+ * @Route()
  */
 class AuthentificationController extends Controller
 {
@@ -67,5 +71,25 @@ class AuthentificationController extends Controller
         );
     }
 
-    
+    /**
+     * @Route(path="/register" ,name="register")
+     * @Template()
+     * @param Request $request
+     * @return array
+     */
+    public function registerAction(Request $request)
+    {
+        $deejay = new Deejay();
+        $registrationForm = $this->get('form.factory')->create(DeejayRegistrationType::class, $deejay);
+        $registrationForm->handleRequest($request);
+        if ($registrationForm->isSubmitted() && $registrationForm->isValid()) {
+            $deejay->setPassword($this->get('security.password_encoder')->encodePassword($deejay, $deejay->getPassword()));
+            $deejay->addRole('ROLE_USER');
+            $this->get('repository.deejay')->save($deejay);
+        }
+
+        return [
+            'registrationForm'  => $registrationForm->createView(),
+        ];
+    }
 }

@@ -50,7 +50,7 @@ abstract class AbstractCoreRepository extends EntityRepository
      */
     public function save($entity, $check = true)
     {
-        $this->internalValidate($entity, $check);
+        $this->validate($entity, $check);
         $new = $entity->getId();
         $this->_em->persist($entity);
         $this->_em->flush($entity);
@@ -65,7 +65,7 @@ abstract class AbstractCoreRepository extends EntityRepository
      */
     public function merge($entity, $check = true)
     {
-        $this->internalValidate($entity, $check);
+        $this->validate($entity, $check);
         $this->_em->merge($entity);
         //$this->_em->persist($entity);
         $this->_em->flush();
@@ -92,7 +92,7 @@ abstract class AbstractCoreRepository extends EntityRepository
      * @param $entity
      * @param $check
      */
-    private function internalValidate($entity, $check)
+    public function validate($entity, $check)
     {
         $errors = $check ? $this->validator->validate($entity) : [];
         if (count($errors) > 0) {

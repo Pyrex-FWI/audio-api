@@ -13,16 +13,26 @@
     <div class="container">
         <div class="row">
             <div>
-                {% if app.user is defined and is_granted('ROLE_ADMIN', app.user) %}
-                    <ul>
-                        <li><a href="{{ path('user_list') }}" >Users list</a></li>
-                    </ul>
-                {{ dump(app.user) }}
-                {% endif %}
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-12">
+            <div class="col-lg-4">
+                <ul>
+                {% block leftMenu %}{% endblock %}
+                {% if app.user is defined and is_granted('ROLE_ADMIN', app.user) %}
+                    <li><a href="{{ path('user_list') }}" >User list</a></li>
+                {% endif %}
+                {% if app.user is defined and is_granted('ROLE_USER', app.user) %}
+                        <li><a href="{{ path('logout') }}" >Logout</a></li>
+                    {{ dump(app.user) }}
+                {% else %}
+                    <li><a href="{{ path('login') }}" >Login</a></li>
+                    <li><a href="{{ path('register') }}" >Register</a></li>
+
+                {% endif %}
+                </ul>
+            </div>
+            <div class="col-lg-6">
                 {% block body %}{% endblock %}
             </div>
         </div>
