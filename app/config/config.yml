@@ -109,8 +109,9 @@ swiftmailer:
     port: 587
     encryption: tls
     #auth_mode: plain
-    delivery_whitelist:
-        - yemistikris@hotmail.fr
+    delivery_address: yemistikrys@gmail.com
+#    delivery_whitelist:
+#        - yemistikris@hotmail.fr
 
 deejay_pool:
     franchise_pool_audio:

@@ -10,22 +10,30 @@
 namespace Pyrex\AdminBundle\EventListener;
 
 
+use AppBundle\Service\SystemEmail;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Pyrex\CoreModelBundle\Entity\Deejay;
 
+/**
+ * Class NewRegistrationEventListener
+ * @author Christophe Pyree <christophe.pyree@gmail.com>
+ * @package Pyrex\AdminBundle\EventListener
+ */
 class NewRegistrationEventListener
 {
 
     /** @var \Swift_Mailer  */
     private $mailer;
-
+    /** @var SystemEmail  */
+    private $systemEmail;
     /**
      * NewRegistrationEventListener constructor.
      * @param \Swift_Mailer $mailer
      */
-    public function __construct(\Swift_Mailer $mailer)
+    public function __construct(\Swift_Mailer $mailer, SystemEmail $systemEmail)
     {
         $this->mailer = $mailer;
+        $this->systemEmail = $systemEmail;
     }
 
     /**
@@ -33,14 +41,13 @@ class NewRegistrationEventListener
      */
     public function postPersist(LifecycleEventArgs $args)
     {
-        $entity = $args->getEntity();
+        /** @var Deejay $entity */
+        $entity = $args->getObject();
 
-        // only act on some "Product" entity
         if (!$entity instanceof Deejay) {
             return;
         }
 
-        $entityManager = $args->getEntityManager();
-        //send mail to inform that new user was created
+        $this->systemEmail->newRegistrationMail($entity);
     }
 }

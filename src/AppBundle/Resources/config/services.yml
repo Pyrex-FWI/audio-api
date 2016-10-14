@@ -75,3 +75,9 @@ services:
         class: AppBundle\Service\Streamer
 #        arguments:
 #            - @logger
+
+    app.system_email:
+        class: AppBundle\Service\SystemEmail
+        arguments:
+            - '@swiftmailer.mailer'
+            - '@templating.engine.twig'

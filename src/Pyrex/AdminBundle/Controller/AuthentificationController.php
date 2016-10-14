@@ -92,4 +92,16 @@ class AuthentificationController extends Controller
             'registrationForm'  => $registrationForm->createView(),
         ];
     }
+
+    /**
+     * @Route("/new_user_mail/{id}")
+     * @Template()
+     * @param Deejay $deejay
+     * @return array
+     */
+    public function activeUserAction(Deejay $deejay)
+    {
+        $this->get('app.system_email')->newRegistrationMail($deejay);
+        dump($this->get('templating')->render('PyrexAdminBundle:Authentification:activeUser.html.twig', [ 'deejay' => $deejay ]));
+    }
 }

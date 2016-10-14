@@ -1,4 +1,30 @@
 {% extends '::base.html.twig' %}
+{% block adminLeftMenu %}
+    <li><a href="{{ path('create_user') }}">Create new user</a></li>
+    {{ parent() }}
+{% endblock %}
 {% block body %}
+    {% if users|length > 0 %}
+        <table class="table table-responsive">
+            <thead>
+                <tr>
+                    <th>&nbsp;</th>
+                    <th>Name</th>
+                    <th>Mail</th>
+                    <th>Active</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for deejay in users %}
+                <tr>
+                    <td><a href="{{ path('user_edit', {id:deejay.id}) }}">#{{ deejay.id }}</a></td>
+                    <td>{{ deejay.name }}</td>
+                    <td>{{ deejay.email }}</td>
+                    <td>{{ deejay.enabled ? 'yes' : 'no' }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
     {{ dump(users) }}
 {% endblock %}

@@ -3,6 +3,8 @@
 namespace Pyrex\CoreModelBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Pyrex\CoreModelBundle\Entity\Deejay;
+use Pyrex\CoreModelBundle\Event\DeejayEventArgs;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -31,5 +33,21 @@ class DeejayRepository extends AbstractCoreRepository implements UserLoaderInter
             ->setParameter('email', $username)
             ->getQuery()
             ->getOneOrNullResult();
+    }
+
+    /**
+     * @param Deejay $deejay
+     * @return bool
+     */
+    public function activate(Deejay $deejay)
+    {
+        if (!$deejay->getEnabled()) {
+            $deejay->setEnabled(true);
+
+            if ($this->save($deejay)) {
+                $deejayEvent = new DeejayEventArgs($deejay);
+                $this->getEntityManager()->getEventManager()->dispatchEvent('user_has_activated', $deejayEvent);
+            }
+        }
     }
 }

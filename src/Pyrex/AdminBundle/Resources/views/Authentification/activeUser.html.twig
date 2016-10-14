@@ -1,0 +1,10 @@
+<html>
+    <body>
+        <p>A new user {{ deejay.name }} has been registered</p>
+        {% if not deejay.enabled %}
+        <p>
+            <a href="{{ url('user_activate', { id: deejay.id }) }}">Activate account</a>
+        </p>
+        {% endif %}
+    </body>
+</html>

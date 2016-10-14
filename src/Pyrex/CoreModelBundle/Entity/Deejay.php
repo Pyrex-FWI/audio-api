@@ -13,12 +13,15 @@
 namespace Pyrex\CoreModelBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Deejay
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="Pyrex\CoreModelBundle\Repository\DeejayRepository")
+ * @UniqueEntity("email")
+ * @UniqueEntity("name")
  */
 class Deejay implements \Symfony\Component\Security\Core\User\AdvancedUserInterface, \Serializable
 {

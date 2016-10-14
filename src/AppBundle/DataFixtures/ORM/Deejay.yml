@@ -9,8 +9,8 @@ Pyrex\CoreModelBundle\Entity\Deejay:
             - 'ROLE_USER'
             - 'ROLE_ADMIN'
     deejay_yann:
-        name: 'DeejayCmc'
-        email: 'dj_sylvester@hotmail.com'
+        name: 'cpyree'
+        email: 'cpyree@hotmail.fr'
         password: 'test'
         plainPassword: 'test'
         enabled: true

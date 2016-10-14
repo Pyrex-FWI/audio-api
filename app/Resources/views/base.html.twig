@@ -14,13 +14,25 @@
         <div class="row">
             <div>
             </div>
+            {% for flash_message in app.session.flashBag.get('error') %}
+                <div class="flash-error">
+                    {{ flash_message }}
+                </div>
+            {% endfor %}
+            {% for flash_message in app.session.flashBag.get('success') %}
+                <div class="flash-succes">
+                    {{ flash_message }}
+                </div>
+            {% endfor %}
         </div>
         <div class="row">
             <div class="col-lg-4">
                 <ul>
                 {% block leftMenu %}{% endblock %}
                 {% if app.user is defined and is_granted('ROLE_ADMIN', app.user) %}
+                    {% block adminLeftMenu %}
                     <li><a href="{{ path('user_list') }}" >User list</a></li>
+                    {% endblock %}
                 {% endif %}
                 {% if app.user is defined and is_granted('ROLE_USER', app.user) %}
                         <li><a href="{{ path('logout') }}" >Logout</a></li>

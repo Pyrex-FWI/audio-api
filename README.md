@@ -85,3 +85,5 @@ RabbitMQ
 - https://www.linuxserver.io
 - https://musicbrainz.org
 - http://echoprint.me
+
+php bin/console hautelook_alice:doctrine:fixtures:load -vvv -n
