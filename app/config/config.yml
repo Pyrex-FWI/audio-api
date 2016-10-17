@@ -47,6 +47,7 @@ twig:
     strict_variables: "%kernel.debug%"
     form_themes:
         - 'bootstrap_3_layout.html.twig'
+        - LexikFormFilterBundle:Form:form_div_layout.html.twig
 
 # Assetic Configuration
 assetic:
@@ -91,6 +92,30 @@ doctrine:
                 auto_mapping: true
                 mappings:
                   PyrexCoreModelBundle: ~
+                  gedmo_translatable:
+                      type: annotation
+                      prefix: Gedmo\Translatable\Entity
+                      dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Translatable/Entity"
+                      alias: GedmoTranslatable # (optional) it will default to the name set for the mapping
+                      is_bundle: false
+                  gedmo_translator:
+                      type: annotation
+                      prefix: Gedmo\Translator\Entity
+                      dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Translator/Entity"
+                      alias: GedmoTranslator # (optional) it will default to the name set for the mapping
+                      is_bundle: false
+                  gedmo_loggable:
+                      type: annotation
+                      prefix: Gedmo\Loggable\Entity
+                      dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Loggable/Entity"
+                      alias: GedmoLoggable # (optional) it will default to the name set for the mappingmapping
+                      is_bundle: false
+                  gedmo_tree:
+                      type: annotation
+                      prefix: Gedmo\Tree\Entity
+                      dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Tree/Entity"
+                      alias: GedmoTree # (optional) it will default to the name set for the mapping
+                      is_bundle: false
                 dql:
                   numeric_functions:
                     levenshtein: Fza\MysqlDoctrineLevenshteinFunction\DQL\LevenshteinFunction
@@ -98,6 +123,10 @@ doctrine:
 #            api_manager:
 #                mappings:
 #                    ApiPlatformCoreBundle: ~
+
+stof_doctrine_extensions:
+    default_locale: fr_FR
+
 
 # Swiftmailer Configuration
 swiftmailer:
@@ -144,3 +173,9 @@ app:
 
 monolog:
     channels: ['consumer', 'producer', 'ID3_READER' ]
+
+lexik_form_filter:
+    listeners:
+        doctrine_orm: true
+        doctrine_dbal: false
+        doctrine_mongodb: false

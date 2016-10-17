@@ -1,0 +1,38 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+    <div>
+        {{ form_start(filterForm) }}
+        {{ form_widget(filterForm) }}
+        {{ form_end(filterForm) }}
+    </div>
+    <div class="count">
+        {{ pagination.getTotalItemCount }}
+    </div>
+    <table class="table table-responsive">
+        <tr>
+            {# sorting of properties based on query components #}
+            <th>{{ knp_pagination_sortable(pagination, 'Id', 'e.id') }}</th>
+            <th{% if pagination.isSorted('e.title') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Title', 'e.title') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'Bpm', 'e.bpm') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'Year', 'e.year') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'File name', 'e.fileName') }}</th>
+            <th>&nbsp;</th>
+        </tr>
+
+        {# table body #}
+        {% for media in pagination %}
+            <tr {% if loop.index is odd %}class="color"{% endif %}>
+                <td><a href="{{ path('app_media_edit', {id:media.id}) }}" >{{ media.id }}</a></td>
+                <td>{{ media.title }}</td>
+                <td>{{ media.bpm }}</td>
+                <td>{{ media.year }}</td>
+                <td>{{ media.fileName }}</td>
+                <td>{% if media is video %}<span class="glyphicon glyphicon-facetime-video"></span>{% endif %}{% if media is audio %}<span class="glyphicon glyphicon-music"></span>{% endif %}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    {# display navigation #}
+    <div class="navigation">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+{% endblock %}

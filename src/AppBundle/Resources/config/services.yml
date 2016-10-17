@@ -68,6 +68,7 @@ services:
         public: false
         calls:
             - [ setGenreRepository, ['@repository.genre']]
+            - [ setMediaRepository, ['@repository.media']]
         tags:
             - { name: serializer.normalizer }
 
@@ -81,3 +82,9 @@ services:
         arguments:
             - '@swiftmailer.mailer'
             - '@templating.engine.twig'
+
+    app.twig_extension:
+        class: AppBundle\Twig\AppExtention
+        public: false
+        tags:
+            - { name: twig.extension }

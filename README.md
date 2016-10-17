@@ -22,9 +22,11 @@
 ### Create dump
 `php bin/console media:dump:collection --dump`
 
+`php bin/console rabbitmq:setup-fabric`
 `sudo php bin/console rabbitmq-supervisor:rebuild -vvv`
 
 `php bin/console media:dump:collection --async-insert -vvv`
+`php bin/console rabbit:consumer media_create_media_reference  -vvv -w`
 `php bin/console rabbit:consumer media_read_tag  -vvv -w`
 `php bin/console rabbit:consumer media_update_tag  -vvv -w`
 

@@ -11,6 +11,7 @@ namespace Pyrex\AdminBundle\Form\Type;
 
 use Pyrex\CoreModelBundle\Entity\Deejay;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -38,13 +39,17 @@ class CreateDeejayType extends AbstractType
                 []
             )
             ->add(
-                'password',
-                PasswordType::class,
+                'roles',
+                ChoiceType::class,
                 [
-                    'required'          => true,
+                    'choices'       => Deejay::getAllowedRoles(),
+                    'choice_label'  => function ($value, $key, $index) {
+                        return $value;
+                    },
+                    'expanded'  => true,
+                    'multiple'  => true,
                 ]
             )
-            ->add('roles')
             ->add('expirationDate')
             ->add('enabled')
             ->add(

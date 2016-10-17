@@ -13,6 +13,10 @@
 namespace Pyrex\CoreModelBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
+use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
@@ -25,6 +29,11 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 class Deejay implements \Symfony\Component\Security\Core\User\AdvancedUserInterface, \Serializable
 {
+    const ROLE_USER     = 'ROLE_USER';
+    const ROLE_ADMIN    = 'ROLE_ADMIN';
+
+    use TimestampableEntity;
+    //use SoftDeleteableEntity;
     /**
      * @var integer
      *
@@ -50,7 +59,7 @@ class Deejay implements \Symfony\Component\Security\Core\User\AdvancedUserInterf
 
     /**
      * @var array
-     *
+     * @Assert\Choice(callback="getAllowedRoles")
      * @ORM\Column(type="array")
      */
     private $roles;
@@ -383,5 +392,14 @@ class Deejay implements \Symfony\Component\Security\Core\User\AdvancedUserInterf
         return $this;
     }
 
-
+    /**
+     * @return array
+     */
+    public static function getAllowedRoles()
+    {
+        return [
+            self::ROLE_ADMIN,
+            self::ROLE_USER,
+        ];
+    }
 }

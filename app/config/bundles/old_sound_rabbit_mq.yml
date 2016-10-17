@@ -3,6 +3,7 @@ old_sound_rabbit_mq:
         default:
             host:     '%old_sound_rabbit_mq.host%'
             port:     5672
+            #web : 15672
             user:     '%old_sound_rabbit_mq.user%'
             password: '%old_sound_rabbit_mq.pwd%'
             vhost:    '/'

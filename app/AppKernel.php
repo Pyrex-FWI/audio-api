@@ -34,6 +34,9 @@ class AppKernel extends Kernel
             new Phobetor\RabbitMqSupervisorBundle\RabbitMqSupervisorBundle(),
             new CertificationBundle\CertificationBundle(),
             new Pyrex\AdminBundle\PyrexAdminBundle(),
+            new \Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
+            new \Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
+            new Lexik\Bundle\FormFilterBundle\LexikFormFilterBundle(),
         ];
 
 
@@ -43,7 +46,7 @@ class AppKernel extends Kernel
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
             $bundles[] = new \Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle();
-            $bundles[] = new Hautelook\AliceBundle\HautelookAliceBundle();
+            $bundles[] = new \Hautelook\AliceBundle\HautelookAliceBundle();
         }
 
         return $bundles;
