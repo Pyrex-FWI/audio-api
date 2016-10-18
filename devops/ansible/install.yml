@@ -4,17 +4,17 @@
   vars:
     #toto: val
   roles:
-#    - { role: geerlingguy.apache, sudo: yes }
-#    - { role: geerlingguy.php, sudo: yes }
-#    - { role: geerlingguy.apache-php-fpm, sudo: yes }
-#    - { role: geerlingguy.mysql }
-#    - { role: geerlingguy.git }
-#    - { role: geerlingguy.composer }
-#    - { role: geerlingguy.php-xdebug }
-#    - { role: futurice.supervisor }
-#    - { role: Stouts.rabbitmq }
-#    - { role: Stouts.mongodb }
-#    - { role: martinmicunda.nodejs }
+    - { role: geerlingguy.apache, sudo: yes }
+    - { role: geerlingguy.php, sudo: yes }
+    - { role: geerlingguy.apache-php-fpm, sudo: yes }
+    - { role: geerlingguy.mysql }
+    - { role: geerlingguy.git }
+    - { role: geerlingguy.composer }
+    - { role: geerlingguy.php-xdebug }
+    - { role: futurice.supervisor }
+    - { role: Stouts.rabbitmq }
+    - { role: Stouts.mongodb }
+    - { role: martinmicunda.nodejs }
 
   tasks:
     - name: Audio Binaries

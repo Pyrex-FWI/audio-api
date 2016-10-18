@@ -1,1 +1,1 @@
-vagrant ansible_port=22 ansible_host=10.10.10.10 ansible_ssh_user=vagrant
+vagrant ansible_port=22 ansible_host=localhost ansible_ssh_user=chpyr

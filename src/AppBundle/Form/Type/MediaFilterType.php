@@ -36,7 +36,7 @@ class MediaFilterType extends AbstractType
     {
         $builder
             ->add(
-                'name',
+                'title',
                 TextFilterType::class,
                 [ 'condition_pattern' => FilterOperands::STRING_CONTAINS]
             )
@@ -54,7 +54,7 @@ class MediaFilterType extends AbstractType
                             return null;
                         }
                         $paramName = sprintf('p_%s', str_replace('.', '_', $field));
-                        $expression = $filterQuery->getExpr()->eq($field, ':'.$paramName);
+                        $expression = $filterQuery->getExpr()->eq('e.year', ':'.$paramName);
                         $parameters = array($paramName => $values['value']); // [ name => value ]
 
                         return $filterQuery->createCondition($expression, $parameters);

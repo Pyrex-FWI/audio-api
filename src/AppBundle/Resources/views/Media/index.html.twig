@@ -1,18 +1,36 @@
 {% extends '::base.html.twig' %}
+{% block stylesheets %}
+{{ parent() }}
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/vendor/nouislider/distribute/nouislider.css')}}">
+{% endblock %}
 {% block body %}
-    <div>
+    <div class="well bs-component">
         {{ form_start(filterForm) }}
-        {{ form_widget(filterForm) }}
+        <fieldset>
+            <legend>Filtre</legend>
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-1">
+                    {{ form_row(filterForm.title)}}
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-1">
+                    {{ form_row(filterForm.artist)}}
+                </div>
+            </div>
+            {{ form_rest(filterForm) }}
+            <div id="date_range_slider"></div>
+
+        </fieldset>
         {{ form_end(filterForm) }}
     </div>
     <div class="count">
         {{ pagination.getTotalItemCount }}
     </div>
-    <table class="table table-responsive">
+    <table class="table table-responsive table-striped table-hover">
         <tr>
             {# sorting of properties based on query components #}
             <th>{{ knp_pagination_sortable(pagination, 'Id', 'e.id') }}</th>
             <th{% if pagination.isSorted('e.title') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Title', 'e.title') }}</th>
+            <th{% if pagination.isSorted('e.artist') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Title', 'e.artist') }}</th>
             <th>{{ knp_pagination_sortable(pagination, 'Bpm', 'e.bpm') }}</th>
             <th>{{ knp_pagination_sortable(pagination, 'Year', 'e.year') }}</th>
             <th>{{ knp_pagination_sortable(pagination, 'File name', 'e.fileName') }}</th>
@@ -23,11 +41,12 @@
         {% for media in pagination %}
             <tr {% if loop.index is odd %}class="color"{% endif %}>
                 <td><a href="{{ path('app_media_edit', {id:media.id}) }}" >{{ media.id }}</a></td>
+                <td>{{ media.artist }}</td>
                 <td>{{ media.title }}</td>
                 <td>{{ media.bpm }}</td>
                 <td>{{ media.year }}</td>
                 <td>{{ media.fileName }}</td>
-                <td>{% if media is video %}<span class="glyphicon glyphicon-facetime-video"></span>{% endif %}{% if media is audio %}<span class="glyphicon glyphicon-music"></span>{% endif %}</td>
+                <td><span class="{{media_icon_class(media)}}"></span></td>
             </tr>
         {% endfor %}
     </table>
@@ -36,3 +55,20 @@
         {{ knp_pagination_render(pagination) }}
     </div>
 {% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/vendor/nouislider/distribute/nouislider.js')}}"></script>
+    <script type="text/javascript">
+        jQuery('document').ready(function(){
+            var slider = document.getElementById('date_range_slider');
+            noUiSlider.create(slider, {
+                start: [1980, 2016],
+                connect:true,
+                range: {
+                    min: 1980,
+                    max: 2016
+                }
+            });
+        });
+    </script>
+{% endblock javascripts %}

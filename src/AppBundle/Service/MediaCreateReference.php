@@ -16,7 +16,6 @@ use Symfony\Component\Serializer\Serializer;
  */
 class MediaCreateReference
 {
-
     /** @var  MediaRepository */
     private $mediaRepository;
 

@@ -1,7 +1,7 @@
 Pyrex\CoreModelBundle\Entity\Deejay:
     deejay_pyrex:
-        name: 'DeejayPyrex'
-        email: 'yemistikris@hotmail.fr'
+        name (unique): 'DeejayPyrex'
+        email (unique): 'yemistikris@hotmail.fr'
         password: 'test'
         plainPassword: 'test'
         enabled: true

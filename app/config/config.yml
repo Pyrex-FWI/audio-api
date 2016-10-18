@@ -126,7 +126,9 @@ doctrine:
 
 stof_doctrine_extensions:
     default_locale: fr_FR
-
+    orm:
+        default:
+            timestampable: true
 
 # Swiftmailer Configuration
 swiftmailer:
@@ -141,6 +143,7 @@ swiftmailer:
     delivery_address: yemistikrys@gmail.com
 #    delivery_whitelist:
 #        - yemistikris@hotmail.fr
+    disable_delivery: true
 
 deejay_pool:
     franchise_pool_audio:

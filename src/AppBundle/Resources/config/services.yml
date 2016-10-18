@@ -85,6 +85,7 @@ services:
 
     app.twig_extension:
         class: AppBundle\Twig\AppExtention
+        arguments: ['@request_stack']
         public: false
         tags:
             - { name: twig.extension }

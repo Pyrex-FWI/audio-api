@@ -4,12 +4,27 @@
  * Date: 04/09/15
  * Time: 20:09.
  */
-namespace AppBundle\Tests\Faker;
+namespace AppBundle\Faker\Provider;
 
 use Faker\Provider\Base;
+use Faker\Generator;
 
-class AvItemProvider extends Base
+class MediaProvider extends Base
 {
+    public function __construct(Generator $generator)
+    {
+        parent::__construct($generator);
+        $this->generator->addProvider($this);
+    }
+
+    protected static $providerId = [
+        1,
+        2,
+        3,
+        4,
+        100,
+    ];
+
     protected static $artist = [
         'Beyonce', 'Booba', 'Bruno Mars', 'Busta Rhymes', 'Bobby Brackins', 'Boosie Badazz',
         'Calvin Harris', 'Ciara', 'Cole Black',
@@ -17,7 +32,7 @@ class AvItemProvider extends Base
         'Eminem',
         'G Eazy',
         'J.Lo', 'Jackson 5', 'Jay-Z',
-        'Keyshia Cole', 'Konshens',
+        'Keyshia Cole', 'Konshens', 'Kim ft. Stony', 'Kalash',
         'Lil Wayne',
         'Mila J',
         'Neyo Lets Go Pville',
@@ -39,6 +54,10 @@ class AvItemProvider extends Base
         'Deep House',
         'EDM',
         'Trap',
+        'Zouk',
+        'Rap',
+        'Hip-Hop',
+        'Ethnic'
     ];
     protected static $title = [
         'About You',
@@ -80,8 +99,22 @@ class AvItemProvider extends Base
         999999,
     ];
 
-    protected static $trackFileNameFormats = '{{id}}_{{artist}}-{{title}} ({{version}}).mp3';
+    protected static $extensions = [
+        'mp3',
+        'mp4'
+    ];
 
+    public static $trackFileNameFormats = '{{id}}_{{artist}}-{{title}}.{{mediaExtension}}';
+
+    public function providerId()
+    {
+        return static::randomElement(static::$providerId);
+    }
+
+    public function mediaExtension()
+    {
+        return static::randomElement(static::$extensions);
+    }
     /**
      * @example 'Rihanna'
      */
@@ -119,14 +152,9 @@ class AvItemProvider extends Base
         return static::numberBetween(static::$id[0], static::$id[1]);
     }
 
-    public function trackFileName($identifierRange = null)
+    public function mediaFileName($identifierRange = null)
     {
-        $old = self::$trackId;
-        if ($identifierRange) {
-            self::$id = [$identifierRange[0], $identifierRange[1]];
-        }
-        $result        = $this->generator->parse(static::$trackFileNameFormats);
-        self::$trackId = $old;
+        $result = $this->generator->parse(static::$trackFileNameFormats);
 
         return $result;
     }

@@ -1,6 +1,6 @@
 {% extends '::base.html.twig' %}
 {% block adminLeftMenu %}
-    <li><a href="{{ path('create_user') }}">Create new user</a></li>
+    <li class="{{ left_menu_class('create_user') }}"><a href="{{ path('create_user') }}">Create new user</a></li>
     {{ parent() }}
 {% endblock %}
 {% block body %}

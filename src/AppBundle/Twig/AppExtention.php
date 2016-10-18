@@ -10,6 +10,7 @@
 namespace AppBundle\Twig;
 
 use Pyrex\CoreModelBundle\Entity\Media;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Class AppExtention
@@ -18,6 +19,13 @@ use Pyrex\CoreModelBundle\Entity\Media;
  */
 class AppExtention extends \Twig_Extension
 {
+    /** @var RequestStack $ requestStack */
+    private $requestStack;
+
+    public function __construct(RequestStack $requestStack)
+    {
+        $this->requestStack = $requestStack;
+    }
     /**
      * @return array
      */
@@ -28,7 +36,48 @@ class AppExtention extends \Twig_Extension
             new \Twig_SimpleTest('video', [$this, 'isVideoFile']),
         ];
     }
+    /**
+     * @return array
+     */
+    public function getFunctions()
+    {
+        return [
+            new \Twig_SimpleFunction('left_menu_class', array($this, 'activeLinkClass')),
+            new \Twig_SimpleFunction('media_icon_class', array($this, 'getMediaIconClass')),
+        ];
+    }
 
+    /**
+     * Return nice class name for a media
+     * @param  Media  $media      [description]
+     * @param  string $audioClass [description]
+     * @param  string $viedoClass [description]
+     * @return [type]             [description]
+     */
+    public function getMediaIconClass(Media $media, $audioClass = 'glyphicon glyphicon-music', $videoClass = 'glyphicon glyphicon-facetime-video')
+    {
+        if ($this->isAudioFile($media)) {
+            return $audioClass;
+        }
+        if ($this->isVideoFile($media)) {
+            return $videoClass;
+        }
+    }
+    /**
+     * Return nice class name if given route equal $routeName arg
+     * @param  string $routeName         [description]
+     * @param  string $activeClassName   [description]
+     * @param  string $inactiveClassName [description]
+     * @return string                    className to use
+     */
+    public function activeLinkClass($routeName, $activeClassName = 'active', $inactiveClassName = "")
+    {
+        if ($this->requestStack->getCurrentRequest()->attributes->get('_route') === $routeName) {
+            return $activeClassName;
+        }
+
+        return $inactiveClassName;
+    }
     /**
      * @param Media $media
      * @return bool

@@ -3,14 +3,23 @@
     <head>
         <meta charset="UTF-8" />
         <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        {% block stylesheets %}
+        <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700">
+        <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/icon?family=Material+Icons">
+        {# Bootstrap #}
+        <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        {#Bootstrap material design#}
         <link rel="stylesheet"
-              href="{{ asset('assets/vendor/bootstrap/dist/css/bootstrap.min.css') }}">
+              href="{{ asset('assets/vendor/bootstrap-material-design/dist/css/bootstrap-material-design.css') }}">
+
+        <link rel="stylesheet"
+              href="{{ asset('assets/vendor/bootstrap-material-design/dist/css/ripples.min.css') }}">
+        {% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
 
     </head>
     <body>
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
             <div>
             </div>
@@ -26,26 +35,25 @@
             {% endfor %}
         </div>
         <div class="row">
-            <div class="col-lg-4">
-                <ul>
+            <div class="col-lg-2 sidebar">
+                <ul class="nav nav-pills nav-stacked">
                 {% block leftMenu %}{% endblock %}
                 {% if app.user is defined and is_granted('ROLE_ADMIN', app.user) %}
                     {% block adminLeftMenu %}
-                    <li><a href="{{ path('user_list') }}" >User list</a></li>
+                    <li class="{{ left_menu_class('user_list') }}"><a href="{{ path('user_list') }}" >User list</a></li>
                     {% endblock %}
                 {% endif %}
                 {% if app.user is defined and is_granted('ROLE_USER', app.user) %}
-                        <li><a href="{{ path('app_media_index') }}">Media</a></li>
-                        <li><a href="{{ path('logout') }}" >Logout</a></li>
-                    {{ dump(app.user) }}
+                        <li class="{{ left_menu_class('app_media_index') }}"><a href="{{ path('app_media_index') }}">Media</a></li>
+                        <li class="{{ left_menu_class('logout') }}"><a href="{{ path('logout') }}" >Logout</a></li>
                 {% else %}
-                    <li><a href="{{ path('login') }}" >Login</a></li>
-                    <li><a href="{{ path('register') }}" >Register</a></li>
+                    <li class="{{ left_menu_class('login') }}"><a href="{{ path('login') }}" >Login</a></li>
+                    <li class="{{ left_menu_class('register') }}"><a href="{{ path('register') }}" >Register</a></li>
 
                 {% endif %}
                 </ul>
             </div>
-            <div class="col-lg-8">
+            <div class="col-lg-10">
                 {% block body %}{% endblock %}
             </div>
         </div>
@@ -55,6 +63,14 @@
             </div>
         </div>
     </div>
-        {% block javascripts %}{% endblock %}
+    {% block javascripts %}
+        <script src="{{ asset('assets/vendor/jquery/dist/jquery.js')}}"></script>
+        <script src="{{ asset('assets/vendor/bootstrap/dist/js/bootstrap.js')}}"></script>
+        <script src="{{ asset('assets/vendor/bootstrap-material-design/dist/js/material.js')}}"></script>
+        <script src="{{ asset('assets/vendor/bootstrap-material-design/dist/js/ripple.js')}}"></script>
+        <script type="text/javascript">
+            $.material.init();
+        </script>
+    {% endblock %}
     </body>
 </html>

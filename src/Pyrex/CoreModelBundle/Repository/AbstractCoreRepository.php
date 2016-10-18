@@ -136,7 +136,7 @@ abstract class AbstractCoreRepository extends EntityRepository implements Pagina
      * @param string        $queryParam
      * @return \Knp\Component\Pager\Pagination\PaginationInterface
      */
-    public function paginate(Request $request, FormInterface $formFilter = null, $limit = 100, $queryParam = 'page')
+    public function paginate(Request $request, FormInterface $formFilter = null, $limit = 20, $queryParam = 'page')
     {
         $dql   = sprintf("SELECT e FROM %s e", $this->_class->getName());
         $em    = &$this->_em;
