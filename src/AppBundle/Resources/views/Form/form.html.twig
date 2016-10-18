@@ -1,0 +1,6 @@
+{% extends 'bootstrap_3_layout.html.twig' %}
+{% block no_ui_slider_widget %}
+    <div id="{{ id }}"></div>
+    {{- form_widget(form.min) -}}
+    {{- form_widget(form.max) -}}
+{% endblock no_ui_slider_widget %}

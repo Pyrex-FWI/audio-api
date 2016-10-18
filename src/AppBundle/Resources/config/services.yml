@@ -89,3 +89,8 @@ services:
         public: false
         tags:
             - { name: twig.extension }
+    app.form.type.no_ui_slider:
+        class: AppBundle\Form\Type\NoUiSliderType
+        arguments: ['@twig', '@event_dispatcher']
+        tags:
+            - { name: form.type }

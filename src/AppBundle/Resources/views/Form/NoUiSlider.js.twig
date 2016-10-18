@@ -1,0 +1,19 @@
+{% spaceless %}
+var {{ id }}_slider = document.getElementById('{{ id }}');
+noUiSlider.create({{ id }}_slider, {
+    start: [{{ start_min }}, {{ start_max }}],
+    connect:true,
+    {%  if step %}step:{{ step }},{% endif %}
+    range: {
+        min: {{ range_min }},
+        max: {{ range_max }}
+    }
+});
+{{ id }}_slider.noUiSlider.on('update', function( values, handle ) {
+
+    var value = values[handle];
+    console.log(values);
+    console.log(handle);
+
+});
+{% endspaceless %}

@@ -62,6 +62,10 @@ class MediaFilterType extends AbstractType
                 ]
             )
             ->add(
+                'toto',
+                NoUiSliderType::class
+            )
+            ->add(
                 'year',
                 NumberRangeFilterType::class
             )

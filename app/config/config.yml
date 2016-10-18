@@ -47,6 +47,7 @@ twig:
     strict_variables: "%kernel.debug%"
     form_themes:
         - 'bootstrap_3_layout.html.twig'
+        - AppBundle:Form:form.html.twig
         - LexikFormFilterBundle:Form:form_div_layout.html.twig
 
 # Assetic Configuration

@@ -22,6 +22,7 @@
         </fieldset>
         {{ form_end(filterForm) }}
     </div>
+    {{ dump(filterForm.toto.vars.js) }}
     <div class="count">
         {{ pagination.getTotalItemCount }}
     </div>
@@ -60,15 +61,7 @@
     <script src="{{ asset('assets/vendor/nouislider/distribute/nouislider.js')}}"></script>
     <script type="text/javascript">
         jQuery('document').ready(function(){
-            var slider = document.getElementById('date_range_slider');
-            noUiSlider.create(slider, {
-                start: [1980, 2016],
-                connect:true,
-                range: {
-                    min: 1980,
-                    max: 2016
-                }
-            });
+            {{ filterForm.toto.vars.js|raw }}
         });
     </script>
 {% endblock javascripts %}
