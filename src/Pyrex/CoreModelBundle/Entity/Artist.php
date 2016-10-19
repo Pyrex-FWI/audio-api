@@ -46,12 +46,10 @@ class Artist
         $this->setName($name);
         $this->medias = new ArrayCollection();
     }
-
-
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -94,5 +92,8 @@ class Artist
         return $this;
     }
 
-
+    public function __toString()
+    {
+        return $this->name;
+    }
 }

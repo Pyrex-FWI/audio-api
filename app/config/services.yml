@@ -4,23 +4,22 @@ parameters:
 #    parameter_name: value
 
 services:
-
-    media_wrapper:
+    id3_wrapper.media_info:
         class: Sapar\Id3\Wrapper\BinWrapper\MediainfoWrapper
         calls:
             - [ setBinPath, ['%id3tool.mediainfo.bin%'] ]
             - [ setLogger, ['@?monolog.logger.id3_reader'] ]
-    eyed3_wrapper:
+    id3_wrapper.eyed3:
         class: Sapar\Id3\Wrapper\BinWrapper\Eyed3Wrapper
         calls:
             - [ setBinPath, ['%id3tool.eyed3.bin%'] ]
             - [ setLogger, ['@?monolog.logger.id3_reader'] ]
-    id3v2_wrapper:
+    id3_wrapper.id3v2:
         class: Sapar\Id3\Wrapper\BinWrapper\Id3v2Wrapper
         calls:
             - [ setBinPath, ['%id3tool.id3v2.bin%'] ]
             - [ setLogger, ['@?monolog.logger.id3_reader'] ]
-    metaflac_wrapper:
+    id3_wrapper.metaflac:
         class: Sapar\Id3\Wrapper\BinWrapper\MetaflacWrapper
         calls:
             - [ setBinPath, ['%id3tool.metaflac.bin%'] ]
@@ -29,14 +28,18 @@ services:
         class: AppBundle\Id3\Id3Manager
         arguments: ['@?logger']
         calls:
-            - [ addWrapper, ['@media_wrapper'] ]
-            - [ addWrapper, ['@eyed3_wrapper'] ]
-            - [ addWrapper, ['@id3v2_wrapper'] ]
-            - [ addWrapper, ['@metaflac_wrapper'] ]
+            - [ addWrapper, ['@id3_wrapper.media_info'] ]
+            - [ addWrapper, ['@id3_wrapper.eyed3'] ]
+            - [ addWrapper, ['@id3_wrapper.id3v2'] ]
+            - [ addWrapper, ['@id3_wrapper.metaflac'] ]
 
     subscriber.app:
         class:     AppBundle\EventListener\AppEventSubscriber
         arguments: [ '@doctrine', '@serializer', '@logger']
+        tags:
+          -        { name: kernel.event_subscriber }
+    subscriber.lexik_form_filter.doctrine_subscriber:
+        class:     AppBundle\EventListener\LexikFilterSubscriber
         tags:
           -        { name: kernel.event_subscriber }
 

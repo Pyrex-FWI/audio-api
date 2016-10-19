@@ -157,29 +157,6 @@ EOT
 
 
     /**
-     * @param $client
-     * @param $concurrency
-     * @param $apiBase
-     */
-    protected function runAsyncUpdate($client, $concurrency, $apiBase, $max)
-    {
-        $requests = function ($concurrency, $apiBase, $max) {
-            for ($j = 1; $j <= $max; ++$j) {
-                $url = sprintf('%s/media?order[id]=desc&untaged=1&_trigger_update&_=%s', $apiBase, time());
-                yield new Request('GET', $url);
-            }
-        };
-        $pool = new Pool($client, $requests($concurrency, $apiBase, $max), [
-            'fulfilled' => function ($response, $index) {
-                $this->progressBar->advance(100);
-            },
-            'concurrency' => $concurrency,
-        ]);
-        $promise = $pool->promise();
-        $promise->wait();
-    }
-
-    /**
      * Show configuration information.
      */
     private function info()

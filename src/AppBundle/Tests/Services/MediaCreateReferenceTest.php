@@ -31,6 +31,7 @@ class MediaCreateReferenceTest extends KernelTestCase
     private $entityManager;
     /** @var  Prophet */
     private $prophet;
+
     protected function setUp()
     {
         parent::setUp();
@@ -42,12 +43,12 @@ class MediaCreateReferenceTest extends KernelTestCase
      */
     public function createReferenceIfNotExist()
     {
-
         /* @var Media $media */
         $media      = new Media();
         $media->setFullPath('toto');
 
         $mediaRepository = $this->prophet->prophesize(MediaRepository::class);
+        $mediaRepository->createIfNotExist('toto', null)->shouldBeCalled()->willReturn($media);
         $mediaRepository->findOneBy(['fullFilePathMd5' => md5('toto')])->shouldBeCalled();
 
         $entityManager = $this->prophet->prophesize(EntityManager::class);
@@ -55,7 +56,7 @@ class MediaCreateReferenceTest extends KernelTestCase
         $entityManager->persist($media)->shouldBeCalled();
         $entityManager->flush()->shouldBeCalled();
 
-        $mediaCreateReference = new MediaCreateReference($entityManager->reveal());
+        $mediaCreateReference = new MediaCreateReference($mediaRepository->reveal());
         $result = $mediaCreateReference->createReferenceIfNotExist('toto');
         $this->assertEquals(Media::class, get_class($result));
     }

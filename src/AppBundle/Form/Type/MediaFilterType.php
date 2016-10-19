@@ -62,8 +62,12 @@ class MediaFilterType extends AbstractType
                 ]
             )
             ->add(
-                'toto',
-                NoUiSliderType::class
+                'bpm',
+                NoUiSliderFilterType::class,
+                [
+                    'range_min' => 60,
+                    'range_max' => 180,
+                ]
             )
             ->add(
                 'year',

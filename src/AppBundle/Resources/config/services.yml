@@ -94,3 +94,7 @@ services:
         arguments: ['@twig', '@event_dispatcher']
         tags:
             - { name: form.type }
+    app.form.type.no_ui_slider_filter:
+        class: AppBundle\Form\Type\NoUiSliderFilterType
+        tags:
+            - { name: form.type }

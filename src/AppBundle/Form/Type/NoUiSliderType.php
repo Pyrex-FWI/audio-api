@@ -11,6 +11,7 @@ namespace AppBundle\Form\Type;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
@@ -24,7 +25,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class NoUiSliderType extends AbstractType
 {
-
     private $twig;
     private $eventDispatcher;
 
@@ -35,17 +35,15 @@ class NoUiSliderType extends AbstractType
      */
     public function __construct(\Twig_Environment $twig, EventDispatcherInterface $eventDispatcher)
     {
-        $this->twig = $twig;
-        $this->eventDispatcher = $eventDispatcher;
+        $this->twig             = $twig;
+        $this->eventDispatcher  = $eventDispatcher;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('min', TextType::class)
-            ->add('max', TextType::class);
-        
-
+            ->add('min', HiddenType::class)
+            ->add('max', HiddenType::class);
     }
 
     /**
@@ -83,9 +81,9 @@ class NoUiSliderType extends AbstractType
         $view->vars['start_min'] = $options['start_min'];
         $view->vars['start_max'] = $options['start_max'];
         $view->vars['step']      = $options['step'];
-        $javascriptContent = $this->twig->render('AppBundle:Form:NoUiSlider.js.twig', $view->vars);
-        $view->vars['js'] = $javascriptContent;
-        
+
+        $javascriptContent       = $this->twig->render('AppBundle:Form:NoUiSlider.js.twig', $view->vars);
+        $view->vars['js']        = $javascriptContent;
         /*$this->eventDispatcher->addListener('kernel.response', function($event) use ($javascriptContent) {
 
             $response = $event->getResponse();

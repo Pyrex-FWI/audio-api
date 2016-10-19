@@ -22,7 +22,6 @@
         </fieldset>
         {{ form_end(filterForm) }}
     </div>
-    {{ dump(filterForm.toto.vars.js) }}
     <div class="count">
         {{ pagination.getTotalItemCount }}
     </div>
@@ -61,7 +60,7 @@
     <script src="{{ asset('assets/vendor/nouislider/distribute/nouislider.js')}}"></script>
     <script type="text/javascript">
         jQuery('document').ready(function(){
-            {{ filterForm.toto.vars.js|raw }}
+            {{ filterForm.bpm.vars.js|raw }}
         });
     </script>
 {% endblock javascripts %}
