@@ -27,12 +27,14 @@
            - python-pip
            - python-dev
            - build-essential
+           - ruby
     - name: Audio Binaries (python)
       pip: name={{item}}
       with_items:
            - eyeD3
     - name: bower
       command: npm install -g bower
+    - gem: name=sass state=latest
 
     #todo // varDumper, auto_preprend, remote_host
     #phpcs

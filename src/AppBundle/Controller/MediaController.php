@@ -27,7 +27,7 @@ use Symfony\Component\HttpFoundation\Response;
 class MediaController extends Controller
 {
     /**
-     * @Route("/")
+     * @Route("/", name="media_list")
      * @Template()
      * @return Response
      */

@@ -2,7 +2,8 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        {% set pageTitle = 'page.title.' ~ app.request.attributes.get('_route') %}
+        <title>{% block title %}{{ pageTitle|trans }}{% endblock %}</title>
         {% block stylesheets %}
         <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700">
         <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/icon?family=Material+Icons">
@@ -52,7 +53,7 @@
                     {% endblock %}
                 {% endif %}
                 {% if app.user is defined and is_granted('ROLE_USER', app.user) %}
-                        <li class="{{ left_menu_class('app_media_index') }}"><a href="{{ path('app_media_index') }}">Media</a></li>
+                        <li class="{{ left_menu_class('media_list') }}"><a href="{{ path('media_list') }}">Media</a></li>
                         <li class="{{ left_menu_class('logout') }}"><a href="{{ path('logout') }}" >Logout</a></li>
                 {% else %}
                     <li class="{{ left_menu_class('login') }}"><a href="{{ path('login') }}" >Login</a></li>

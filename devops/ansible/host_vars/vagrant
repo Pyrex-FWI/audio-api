@@ -15,9 +15,9 @@ php_packages:
 
 apache_vhosts:
   - servername: "sapar-audio.dev"
-    documentroot: "/home/chpyr/audio-api/web"
+    documentroot: "/var/www/html/audio/web"
     extra_parameters: |
-          ProxyPassMatch ^/(.*\.php(/.*)?)$ "unix:/var/run/php/php7.0-fpm.sock|fcgi://127.0.0.1:9000/home/chpyr/audio-api/web"
+          ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://127.0.0.1:9000/var/www/html/audio/web"
 
 mysql_root_password: sigipsr
 mysql_databases:

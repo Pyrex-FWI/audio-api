@@ -2,11 +2,11 @@
 {% block no_ui_slider_label %}
  {{ block('form_label')}}
  <span class="control-label">(<span id="{{id}}_min_label">
-     ({{value.min}}
+     ({{value.min|default(range_min)}}
  </span>
  -
  <span id="{{id}}_max_label">
-     {{value.max}})
+     {{value.max|default(range_max)}})
  </span>)</span>
 {% endblock no_ui_slider_label %}
 {% block no_ui_slider_widget %}
