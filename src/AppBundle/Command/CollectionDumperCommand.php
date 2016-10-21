@@ -191,7 +191,7 @@ EOT
             foreach ($reader as $line) {
                 $producerData = [
                     'pathName'  => $line->getFile()->getPathname(),
-                    'provider'  => $provider,
+                    'provider'  => $line->getProvider(),
                     'mediaRef'  => null,
                 ];
 

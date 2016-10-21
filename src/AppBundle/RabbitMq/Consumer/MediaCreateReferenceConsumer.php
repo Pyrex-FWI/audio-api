@@ -46,12 +46,12 @@ class MediaCreateReferenceConsumer implements ConsumerInterface
         $data = $this->container->get('serializer')->decode($msg->body, 'json');
         $this->logger->info(self::$count.' - '.$data['pathName']);
 
-
-        if (!file_exists($data['pathName'])) {
-            $this->logger->info(sprintf('File %s not exist'), $data['pathName']);
+        //Cette responsabilité ne devrait pas être gérée ici
+        /*if (!file_exists($data['pathName'])) {
+            $this->logger->info(sprintf('File %s not exist', $data['pathName']));
 
             return true;
-        }
+        }*/
 
         $media = $this->container->get('repository.media')->createIfNotExist($data['pathName'], $data['provider']);
         $data['mediaRef'] = $media->getId();
