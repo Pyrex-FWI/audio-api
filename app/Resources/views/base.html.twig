@@ -27,7 +27,41 @@
                 margin: 16px 0 0 0;
                 color: #BDBDBD;
             }
+            body {
+                padding-top: 70px;
+            }
         </style>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Project name</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">Dashboard</a></li>
+            <li><a href="#">Settings</a></li>
+            <li><a href="#">Profile</a></li>
+            <li>
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Langue<span class="caret"></span></a>
+
+                <ul  class="dropdown-menu">
+                    <li><a href="#">FR</a></li>
+                    <li><a href="#">EN</a></li>
+                </ul>
+            </li>
+          </ul>
+          <form class="navbar-form navbar-right">
+            <input type="text" class="form-control" placeholder="Search...">
+          </form>
+        </div>
+      </div>
+    </nav>
     <div class="container-fluid">
         <div class="row">
             <div>
@@ -58,7 +92,6 @@
                 {% else %}
                     <li class="{{ left_menu_class('login') }}"><a href="{{ path('login') }}" >Login</a></li>
                     <li class="{{ left_menu_class('register') }}"><a href="{{ path('register') }}" >Register</a></li>
-
                 {% endif %}
                 </ul>
             </div>
@@ -68,7 +101,8 @@
         </div>
         <div class="row">
             <div class="col-sm-12">
-                footer
+                {{dump(app)}}
+                {{dump(app.request.attributes.get('_route'))}}
             </div>
         </div>
     </div>

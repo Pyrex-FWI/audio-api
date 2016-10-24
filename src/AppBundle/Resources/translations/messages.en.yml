@@ -1,4 +1,5 @@
 page:
     title:
-        home: Login
+        home: Welcome
+        login: Login
         media_list: Media list

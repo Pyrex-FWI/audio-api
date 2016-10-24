@@ -1,4 +1,5 @@
 page:
     title:
-        home: Connexion
+        home: Bienvenue
+        login: Authentification
         media_list: Liste des medias
