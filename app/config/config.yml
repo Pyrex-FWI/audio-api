@@ -37,13 +37,14 @@ framework:
     session:
         # http://symfony.com/doc/current/reference/configuration/framework.html#handler-id
         handler_id:  ~
+        cookie_lifetime: 3600
         #save_path:   "%kernel.root_dir%/../var/sessions/%kernel.environment%"
     fragments:       ~
     http_method_override: true
     assets: ~
     translator:
-        fallback:
-            - %locale%
+        fallbacks:
+            - '%locale%'
 
 # Twig Configuration
 twig:
