@@ -2,65 +2,132 @@
 {% block stylesheets %}
 {{ parent() }}
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/vendor/nouislider/distribute/nouislider.css')}}">
+    {% stylesheets filter="scssphp"
+    "@AppBundle/Resources/assets/sass/media-index.scss"
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
 {% endblock %}
+{%  set cls = 'media-index' %}
 {% block body %}
-    <div class="well bs-component">
-        {{ form_start(filterForm) }}
-        <fieldset>
-            <legend>Filtre</legend>
-            <div class="row">
-                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-1">
-                    {{ form_row(filterForm.title)}}
+    <div class="row">
+        <div class="well bs-component form-filter col-lg-6">
+            {{ form_start(filterForm) }}
+            <fieldset>
+                <legend>Filtre</legend>
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-1">
+                        {{ form_row(filterForm.title)}}
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-1">
+                        {{ form_row(filterForm.artist)}}
+                    </div>
                 </div>
-                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-1">
-                    {{ form_row(filterForm.artist)}}
-                </div>
+                {{ form_rest(filterForm) }}
+                <div id="date_range_slider"></div>
+
+            </fieldset>
+            {{ form_end(filterForm) }}
+
+            <div class="amplitude-play" amplitude-song-index="2">Play</div>
+            <div class="amplitude-pause" amplitude-song-index="2">Pause</div>
+            <div class="amplitude-play-pause amplitude-paused">Play pause</div>
+            <div class="amplitude-next">next</div>
+            <div class="ampltiude-prev">prev</div>
+            <span amplitude-song-info="name"></span>
+            <div id="amplitude-visualization"></div>
+        </div>
+        <div class="col-lg-6">
+            <div class="count">
+                {{ pagination.getTotalItemCount }}
             </div>
-            {{ form_rest(filterForm) }}
-            <div id="date_range_slider"></div>
+            <table class="table table-responsive table-striped table-hover">
+                <tr>
+                    {# sorting of properties based on query components #}
+                    <th>{{ knp_pagination_sortable(pagination, 'Id', 'e.id') }}</th>
+                    <th{% if pagination.isSorted('e.title') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Title', 'e.title') }}</th>
+                    <th{% if pagination.isSorted('e.artist') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Title', 'e.artist') }}</th>
+                    <th>{{ knp_pagination_sortable(pagination, 'Bpm', 'e.bpm') }}</th>
+                    <th>{{ knp_pagination_sortable(pagination, 'Year', 'e.year') }}</th>
+                    <th>{{ knp_pagination_sortable(pagination, 'File name', 'e.fileName') }}</th>
+                    <th>&nbsp;</th>
+                </tr>
 
-        </fieldset>
-        {{ form_end(filterForm) }}
-    </div>
-    <div class="count">
-        {{ pagination.getTotalItemCount }}
-    </div>
-    <table class="table table-responsive table-striped table-hover">
-        <tr>
-            {# sorting of properties based on query components #}
-            <th>{{ knp_pagination_sortable(pagination, 'Id', 'e.id') }}</th>
-            <th{% if pagination.isSorted('e.title') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Title', 'e.title') }}</th>
-            <th{% if pagination.isSorted('e.artist') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Title', 'e.artist') }}</th>
-            <th>{{ knp_pagination_sortable(pagination, 'Bpm', 'e.bpm') }}</th>
-            <th>{{ knp_pagination_sortable(pagination, 'Year', 'e.year') }}</th>
-            <th>{{ knp_pagination_sortable(pagination, 'File name', 'e.fileName') }}</th>
-            <th>&nbsp;</th>
-        </tr>
-
-        {# table body #}
-        {% for media in pagination %}
-            <tr {% if loop.index is odd %}class="color"{% endif %}>
-                <td><a href="{{ path('app_media_edit', {id:media.id}) }}" >{{ media.id }}</a></td>
-                <td>{{ media.artist }}</td>
-                <td>{{ media.title }}</td>
-                <td>{{ media.bpm }}</td>
-                <td>{{ media.year }}</td>
-                <td>{{ media.fileName }}</td>
-                <td><span class="{{media_icon_class(media)}}"></span></td>
-            </tr>
-        {% endfor %}
-    </table>
-    {# display navigation #}
-    <div class="navigation">
-        {{ knp_pagination_render(pagination) }}
+                {# table body #}
+                {% for media in pagination %}
+                    <tr {% if loop.index is odd %}class="color"{% endif %}>
+                        <td>
+                            <span class="amplitude-action glyphicon glyphicon-play amplitude-play-pause amplitude-paused" amplitude-song-index="{{ loop.index0 }}"></span>
+                            <a href="{{ path('app_media_edit', {id:media.id}) }}" >{{ media.id }}</a>
+                        </td>
+                        <td>{{ media.artist }}</td>
+                        <td>{{ media.title }}</td>
+                        <td>{{ media.bpm }}</td>
+                        <td>{{ media.year }}</td>
+                        <td>{{ media.fileName }}</td>
+                        <td><span class="{{media_icon_class(media)}}"></span></td>
+                    </tr>
+                {% endfor %}
+            </table>
+            {# display navigation #}
+            <div class="navigation">
+                {{ knp_pagination_render(pagination) }}
+            </div>
+        </div>
     </div>
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
     <script src="{{ asset('assets/vendor/nouislider/distribute/nouislider.js')}}"></script>
+    <script src="{{ asset('assets/vendor/amplitude/js/amplitude.js')}}"></script>
+    <script src="{{ asset('assets/vendor/amplitude/visualizations/michaelbromley.js')}}"></script>
     <script type="text/javascript">
         jQuery('document').ready(function(){
             {{ filterForm.bpm.vars.js|raw }}
         });
+        function after_stop() {
+          console.log(this);
+        }
+
+        Amplitude.init({
+            "songs": {{ amplitude_songs(pagination.items)|raw }},
+            "callbacks":{
+                "befor_play": "updateAmplitudeBtn",
+                "after_stop": "updateAmplitudeBtn"
+            },
+            "debug": true
+
+        });
+        Amplitude.registerVisualization( MichaelBromleyVisualization, {
+            width: '314',
+            height: '314'
+        } );
+
+        function updateAmplitudeBtn() {
+            var playPayseBtn = document.getElementsByClassName("amplitude-play-pause");
+            for (var i = 0; i < playPayseBtn.length; i++) {
+                playPayseBtn[i].classList.toggle('glyphicon-play', playPayseBtn[i].classList.contains('amplitude-paused'));
+                playPayseBtn[i].classList.toggle('glyphicon-pause', playPayseBtn[i].classList.contains('amplitude-playing'));
+                console.log(playPayseBtn[i].classList);
+
+            }
+        }
+        /*jQuery('span.amplitude-play-pause').on('change', function(){
+            console.log(this);
+            if (jQuery(this).hasClass('amplitude-paused')) {
+                jQuery(this).toggleClass('glyphicon-pause', true);
+                jQuery(this).toggleClass('glyphicon-play', false);
+
+                return;
+            }
+
+            if (jQuery(this).hasClass('amplitude-playing')) {
+                jQuery(this).toggleClass('glyphicon-pause', false);
+                jQuery(this).toggleClass('glyphicon-play', true);
+
+                return;
+            }
+
+        });*/
     </script>
 {% endblock javascripts %}

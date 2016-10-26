@@ -15,6 +15,13 @@
 
         <link rel="stylesheet"
               href="{{ asset('assets/vendor/bootstrap-material-design/dist/css/ripples.min.css') }}">
+
+            {% stylesheets filter="scssphp" output="css/main.css"
+                "../app/Resources/assets/sass/main.scss"
+            %}
+            <link rel="stylesheet" href="{{ asset_url }}" />
+            {% endstylesheets %}
+
         {% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
@@ -27,7 +34,47 @@
                 margin: 16px 0 0 0;
                 color: #BDBDBD;
             }
+
         </style>
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">Project name</a>
+                </div>
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="#">Dashboard</a></li>
+                        <li><a href="#">Settings</a></li>
+                        <li><a href="#">Profile</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Language <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                {% for langue in languages %}
+                                    {% set langTr = 'language.' ~ langue %}
+                                    <li><a href="{{ path(app.request.attributes.get('_route'), { '_locale': langue }) }}">{{ langTr|trans }}</a></li>
+                                {% endfor %}
+                                <li><a href="#">Action</a></li>
+                                <li><a href="#">Another action</a></li>
+                                <li><a href="#">Something else here</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li class="dropdown-header">Nav header</li>
+                                <li><a href="#">Separated link</a></li>
+                                <li><a href="#">One more separated link</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <form class="navbar-form navbar-right">
+                        <input type="text" class="form-control" placeholder="Search...">
+                    </form>
+                </div>
+            </div>
+        </nav>
     <div class="container-fluid">
         <div class="row">
             <div>
@@ -49,11 +96,11 @@
                 {% block leftMenu %}{% endblock %}
                 {% if app.user is defined and is_granted('ROLE_ADMIN', app.user) %}
                     {% block adminLeftMenu %}
-                    <li class="{{ left_menu_class('user_list') }}"><a href="{{ path('user_list') }}" >User list</a></li>
+                    <li class="{{ left_menu_class('user_list') }}"><a href="{{ path('user_list') }}" >{{ 'page.title.user_list'|trans }}</a></li>
                     {% endblock %}
                 {% endif %}
                 {% if app.user is defined and is_granted('ROLE_USER', app.user) %}
-                        <li class="{{ left_menu_class('media_list') }}"><a href="{{ path('media_list') }}">Media</a></li>
+                        <li class="{{ left_menu_class('media_list') }}"><a href="{{ path('media_list') }}">{{ 'page.title.media_list'|trans }}</a></li>
                         <li class="{{ left_menu_class('logout') }}"><a href="{{ path('logout') }}" >Logout</a></li>
                 {% else %}
                     <li class="{{ left_menu_class('login') }}"><a href="{{ path('login') }}" >Login</a></li>
@@ -62,13 +109,14 @@
                 {% endif %}
                 </ul>
             </div>
-            <div class="col-lg-10">
+            <div class="col-lg-10 {{ cls|default('') }}">
                 {% block body %}{% endblock %}
             </div>
         </div>
         <div class="row">
             <div class="col-sm-12">
                 footer
+                {{ dump() }}
             </div>
         </div>
     </div>
@@ -76,7 +124,7 @@
         <script src="{{ asset('assets/vendor/jquery/dist/jquery.js')}}"></script>
         <script src="{{ asset('assets/vendor/bootstrap/dist/js/bootstrap.js')}}"></script>
         <script src="{{ asset('assets/vendor/bootstrap-material-design/dist/js/material.js')}}"></script>
-        <script src="{{ asset('assets/vendor/bootstrap-material-design/dist/js/ripple.js')}}"></script>
+        <script src="{{ asset('assets/vendor/bootstrap-material-design/dist/js/ripples.js')}}"></script>
         <script type="text/javascript">
             $.material.init();
         </script>

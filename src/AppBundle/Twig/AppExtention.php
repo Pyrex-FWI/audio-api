@@ -10,7 +10,9 @@
 namespace AppBundle\Twig;
 
 use Pyrex\CoreModelBundle\Entity\Media;
+use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Routing\Route;
 
 /**
  * Class AppExtention
@@ -21,10 +23,15 @@ class AppExtention extends \Twig_Extension
 {
     /** @var RequestStack $ requestStack */
     private $requestStack;
+    private $allowed_directories;
+    /** @var Router  */
+    private $router;
 
-    public function __construct(RequestStack $requestStack)
+    public function __construct(RequestStack $requestStack, Router $router, $allowed_directories)
     {
         $this->requestStack = $requestStack;
+        $this->allowed_directories = $allowed_directories;
+        $this->router = $router;
     }
     /**
      * @return array
@@ -44,9 +51,32 @@ class AppExtention extends \Twig_Extension
         return [
             new \Twig_SimpleFunction('left_menu_class', array($this, 'activeLinkClass')),
             new \Twig_SimpleFunction('media_icon_class', array($this, 'getMediaIconClass')),
+            new \Twig_SimpleFunction('amplitude_songs', array($this, 'transformMediaListToJsonAmplitude')),
         ];
     }
 
+    /**
+     * @param Media[] $medias
+     */
+    public function transformMediaListToJsonAmplitude($medias)
+    {
+
+        $data = array_map(
+            function (Media $item) {
+                return [
+                    'name'          => $item->getTitle(),
+                    'album'         => '',
+                    'artist'        => $item->getArtist(),
+                    'url'           => $this->router->getGenerator()->generate('stream', ['file' => $this->allowed_directories[0].DIRECTORY_SEPARATOR.'dir01/01.mp3']),
+                    'cover_art_url' => null,
+                ];
+            },
+            (array) $medias
+        );
+
+        return json_encode($data);
+
+    }
     /**
      * Return nice class name for a media
      * @param  Media  $media      [description]

@@ -1,0 +1,8 @@
+media_filter:
+    title: Title
+    artist: Artist
+    bpm: bpm
+    year: Year
+    filter: Filter
+
+

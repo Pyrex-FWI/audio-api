@@ -46,22 +46,6 @@ class MediaFilterType extends AbstractType
                 [ 'condition_pattern' => FilterOperands::STRING_CONTAINS]
             )
             ->add(
-                'year_simple',
-                NumberFilterType::class,
-                [
-                    'apply_filter' => function (QueryInterface $filterQuery, $field, $values) {
-                        if (empty($values['value'])) {
-                            return null;
-                        }
-                        $paramName = sprintf('p_%s', str_replace('.', '_', $field));
-                        $expression = $filterQuery->getExpr()->eq('e.year', ':'.$paramName);
-                        $parameters = array($paramName => $values['value']); // [ name => value ]
-
-                        return $filterQuery->createCondition($expression, $parameters);
-                    },
-                ]
-            )
-            ->add(
                 'bpm',
                 NoUiSliderFilterType::class,
                 [
@@ -73,7 +57,7 @@ class MediaFilterType extends AbstractType
                 'year',
                 NumberRangeFilterType::class
             )
-            ->add('Filter', SubmitType::class)
+            ->add('filter', SubmitType::class)
             ;
 
         return $builder;
@@ -86,7 +70,9 @@ class MediaFilterType extends AbstractType
     {
         $resolver->setDefaults(array(
             'csrf_protection'   => false,
-            'validation_groups' => array('filtering') // avoid NotBlank() constraint-related message
+            'validation_groups' => array('filtering'), // avoid NotBlank() constraint-related message,
+            'label_format'      => 'media_filter.%name%',
+            'translation_domain'=> 'forms',
         ));
     }
 }

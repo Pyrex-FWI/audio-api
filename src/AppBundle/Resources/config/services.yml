@@ -1,6 +1,6 @@
 parameters:
     command.collection_dumper.class: AppBundle\Command\CollectionDumperCommand
-
+    streamer.class: AppBundle\Service\Streamer
 
 services:
 
@@ -73,7 +73,7 @@ services:
             - { name: serializer.normalizer }
 
     streamer:
-        class: AppBundle\Service\Streamer
+        class: '%streamer.class%'
 #        arguments:
 #            - @logger
 
@@ -85,7 +85,7 @@ services:
 
     app.twig_extension:
         class: AppBundle\Twig\AppExtention
-        arguments: ['@request_stack']
+        arguments: ['@request_stack', '@router', '%allowed_directories%']
         public: false
         tags:
             - { name: twig.extension }

@@ -2,3 +2,8 @@ page:
     title:
         home: Login
         media_list: Media list
+        user_list: User list
+
+language:
+    fr: French
+    en: English

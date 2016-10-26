@@ -2,3 +2,8 @@ page:
     title:
         home: Connexion
         media_list: Liste des medias
+        user_list: Liste des utilisateurs
+
+language:
+    fr: Français
+    en: Anglais
