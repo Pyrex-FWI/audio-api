@@ -1,4 +1,4 @@
-p<?php
+<?php
 
 namespace Pyrex\DupeBundle\Command;
 

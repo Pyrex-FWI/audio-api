@@ -5,15 +5,19 @@
 namespace Pyrex\CoreModelBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  * Album
  *
  * @ORM\Table()
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Pyrex\CoreModelBundle\Repository\AlbumRepository")
  */
 class Album
 {
+    use TimestampableEntity;
+
     /**
      * @var integer
      *
@@ -26,7 +30,7 @@ class Album
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ORM\Column(name="name", type="string", length=128)
      */
     private $name;
 
@@ -38,6 +42,12 @@ class Album
      */
     private $cover;
 
+    /**
+     * @var string
+     * @Gedmo\Slug(fields={"name"}, unique=true)
+     * @ORM\Column(type="string", length=128, unique=true)
+     */
+    protected $slug;
 
     /**
      * Get id
@@ -96,5 +106,13 @@ class Album
         // @codeCoverageIgnoreStart
         return $this->cover;
         // @codeCoverageIgnoreEnd
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
     }
 }

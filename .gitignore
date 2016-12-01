@@ -26,5 +26,7 @@ Tests/TestData/root_path
 /var/logs/
 /var/cache/
 /var/sessions/
-/devops/ansible/roles/
+/devops/ansible/roles/*/
 *.retry
+web/assets/vendor
+/src/Pyrex/NfoReader/

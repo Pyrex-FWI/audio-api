@@ -1,3 +1,0 @@
-pyrex_radio_homepage:
-    path:     /
-    defaults: { _controller: PyrexRadioBundle:Default:index }

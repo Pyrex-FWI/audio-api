@@ -56,9 +56,9 @@ parameters:
     # use this instead above find /volume3/temp/ -type f -iname  '*flac' -o -iname '*.mp3'
     #dump.filename: /volume1/web/audio_api/app/cache/files_collection.txt
     collection.paths:
-        ddp:
+        test:
             provider: 1
-            paths: [/volume4/archives/_DigitaldjPool/ ]
+            paths: [/tmp/ ]
             match: "*.mp3"
 
         av_district:
@@ -96,3 +96,10 @@ parameters:
     # Donwload configuration  #
     ###########################
     database_check: true
+
+    old_sound_rabbit_mq.host: localhost
+    old_sound_rabbit_mq.user: guest
+    old_sound_rabbit_mq.pwd: guest
+
+    rb.pid_file: /run/supervisord.pid
+    rb.sock_file: /run/supervisord.sock

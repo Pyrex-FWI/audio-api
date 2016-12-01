@@ -1,0 +1,11 @@
+page:
+    title:
+        genre_list: Genre list
+        home: Login
+        media_list: Media list
+        user_list: User list
+        media_list_by_genre_year: %genre% of %year%
+
+language:
+    fr: French
+    en: English

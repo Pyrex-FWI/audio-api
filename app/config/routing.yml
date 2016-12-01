@@ -1,10 +1,42 @@
-pyrex_core_model:
-    resource: "@PyrexCoreModelBundle/Resources/config/routing.xml"
-    prefix:   /
+#hwi_oauth_redirect:
+#    resource: "@HWIOAuthBundle/Resources/config/routing/redirect.xml"
+#    prefix:   /redirect
+#
+#hwi_oauth_connect:
+#    resource: "@HWIOAuthBundle/Resources/config/routing/connect.xml"
+#    prefix:   /connect
+#
+#hwi_oauth_login:
+#    resource: "@HWIOAuthBundle/Resources/config/routing/login.xml"
+#    prefix:   /login
 
-pyrex_radio:
-    resource: "@PyrexRadioBundle/Resources/config/routing.yml"
-    prefix:   /
+#facebook_login:
+#    path: /connect/check-facebook
+
+logout:
+    path: /admin/logout
+    prefix:   /{_locale}/
+    requirements:
+        _locale: '%locale_regex%'
+
+certification:
+    resource: "@CertificationBundle/Controller/"
+    type:     annotation
+    prefix:   /{_locale}/certification
+    requirements:
+        _locale: '%locale_regex%'
+
 app:
     resource: "@AppBundle/Controller/"
     type:     annotation
+    prefix:  /{_locale}/
+    requirements:
+        _locale: '%locale_regex%'
+
+
+pyrex_admin:
+    resource: "@PyrexAdminBundle/Controller/"
+    type:     annotation
+    prefix:   /{_locale}/
+    requirements:
+        _locale: '%locale_regex%'

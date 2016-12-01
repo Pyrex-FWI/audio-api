@@ -4,41 +4,76 @@ parameters:
 #    parameter_name: value
 
 services:
-
-    media_wrapper:
+    id3_wrapper.media_info:
         class: Sapar\Id3\Wrapper\BinWrapper\MediainfoWrapper
         calls:
             - [ setBinPath, ['%id3tool.mediainfo.bin%'] ]
-    eyed3_wrapper:
+            - [ setLogger, ['@?monolog.logger.id3_reader'] ]
+    id3_wrapper.eyed3:
         class: Sapar\Id3\Wrapper\BinWrapper\Eyed3Wrapper
         calls:
             - [ setBinPath, ['%id3tool.eyed3.bin%'] ]
-    id3v2_wrapper:
+            - [ setLogger, ['@?monolog.logger.id3_reader'] ]
+    id3_wrapper.id3v2:
         class: Sapar\Id3\Wrapper\BinWrapper\Id3v2Wrapper
         calls:
             - [ setBinPath, ['%id3tool.id3v2.bin%'] ]
-    metaflac_wrapper:
+            - [ setLogger, ['@?monolog.logger.id3_reader'] ]
+    id3_wrapper.metaflac:
         class: Sapar\Id3\Wrapper\BinWrapper\MetaflacWrapper
         calls:
             - [ setBinPath, ['%id3tool.metaflac.bin%'] ]
+            - [ setLogger, ['@?monolog.logger.id3_reader'] ]
     id3_manager:
         class: AppBundle\Id3\Id3Manager
         arguments: ['@?logger']
         calls:
-            - [ addWrapper, ['@media_wrapper'] ]
-            - [ addWrapper, ['@eyed3_wrapper'] ]
-            - [ addWrapper, ['@id3v2_wrapper'] ]
-            - [ addWrapper, ['@metaflac_wrapper'] ]
+            - [ addWrapper, ['@id3_wrapper.media_info'] ]
+            - [ addWrapper, ['@id3_wrapper.eyed3'] ]
+            - [ addWrapper, ['@id3_wrapper.id3v2'] ]
+            - [ addWrapper, ['@id3_wrapper.metaflac'] ]
 
     subscriber.app:
         class:     AppBundle\EventListener\AppEventSubscriber
         arguments: [ '@doctrine', '@serializer', '@logger']
         tags:
           -        { name: kernel.event_subscriber }
-
-    faker.avd_item_provider:
-        class: AppBundle\Tests\Faker\AvItemProvider
-        public: false # useless if used alone
-        arguments: ['@faker.generator']
+    subscriber.lexik_form_filter.doctrine_subscriber:
+        class:     AppBundle\EventListener\LexikFilterSubscriber
         tags:
-            - { name: bazinga_faker.provider }
+          -        { name: kernel.event_subscriber }
+
+    #Only for test
+    hautelook_alice.custom_faker_generator:
+        class: Faker\Generator
+        factory: [ Faker\Factory, create ]
+        lazy: true
+        arguments:
+            - '%hautelook_alice.locale%'
+        calls:
+            - [ seed, [ '%hautelook_alice.seed' ] ]
+    faker.avd_item_provider:
+        class: AppBundle\Faker\Provider\AvItemProvider
+        arguments: [ '@hautelook_alice.custom_faker_generator' ]
+        tags: [ { name: hautelook_alice.faker.provider } ]
+
+    alice.processor.user:
+        class: AppBundle\DataFixtures\Processor\UserProcessor
+        arguments: ["@security.password_encoder"]
+        tags: [ { name: hautelook_alice.alice.processor } ]
+
+    app.local_listener:
+        class: AppBundle\EventListener\LocalListener
+        arguments:
+            - '@router'
+            - '%locales%'
+            - '%%kernel.default_locale%'
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, priority: 15 }
+
+    app.switch_user_listener:
+        class: AppBundle\EventListener\SwitchUserListener
+        arguments:
+            - '@?logger'
+        tags:
+            - { name: kernel.event_listener, event: security.switch_user, method: onSwitchUser }

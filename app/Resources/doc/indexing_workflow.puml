@@ -1,0 +1,7 @@
+@startuml
+DUMP -> RABBIT: Add each files into read_queue
+RABBIT -> RABBIT: Read Id3Metadata and requeue into update_queue
+RABBIT --> MYSQL: "Create reference if media not exist"
+RABBIT --> MYSQL: Update media id3 info
+
+@enduml

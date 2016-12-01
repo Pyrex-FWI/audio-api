@@ -1,0 +1,9 @@
+{% extends '::base.html.twig' %}
+{% block title %}{{ genre.name }}{% endblock %}
+{% block body %}
+{{ form_start(form) }}
+{{ form_widget(form) }}
+{{ form_end(form) }}
+
+    <a href="{{ path('media_list_by_genre_year', {'genre':genre.slug}) }}">{{ 'songs_list'|trans }}</a>
+{% endblock %}

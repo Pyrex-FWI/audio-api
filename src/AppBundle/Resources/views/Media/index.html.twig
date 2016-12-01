@@ -1,0 +1,130 @@
+{% extends '::base.html.twig' %}
+{% block title %}
+    {% if app.request.attributes.get('_route') == 'media_list_by_genre_year' %}
+        {{ pageTitle|trans({'%genre%' : app.request.attributes.get('genre').name , '%year%': app.request.attributes.get('_route_params')['year']}) }}
+    {% else %}
+        {{ pageTitle|trans }}
+    {% endif %}
+{% endblock %}
+{% block stylesheets %}
+{{ parent() }}
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/vendor/nouislider/distribute/nouislider.css')}}">
+    {% stylesheets filter="scssphp"
+    "@AppBundle/Resources/assets/sass/media-index.scss"
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+{% endblock %}
+{%  set cls = 'media-index' %}
+{% block body %}
+    <div class="row">
+        <div class="well bs-component form-filter col-lg-6">
+            {{ form_start(filterForm) }}
+            <fieldset>
+                <legend>Filtre</legend>
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-1">
+                        {{ form_row(filterForm.title)}}
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-1">
+                        {{ form_row(filterForm.artist)}}
+                    </div>
+                </div>
+                {{ form_rest(filterForm) }}
+                <div id="date_range_slider"></div>
+
+            </fieldset>
+            {{ form_end(filterForm) }}
+
+            <div class="amplitude-next">next</div>
+            <div class="ampltiude-prev">prev</div>
+            <span amplitude-song-info="name"></span>
+            <div id="amplitude-visualization"></div>
+        </div>
+        <div class="col-lg-6">
+            <div class="count">
+                {{ pagination.getTotalItemCount }}
+            </div>
+            <table class="table table-responsive table-striped table-hover">
+                <tr>
+                    {# sorting of properties based on query components #}
+                    <th>{{ knp_pagination_sortable(pagination, 'Id', 'e.id') }}</th>
+                    <th{% if pagination.isSorted('e.title') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Title', 'e.title') }}</th>
+                    <th{% if pagination.isSorted('e.artist') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Title', 'e.artist') }}</th>
+                    <th>{{ knp_pagination_sortable(pagination, 'Bpm', 'e.bpm') }}</th>
+                    <th>{{ knp_pagination_sortable(pagination, 'Year', 'e.year') }}</th>
+                    <th>{{ knp_pagination_sortable(pagination, 'File name', 'e.fileName') }}</th>
+                    <th>&nbsp;</th>
+                </tr>
+
+                {# table body #}
+                {% for media in pagination %}
+                    <tr {% if loop.index is odd %}class="color"{% endif %}>
+                        <td>
+                            <span class="amplitude-action glyphicon glyphicon-play amplitude-play" amplitude-song-index="{{ loop.index0 }}"></span>
+                            <span class="hide amplitude-action glyphicon glyphicon-pause amplitude-pause" amplitude-song-index="{{ loop.index0 }}"></span>
+                            <a href="{{ path('media_slug', {slug:media.slug}) }}" >{{ media.id }}</a>
+                        </td>
+                        <td>{{ media.artist }}</td>
+                        <td>{{ media.title }}</td>
+                        <td>{{ media.bpm }}</td>
+                        <td>{{ media.year }}</td>
+                        <td>{{ media.fileName }}</td>
+                        <td><span class="{{media_icon_class(media)}}"></span></td>
+                    </tr>
+                {% endfor %}
+            </table>
+            {# display navigation #}
+            <div class="navigation">
+                {{ knp_pagination_render(pagination) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/vendor/nouislider/distribute/nouislider.js')}}"></script>
+    <script src="{{ asset('assets/vendor/amplitude/js/amplitude.js')}}"></script>
+    <script src="{{ asset('assets/vendor/amplitude/visualizations/michaelbromley.js')}}"></script>
+    <script type="text/javascript">
+        jQuery('document').ready(function(){
+            {{ filterForm.bpm.vars.js|raw }}
+        });
+        function after_stop() {
+          console.log(this);
+        }
+
+        Amplitude.init({
+            "songs": {{ amplitude_songs(pagination.items)|raw }},
+            "callbacks":{
+                //"befor_play": "updateAmplitudeBtn",
+                //"after_stop": "updateAmplitudeBtn"
+            },
+            "debug": true
+
+        });
+        Amplitude.registerVisualization( MichaelBromleyVisualization, {
+            width: '314',
+            height: '314'
+        } );
+
+        var lastPlay = null;
+        jQuery('span.amplitude-play').on('click', function(){
+            $(this).toggleClass('hide',true);
+            var index = $(this).attr('amplitude-song-index');
+            $('span.amplitude-pause[amplitude-song-index="'+index+'"]').removeClass('hide', false);
+
+            if (lastPlay != null && lastPlay != index) {
+                $('span.amplitude-play[amplitude-song-index="'+lastPlay+'"]').toggleClass('hide', false);
+                $('span.amplitude-pause[amplitude-song-index="'+lastPlay+'"]').toggleClass('hide', true);
+            }
+            lastPlay = index;
+
+        });
+        jQuery('span.amplitude-pause').on('click', function(){
+            $(this).toggleClass('hide',true);
+            var index = $(this).attr('amplitude-song-index');
+            $('span.amplitude-play[amplitude-song-index="'+index+'"]').toggleClass('hide', false);
+        });
+    </script>
+{% endblock javascripts %}

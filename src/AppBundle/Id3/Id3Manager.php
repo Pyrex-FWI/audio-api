@@ -7,6 +7,10 @@ use Sapar\Id3\Wrapper\Id3WrapperInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
+/**
+ * Class Id3Manager
+ * @package AppBundle\Id3
+ */
 class Id3Manager
 {
     /** @var Id3WrapperInterface[] */
@@ -14,6 +18,10 @@ class Id3Manager
     /** @var  LoggerInterface */
     private $logger;
 
+    /**
+     * Id3Manager constructor.
+     * @param LoggerInterface|null $logger
+     */
     public function __construct(LoggerInterface $logger = null)
     {
         $this->logger = $logger ? $logger : new NullLogger();
@@ -35,7 +43,13 @@ class Id3Manager
     public function read(Id3Metadata $id3Metadata)
     {
         foreach ($this->wrappers as $wrapper) {
-            if ($wrapper->supportRead($id3Metadata) && $wrapper->read($id3Metadata)) {
+            if (!$wrapper->supportRead($id3Metadata)) {
+                continue;
+            }
+
+            $this->logger->info(sprintf('Try read with %s', get_class($wrapper)));
+
+            if ($wrapper->read($id3Metadata)) {
                 $this->logger->info(sprintf('Read success for %s with %s', $id3Metadata->getFile(), get_class($wrapper)));
 
                 return true;

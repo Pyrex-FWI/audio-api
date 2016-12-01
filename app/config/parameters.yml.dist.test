@@ -1,0 +1,105 @@
+# This file is a "template" of what your parameters.yml file should look like
+# Set parameters here that may be different on each deployment target of the app, e.g. development, staging, production.
+# http://symfony.com/doc/current/best_practices/configuration.html#infrastructure-related-configuration
+parameters:
+    database_host:     127.0.0.1
+    database_port:     ~
+    database_name:     sf_audio_dev
+    database_user:     root
+    database_password: ~
+    # You should uncomment this if you want use pdo_sqlite
+    # database_path: "%kernel.root_dir%/data.db3"
+
+    mailer_transport:  smtp
+    mailer_host:       127.0.0.1
+    mailer_user:       ~
+    mailer_password:   ~
+
+    # A secret key that's used to generate certain security-related tokens
+    secret:            ThisTokenIsNotSoSecretChangeIt
+
+    ###########################
+    #    PROVIDERS CONFIG     #
+    ###########################
+    digital_dj_pool.configuration.root_path: /volume4/Pool/DigitaldjPool/
+    digital_dj_pool.credentials.login: your_login
+    digital_dj_pool.credentials.password: your_password
+
+    av_district.configuration.root_path: /volume4/Pool/AvDistrict
+    av_district.credentials.login: your@mail.fr
+    av_district.credentials.password: xxx
+
+    franchise_pool.configuration.root_path: /volume4/Pool/Franchise/Audio
+    franchise_pool.credentials.login: your_login
+    franchise_pool.credentials.password: your_password
+
+    smashvision.configuration.root_path: /volume4/Pool/SmashVision
+    smashvision.credentials.login: xxx@hotmail.fr
+    smashvision.credentials.password: toto
+
+    ###########################
+    #      ID3_WRAPPERS       #
+    ###########################
+    id3tool.eyed3.bin: /usr/local/bin/eyeD3
+    id3tool.eyed3.bin: '/usr/bin/python -m eyed3.main'
+    id3tool.mediainfo.bin: /usr/bin/mediainfo
+    id3tool.id3v2.bin: /usr/bin/id3v2
+    id3tool.metaflac.bin: /usr/local/bin/metaflac
+
+    #organize.temp.root_output: /volume1/archives/
+    allowed_directories:
+        - '%kernel.root_dir%/../src/AppBundle/Tests/TestData/'
+        - /volume3/ddj/
+
+    api.base: http://sapar/audio_api/web/api/
+    find.command: find %%s -type f -size +1000k -iname '%%s' -exec echo \"{}\",\"%d\" ';'
+    # use this instead above find /volume3/temp/ -type f -iname  '*flac' -o -iname '*.mp3'
+    #dump.filename: /volume1/web/audio_api/app/cache/files_collection.txt
+    collection.paths:
+        ddp:
+            provider: 1
+            paths: [/volume4/archives/_DigitaldjPool/ ]
+            match: "*.mp3"
+
+        av_district:
+            provider: 2
+            paths:
+                - /volume4/archives/_FranchiseRecordPool/Video/
+            match: "*.mp[3|4]"
+
+        franchise_audio:
+            provider: 3
+            paths:
+                - /volume4/archives/_FranchiseRecordPool/Audio/
+            match: "*.mp3"
+
+        franchise_video:
+            provider: 4
+            paths:
+                - /volume4/archives/_FranchiseRecordPool/Video/
+            match: "*.mp3"
+
+        smash:
+            provider: 5
+            paths:
+                - /volume4/archives/_SmashVision/
+                - /volume3/Smashvision/
+            match: "*.mp4"
+
+        sapar:
+            provider: 100
+            paths:
+                - /volume4/archives/-------------{ X-Tazy }-------------
+            match: "*.mp3"
+
+    ###########################
+    # Donwload configuration  #
+    ###########################
+    database_check: true
+
+    old_sound_rabbit_mq.host: localhost
+    old_sound_rabbit_mq.user: guest
+    old_sound_rabbit_mq.pwd: guest
+
+    rb.pid_file: /run/supervisord.pid
+    rb.sock_file: /run/supervisord.sock

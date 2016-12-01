@@ -1,0 +1,20 @@
+{% extends 'bootstrap_3_layout.html.twig' %}
+{% block no_ui_slider_label %}
+ {{ block('form_label')}}
+ <span class="control-label">(<span id="{{id}}_min_label">
+     ({{value.min|default(range_min)}}
+ </span>
+ -
+ <span id="{{id}}_max_label">
+     {{value.max|default(range_max)}})
+ </span>)</span>
+{% endblock no_ui_slider_label %}
+{% block no_ui_slider_widget %}
+    <div id="{{ id }}"></div>
+    {{- form_widget(form.min) -}}
+    {{- form_widget(form.max) -}}
+{% endblock no_ui_slider_widget %}
+
+{% block no_ui_slider_filter_widget %}
+    {{ block('no_ui_slider_widget')}}
+{% endblock no_ui_slider_filter_widget %}

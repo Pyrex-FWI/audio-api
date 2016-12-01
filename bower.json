@@ -1,6 +1,10 @@
 {
-  "name": "lemon-rest-bundle-demo",
+  "name": "sapar-audio",
   "dependencies": {
-    "ng-admin": "master"
+    "bootstrap": "^3.3.7",
+    "bootstrap-material-design": "master",
+    "nouislider": "^9.0.0",
+    "amplitude": "^2.0.0",
+    "flag-icon-css": "^2.6.0"
   }
 }

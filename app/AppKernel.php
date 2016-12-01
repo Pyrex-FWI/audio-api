@@ -29,7 +29,18 @@ class AppKernel extends Kernel
             new \DeejayPoolBundle\DeejayPoolBundle(),
             new Pyrex\RadioBundle\PyrexRadioBundle(),
             new Pyrex\CoreModelBundle\PyrexCoreModelBundle(),
+            new OldSound\RabbitMqBundle\OldSoundRabbitMqBundle(),
+            new Bazinga\Bundle\FakerBundle\BazingaFakerBundle(),
+            new Phobetor\RabbitMqSupervisorBundle\RabbitMqSupervisorBundle(),
+            new CertificationBundle\CertificationBundle(),
+            new Pyrex\AdminBundle\PyrexAdminBundle(),
+            new \Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
+            new \Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
+            new Lexik\Bundle\FormFilterBundle\LexikFormFilterBundle(),
+            new FOS\HttpCacheBundle\FOSHttpCacheBundle(),
+            //new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
         ];
+
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
             $bundles[] = new Symfony\Bundle\DebugBundle\DebugBundle();
@@ -37,7 +48,7 @@ class AppKernel extends Kernel
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
             $bundles[] = new \Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle();
-            $bundles[] = new Bazinga\Bundle\FakerBundle\BazingaFakerBundle();
+            $bundles[] = new \Hautelook\AliceBundle\HautelookAliceBundle();
         }
 
         return $bundles;

@@ -1,0 +1,25 @@
+include:
+    #- Genre.yml
+Pyrex\CoreModelBundle\Entity\Genre:
+    genre_dancehall:
+        name: 'Dance Hall'
+    genre_zouk:
+        name: 'Zouk'
+    genre_rap:
+        name: 'Rap'
+
+Pyrex\CoreModelBundle\Entity\Artist:
+    artist{1..20}:
+        name (unique): '<name()>'
+
+AppBundle\Entity\Media:
+    media{1..200}:
+        artist: <artist()>
+        bpm: <numberBetween(70, 165)>
+        fullPath: <mediaFileName()>
+        title: <title()>
+        releaseDate: <dateTime()>
+        genres: ['@genre*']
+        artists: '<numberBetween(1, 5)>x @artist*'
+        provider: <providerId()>
+        year: '<numberBetween(1980, 2016)>'

@@ -13,11 +13,18 @@ use DeejayPoolBundle\Entity\FranchisePoolItem;
 use DeejayPoolBundle\Entity\SvItem;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  * Media.
  *
  * @ORM\Entity
+ * @ORM\Table(
+ *      indexes={@ORM\Index(name="provider_filename", columns={"fileName"})},
+ *      uniqueConstraints={@ORM\UniqueConstraint(name="full_file_path_md5", columns={"fullFilePathMd5"})},
+ *      options={"collate"="utf8mb4_unicode_ci", "charset"="utf8mb4"}
+ * )
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="provider", type="integer", fieldName="provider")
  * @ORM\DiscriminatorMap({
@@ -32,6 +39,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
  */
 class Media extends \Pyrex\CoreModelBundle\Entity\Media
 {
+    use TimestampableEntity;
+
     const PROVIDER_DIGITAL_DJ_POOL = 1;
     const PROVIDER_AV_DISTRICT     = 2;
     const PROVIDER_FRP_AUDIO       = 3;
@@ -56,10 +65,6 @@ class Media extends \Pyrex\CoreModelBundle\Entity\Media
         self::PROVIDER_MEDIA           => self::class,
     ];
 
-    public static function getProviders()
-    {
-        return self::$providerMapCodeToId;
-    }
     /**
      * @var string
      *
@@ -84,6 +89,21 @@ class Media extends \Pyrex\CoreModelBundle\Entity\Media
      * @Groups({"media-read"})
      */
     protected $providerId;
+
+    /**
+     * @var string
+     * @Gedmo\Slug(fields={"artist", "title"}, unique=true)
+     * @ORM\Column(type="string", length=128, unique=true)
+     */
+    protected $slug;
+
+    /**
+     * @return array
+     */
+    public static function getProviders()
+    {
+        return self::$providerMapCodeToId;
+    }
 
     /**
      * Get downloadlink.
@@ -142,7 +162,6 @@ class Media extends \Pyrex\CoreModelBundle\Entity\Media
 
     /**
      * @todo refactor into subClass (audio implementation)
-     *
      * @param $sampleItem
      *
      * @return int|null
@@ -239,5 +258,13 @@ class Media extends \Pyrex\CoreModelBundle\Entity\Media
         $key = self::$providerMapIdToClass[$provider];
 
         return $key;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
     }
 }

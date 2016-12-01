@@ -1,14 +1,32 @@
 ---
 php_enable_webserver: true
+php_enable_php_fpm: true
 php_packages:
+  - php7.0
+  - php7.0-cli
+  - php7.0-fpm
   - php7.0-mysql
+  - php7.0-bcmath
+  - php7.0-mbstring
+  - php7.0-dom
+  - php7.0-intl
+  - php7.0-common
+  - php-apcu
 
+apache_listen_port: 8000
+
+#apache_listen_ip: 127.0.0.1
 apache_vhosts:
   - servername: "sapar-audio.dev"
     documentroot: "/var/www/html/audio/web"
     extra_parameters: |
-          ProxyPassMatch ^/(.*\.php(/.*)?)$ "unix:/var/run/php/php7.0-fpm.sock|fcgi://localhost/var/www/html/audio/web"
+          ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://127.0.0.1:9000/var/www/html/audio/web"
 
+apache_mods_enabled:
+  - headers.load
+  - rewrite.load
+  - ssl.load
+  - proxy_http.load
 mysql_root_password: sigipsr
 mysql_databases:
 - name: sf_audio_test
@@ -25,3 +43,27 @@ mysql_users:
 php_xdebug_remote_enable: "true"
 php_xdebug_idekey: XDEBUG
 php_xdebug_remote_connect_back: "true"
+
+varnish_version: "4.1"
+varnish_default_backend_host: "127.0.0.1"
+varnish_default_backend_port: "8001"
+varnish_listen_port: "8080"
+
+supervisor_group:
+supervisor_user_group: "supervisor" # a linux usergroup whose members may manage supervisor without sudo
+supervisor_group_users: # a list of linux users to add to the control group
+    - "vagrant"
+
+rabbitmq_enabled: yes
+
+rabbitmq_plugins:                       # Ensure the plugins is installed
+  - rabbitmq_management
+
+rabbitmq_users:                         # Ensure the users added
+  - user: guest
+    password: guest
+    vhost: /
+    configure_priv: .*
+    read_priv: .*
+    write_priv: .*
+    tags: administrator

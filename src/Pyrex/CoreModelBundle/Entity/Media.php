@@ -12,13 +12,14 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * Media
  *
  * @ORM\Table(
- *      indexes={@ORM\Index(name="profider_filename", columns={"fileName"})},
+ *      indexes={@ORM\Index(name="provider_filename", columns={"fileName"})},
  *      uniqueConstraints={@UniqueConstraint(name="full_file_path_md5", columns={"fullFilePathMd5"})},
  *      options={"collate"="utf8mb4_unicode_ci", "charset"="utf8mb4"}
  * )
  */
 class Media
 {
+
     const MEDIA_TYPE_AUDIO          = 1;
     const MEDIA_TYPE_VIDEO          = 2;
     /**
@@ -135,7 +136,7 @@ class Media
      **/
     protected $genres;
     /**
-     * @ORM\ManyToMany(targetEntity="\Pyrex\CoreModelBundle\Entity\Artist", inversedBy="medias", cascade={"persist", "detach", "refresh"}, fetch="EXTRA_LAZY")
+     * @ORM\ManyToMany(targetEntity="\Pyrex\CoreModelBundle\Entity\Artist", inversedBy="medias", cascade={"all"}, fetch="EXTRA_LAZY")
      * @ORM\JoinTable(
      *      joinColumns={@ORM\JoinColumn(name="media_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="artist_id", referencedColumnName="id")}
@@ -186,6 +187,17 @@ class Media
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @param $id
+     * @return $this
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     /**
@@ -284,7 +296,7 @@ class Media
         $this->exist = file_exists($fullPath) ? true : true;
         $splFile = new \SplFileInfo($this->fullPath);
         $this->setFileName($splFile->getBasename());
-        $this->setFullFilePathMd5(md5($this->fullPath));
+        $this->setFullFilePathMd5(md5($fullPath));
         $paths = explode('/', $splFile->getPath());
         $this->setDirName(end($paths));
 
@@ -397,9 +409,17 @@ class Media
      */
     public function addGenre(Genre $genre)
     {
-        if (!$this->genres->contains($genre)) {
-            $this->genres->add($genre);
+        if ($this->genres->contains($genre)) {
+            return;
         }
+
+        foreach ($this->genres->getIterator() as $_genre) {
+            /** @var Genre $_genre */
+            if ($_genre->getName() === $genre->getName()) {
+                return;
+            }
+        }
+        $this->genres->add($genre);
 
         return $this;
     }

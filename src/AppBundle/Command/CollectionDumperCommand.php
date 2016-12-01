@@ -59,16 +59,41 @@ class CollectionDumperCommand extends ContainerAwareCommand
     }
 
     /**
+     * this method is called by DI or CollectionDumperPass.
+     *
+     * @param FileDumperWriter $fileDumperWriter
+     */
+    public function addFileDumperWriter(FileDumperWriter $fileDumperWriter)
+    {
+        $this->fileDumperWriters[$fileDumperWriter->getName()] = $fileDumperWriter;
+    }
+    /**
      * {@inheritdoc}
      */
     protected function configure()
     {
         $this->setName('media:dump:collection')->setDescription('Dump|Import|Update collection files into databases')
-            ->addOption('dump',         null, InputOption::VALUE_NONE, 'This option dump all dirs registered into %collection.dirs% parameter', null)
-            ->addOption('info',        null, InputOption::VALUE_NONE, 'Print all availablse FileDumpWriters', null)
-            ->addOption('async-insert',    null, InputOption::VALUE_NONE, 'Send message to rabbit mq for database insertion', null)
-            //->addOption('db-insert',    null, InputOption::VALUE_REQUIRED, 'db-insert=all db-insert=new', null)
-            ->addOption('update-tags',  null, InputOption::VALUE_NONE)
+            ->addOption(
+                'dump',
+                null,
+                InputOption::VALUE_NONE,
+                'This option dump all dirs registered into %collection.dirs% parameter',
+                null
+            )
+            ->addOption(
+                'info',
+                null,
+                InputOption::VALUE_NONE,
+                'Print all availablse FileDumpWriters',
+                null
+            )
+            ->addOption(
+                'async-insert',
+                null,
+                InputOption::VALUE_NONE,
+                'Send message to rabbit mq for database insertion',
+                null
+            )
             ->setHelp(
                 <<<EOT
 Dump your collection via %ddp.console.collection_dumper.shell_command%
@@ -76,21 +101,6 @@ EOT
             );
     }
 
-    /**
-     * Get all destination files name from FileDumper.
-     *
-     * @return array
-     */
-    private function getCollectionFileName()
-    {
-        $fileCollection = [];
-        foreach ($this->fileDumperWriters as $dumpWriter) {
-            /* @var \AppBundle\FileDumper\FileDumperWriter $dumpWriter */
-            $fileCollection[$dumpWriter->getProvider()] = $dumpWriter->getFilePathName();
-        }
-
-        return $fileCollection;
-    }
     /**
      * {@inheritdoc}
      */
@@ -112,21 +122,23 @@ EOT
         if ($this->input->getOption('async-insert')) {
             $this->produceMsg();
         }
-
-        if ($this->input->getOption('update-tags')) {
-            $this->updateTags();
-        }
     }
-
     /**
-     * this method is called by DI or CollectionDumperPass.
+     * Get all destination files name from FileDumper.
      *
-     * @param FileDumperWriter $fileDumperWriter
+     * @return array
      */
-    public function addFileDumperWriter(FileDumperWriter $fileDumperWriter)
+    private function getCollectionFileName()
     {
-        $this->fileDumperWriters[$fileDumperWriter->getName()] = $fileDumperWriter;
+        $fileCollection = [];
+        foreach ($this->fileDumperWriters as $dumpWriter) {
+            /* @var \AppBundle\FileDumper\FileDumperWriter $dumpWriter */
+            $fileCollection[$dumpWriter->getProvider()] = $dumpWriter->getFilePathName();
+        }
+
+        return $fileCollection;
     }
+
 
     /**
      * Find media and Write dump file.
@@ -143,90 +155,6 @@ EOT
         }
     }
 
-    /**
-     * Insert $stack into database
-     * If option db-insert = new, we try to remove already existing media from $stack
-     * If option db-insert = all, we insert all medias from $stack.
-     *
-     * @param $provider
-     * @param $stack
-     */
-    private function insertDatabase($provider, $stack)
-    {
-        /** @var Registry $doctrine */
-        $doctrine      = $this->getContainer()->get('doctrine');
-        $entityManager = $doctrine->getManager();
-        $entityManager->getConnection()->getConfiguration()->setSQLLogger(null);
-
-        if ($this->input->getOption('db-insert') == 'new') {
-            $this->removeExistingMedia($stack);
-        }
-
-        foreach ($stack as $fileName) {
-            $media = new Media();
-            $media
-                ->setProvider($provider)
-                ->setFullPath($fileName);
-            $entityManager->persist($media);
-        }
-
-        $entityManager->flush();
-        $entityManager->clear();
-    }
-
-    /**
-     * This method find all existing media from $stack.
-     * Each media that already exist in database is removed in $stack.
-     *
-     * @param $stack
-     */
-    private function removeExistingMedia(&$stack)
-    {
-        /** @var Registry $doctrine */
-        /* @var EntityRepository $mediaRepository */
-        $doctrine        = $this->getContainer()->get('doctrine');
-        $mediaRepository = $doctrine->getRepository('\AppBundle\Entity\Media');
-        $existing        = $mediaRepository->findBy(['fullFilePathMd5' => array_map('md5', $stack)]);
-        $founded         = count($existing);
-
-        if ($founded == count($stack)) {
-            $stack = [];
-
-            return;
-        }
-
-        if ($founded > 0) {
-            $remove = [];
-            foreach ($existing as $existingItem) {
-                /* @var Media $existingItem */
-                $remove[] = $existingItem->getFullPath();
-            }
-            $stack = array_diff($stack, $remove);
-        }
-    }
-
-    /**
-     * @param $client
-     * @param $concurrency
-     * @param $apiBase
-     */
-    protected function runAsyncUpdate($client, $concurrency, $apiBase, $max)
-    {
-        $requests = function ($concurrency, $apiBase, $max) {
-            for ($j = 1; $j <= $max; ++$j) {
-                $url = sprintf('%s/media?order[id]=desc&untaged=1&_trigger_update&_=%s', $apiBase, time());
-                yield new Request('GET', $url);
-            }
-        };
-        $pool = new Pool($client, $requests($concurrency, $apiBase, $max), [
-            'fulfilled' => function ($response, $index) {
-                $this->progressBar->advance(100);
-            },
-            'concurrency' => $concurrency,
-        ]);
-        $promise = $pool->promise();
-        $promise->wait();
-    }
 
     /**
      * Show configuration information.
@@ -258,43 +186,24 @@ EOT
             $this->output->writeln(sprintf('Try insert: <info>%s</info> media(s)', $ctn));
             $this->progressBar = new ProgressBar($this->output, $ctn);
             /** @var Producer $mediaIndexer */
-            $mediaIndexer = $this->getContainer()->get('old_sound_rabbit_mq.sapar_media_indexer_producer');
-
+            $mediaIndexer = $this->getContainer()->get('old_sound_rabbit_mq.media_create_media_reference_producer');
+            $mediaIndexer->setContentType('application/json');
             foreach ($reader as $line) {
+                $producerData = [
+                    'pathName'  => $line->getFile()->getPathname(),
+                    'provider'  => $line->getProvider(),
+                    'mediaRef'  => null,
+                ];
+
                 $stack[] = $line->getFile()->getPathname();
                 ++$i;
                 $this->progressBar->advance();
-                $mediaIndexer->publish(json_encode(['pathName' => $line->getFile()->getPathname(), 'provider' => $provider]));
+
+                $mediaIndexer->publish($this->getContainer()->get('serializer')->serialize($producerData, 'json'));
                 gc_collect_cycles();
             }
             $this->progressBar->finish();
             $this->output->writeln('');
         }
-    }
-
-    /**
-     * Update tags.
-     * This command iterate on api calls from Media endpoint filtered by "Untaged".
-     */
-    protected function updateTags()
-    {
-        $apiBase = $this->getContainer()->getParameter('api.base');
-        $result  = (json_decode(file_get_contents(sprintf('%s/media?order[id]=desc&untaged=1&_=%s', $apiBase, time())), true));
-        if (intval($result['hydra:totalItems']) === 0) {
-            return;
-        }
-        $pageCount   = (ceil(intval($result['hydra:totalItems']) / intval($result['hydra:itemsPerPage'])));
-        $concurrency = 15;
-        if ($pageCount == 0) {
-            return;
-        }
-        $maxIteration      = ceil($pageCount / $concurrency);
-        $client            = new Client();
-        $this->progressBar = new ProgressBar($this->output, $result['hydra:totalItems']);
-        //for ($i = 1; $i <= $maxIteration; ++$i) {
-        $this->runAsyncUpdate($client, $concurrency, $apiBase, $result['hydra:totalItems']);
-        //$this->progressBar->advance(100*$concurrency);
-        //}
-        $this->progressBar->finish();
     }
 }

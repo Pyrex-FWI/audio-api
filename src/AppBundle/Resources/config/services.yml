@@ -1,6 +1,6 @@
 parameters:
     command.collection_dumper.class: AppBundle\Command\CollectionDumperCommand
-
+    streamer.class: AppBundle\Service\Streamer
 
 services:
 
@@ -46,12 +46,62 @@ services:
         class: AppBundle\Organizer\Rules\MediaTypeRule
         tags: [ { name: organizer.rule } ]
 
+    app.media_tag_reader:
+        class: AppBundle\Service\MediaTagReader
+        arguments: ['@id3_manager']
+
+    app.media_tag_update:
+        class: AppBundle\Service\MediaTagUpdate
+        arguments: ['@repository.media', '@serializer']
+
+    app.media_create_reference:
+        class: AppBundle\Service\MediaCreateReference
+        arguments: ['@repository.media']
+
+    app.nfo_manager:
+        class: AppBundle\Service\NfoManager
+
     genre_stack:
         class: AppBundle\Service\GenreStack
         arguments:
             - '@doctrine'
 
+    app.serializer_normalizer.id3metadata_normalizer:
+        class: AppBundle\Serializer\Normalizer\Id3MetadataNormalizer
+        public: false
+        calls:
+            - [ setGenreRepository, ['@repository.genre']]
+            - [ setMediaRepository, ['@repository.media']]
+        tags:
+            - { name: serializer.normalizer }
+
     streamer:
-        class: AppBundle\Service\Streamer
+        class: '%streamer.class%'
 #        arguments:
 #            - @logger
+
+    app.system_email:
+        class: AppBundle\Service\SystemEmail
+        arguments:
+            - '@swiftmailer.mailer'
+            - '@templating.engine.twig'
+
+    app.twig_extension:
+        class: AppBundle\Twig\AppExtention
+        arguments: ['@request_stack', '@router', '%allowed_directories%']
+        public: false
+        tags:
+            - { name: twig.extension }
+    app.form.type.no_ui_slider:
+        class: AppBundle\Form\Type\NoUiSliderType
+        arguments: ['@twig', '@event_dispatcher']
+        tags:
+            - { name: form.type }
+    app.form.type.no_ui_slider_filter:
+        class: AppBundle\Form\Type\NoUiSliderFilterType
+        tags:
+            - { name: form.type }
+
+    app.security_switch_user:
+        class: AppBundle\Service\SecuritySwitchUser
+        arguments: [ '@security.token_storage' ]

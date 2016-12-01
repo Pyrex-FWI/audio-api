@@ -1,0 +1,47 @@
+{% extends '::base.html.twig' %}
+{% block stylesheets %}
+{{ parent() }}
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/vendor/nouislider/distribute/nouislider.css')}}">
+    {% stylesheets filter="scssphp"
+    "@AppBundle/Resources/assets/sass/media-index.scss"
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+{% endblock %}
+{%  set cls = 'media-index' %}
+{% block body %}
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="count">
+                {{ pagination.getTotalItemCount }}
+            </div>
+            <table class="table table-responsive table-striped table-hover">
+                <tr>
+                    {# sorting of properties based on query components #}
+                    <th>{{ knp_pagination_sortable(pagination, 'Id', 'e.id') }}</th>
+                    <th{% if pagination.isSorted('e.name') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Title', 'e.title') }}</th>
+                </tr>
+
+                {# table body #}
+                {% for media in pagination %}
+                    <tr {% if loop.index is odd %}class="color"{% endif %}>
+                        <td>
+                            <a href="{{ path('genre_slug', {slug:media.slug}) }}" >{{ media.id }}</a>
+                        </td>
+                        <td>{{ media.name }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+            {# display navigation #}
+            <div class="navigation">
+                {{ knp_pagination_render(pagination) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/vendor/nouislider/distribute/nouislider.js')}}"></script>
+    <script src="{{ asset('assets/vendor/amplitude/js/amplitude.js')}}"></script>
+    <script src="{{ asset('assets/vendor/amplitude/visualizations/michaelbromley.js')}}"></script>
+{% endblock javascripts %}

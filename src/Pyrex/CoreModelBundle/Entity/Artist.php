@@ -5,15 +5,18 @@ namespace Pyrex\CoreModelBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  * Artist
  *
  * @ORM\Table(uniqueConstraints={@ORM\UniqueConstraint(name="name_idx", columns={"name"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Pyrex\CoreModelBundle\Repository\ArtistRepository")
  */
 class Artist
 {
+    use TimestampableEntity;
 
     /**
      * @var integer
@@ -27,7 +30,7 @@ class Artist
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=200, nullable=false)
+     * @ORM\Column(name="name", type="string", length=128, nullable=false)
      * @Groups({"artist-read", "media-read"})
      */
     private $name;
@@ -38,6 +41,13 @@ class Artist
     private $medias;
 
     /**
+     * @var string
+     * @Gedmo\Slug(fields={"name"}, unique=true)
+     * @ORM\Column(type="string", length=128, unique=true)
+     */
+    protected $slug;
+
+    /**
      * Artist constructor.
      * @param null $name
      */
@@ -46,12 +56,10 @@ class Artist
         $this->setName($name);
         $this->medias = new ArrayCollection();
     }
-
-
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -94,5 +102,17 @@ class Artist
         return $this;
     }
 
+    public function __toString()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
 
 }
