@@ -2,6 +2,7 @@ media_filter:
     title: Tritre
     artist: Artiste
     bpm: Bpm
+    genres: Genre
     year: Année
     filter: Filtrer
 

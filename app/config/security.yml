@@ -35,14 +35,28 @@ security:
             #provider: sapar_db #Give the first declared provider
             anonymous: true
             http_basic: ~
+            switch_user: { role: ROLE_ADMIN, parameter: _want_to_be_this_user }
+            remember_me:
+                secret: '%secret%'
+                lifetime: 604800 # 1 week in seconds
+                path: /
             form_login:
                 login_path: login
                 check_path: login
+                default_target_path: home
+#            oauth:
+#                resource_owners:
+#                    facebook:      "/connect/check-facebook"
+#                login_path:        login
+#                failure_path:      login
+#                use_forward:       false
+#                oauth_user_provider:
+#                    service: hwi_oauth.user.provider
             logout:
                 path: logout
                 target: login
                 #default_target_path: certification_admin_index
             # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
     access_control:
-        - { path: ^/(fr|en)/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/((fr|en)/)?login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/, roles: ROLE_USER }

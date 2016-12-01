@@ -7,6 +7,7 @@
     - { role: geerlingguy.apache, sudo: yes }
     - { role: geerlingguy.php, sudo: yes }
     - { role: geerlingguy.apache-php-fpm, sudo: yes }
+    - { role: geerlingguy.varnish, sudo: yes }
     - { role: geerlingguy.mysql }
     - { role: geerlingguy.git }
     - { role: geerlingguy.composer }
@@ -35,7 +36,14 @@
     - name: bower
       command: npm install -g bower
     - gem: name=sass state=latest
-
+    - name: overide vhost conf
+      template:
+        src: "templates/vhost.conf"
+        dest: "{{ apache_conf_path }}/sites-available/vhosts.conf"
+        owner: root
+        group: root
+        mode: 0644
+      notify: restart apache
     #todo // varDumper, auto_preprend, remote_host
     #phpcs
     #alias php='php -dzend_extension="/usr/lib/php5/modules/xdebug.so"'

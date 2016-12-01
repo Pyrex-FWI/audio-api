@@ -1,9 +1,16 @@
 page:
     title:
+        genre_list: Liste des genres
         home: Connexion
         media_list: Liste des medias
+        media_slug: %artist% - %title%
+        media_id: %artist% - %title%
         user_list: Liste des utilisateurs
-
+        media_list_by_genre_year: %genre% de %year%
 language:
     fr: Français
     en: Anglais
+
+flag:
+    en: gb
+    fr: fr

@@ -19,6 +19,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  */
 class Media
 {
+
     const MEDIA_TYPE_AUDIO          = 1;
     const MEDIA_TYPE_VIDEO          = 2;
     /**
@@ -295,7 +296,7 @@ class Media
         $this->exist = file_exists($fullPath) ? true : true;
         $splFile = new \SplFileInfo($this->fullPath);
         $this->setFileName($splFile->getBasename());
-        $this->setFullFilePathMd5(md5($this->fullPath));
+        $this->setFullFilePathMd5(md5($fullPath));
         $paths = explode('/', $splFile->getPath());
         $this->setDirName(end($paths));
 

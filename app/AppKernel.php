@@ -37,6 +37,8 @@ class AppKernel extends Kernel
             new \Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new \Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
             new Lexik\Bundle\FormFilterBundle\LexikFormFilterBundle(),
+            new FOS\HttpCacheBundle\FOSHttpCacheBundle(),
+            //new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
         ];
 
 

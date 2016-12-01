@@ -5,6 +5,8 @@ namespace Pyrex\CoreModelBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  * Radio.
@@ -15,6 +17,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 class Radio
 {
+    use TimestampableEntity;
+
     /**
      * @var int
      *
@@ -39,6 +43,13 @@ class Radio
      * @ORM\Column(name="hitPages", type="json_array")
      */
     private $hitPagesUrls;
+
+    /**
+     * @var string
+     * @Gedmo\Slug(fields={"name"}, unique=true)
+     * @ORM\Column(type="string", length=128, unique=true)
+     */
+    protected $slug;
 
     public function __construct()
     {
@@ -105,5 +116,13 @@ class Radio
     public function getHitPagesUrls()
     {
         return $this->hitPagesUrls;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
     }
 }

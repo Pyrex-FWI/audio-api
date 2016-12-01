@@ -31,16 +31,20 @@ class MediaRepository extends AbstractCoreRepository
      */
     public function createIfNotExist($file, $providerId = null)
     {
-        $exist = $this->findOneBy(['fullFilePathMd5' => md5($file)]);
-        if (!$exist) {
-            $exist = new Media();
-            if ($providerId) {
-                $exist = static::getMediaInstanceByProviderId($providerId);
-            }
-            $exist->setFullPath($file);
-            $this->save($exist);
+        $media = new Media();
+        if ($providerId) {
+            $media = static::getMediaInstanceByProviderId($providerId);
         }
+        $media->setFullPath($file);
 
-        return $exist;
+        $this->logger->info('Search '.md5($file));
+        $exist = $this->findOneBy(['fullFilePathMd5' => $media->getFullFilePathMd5()]);
+        if ($exist) {
+            return $exist;
+        }
+        
+        $this->save($media);
+
+        return $media;
     }
 }

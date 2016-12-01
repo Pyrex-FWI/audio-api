@@ -12,6 +12,7 @@
                     <th>Name</th>
                     <th>Mail</th>
                     <th>Active</th>
+                    <th>Switch</th>
                 </tr>
             </thead>
             <tbody>
@@ -21,6 +22,11 @@
                     <td>{{ deejay.name }}</td>
                     <td>{{ deejay.email }}</td>
                     <td>{{ deejay.enabled ? 'yes' : 'no' }}</td>
+                    <td>
+                        {% if app.user.id != deejay.id %}
+                        <a href="{{ path('home', { '_want_to_be_this_user': deejay.name }) }}">Switch</a>
+                        {% endif %}
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>

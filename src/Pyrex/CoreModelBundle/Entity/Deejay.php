@@ -13,11 +13,10 @@
 namespace Pyrex\CoreModelBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
-use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Deejay
@@ -46,7 +45,7 @@ class Deejay implements \Symfony\Component\Security\Core\User\AdvancedUserInterf
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255, unique=true)
+     * @ORM\Column(name="name", type="string", length=128, unique=true)
      */
     private $name;
 
@@ -88,6 +87,27 @@ class Deejay implements \Symfony\Component\Security\Core\User\AdvancedUserInterf
      * @ORM\Column(type="boolean")
      */
     private $enabled = false;
+
+    /**
+     * @var string
+     * @Gedmo\Slug(fields={"name"}, unique=true)
+     * @ORM\Column(type="string", length=128, unique=true)
+     */
+    protected $slug;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", options={"default"=null}, nullable=true)
+     */
+    private $facebookId;
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", options={"default"=null}, nullable=true)
+     */
+    private $googleId;
+
 
     /**
      * Get id
@@ -284,8 +304,6 @@ class Deejay implements \Symfony\Component\Security\Core\User\AdvancedUserInterf
             $this->name,
             $this->password,
             $this->enabled,
-            // see section on salt below
-            // $this->salt
             ) = unserialize($serialized);
     }
 
@@ -390,6 +408,14 @@ class Deejay implements \Symfony\Component\Security\Core\User\AdvancedUserInterf
         $this->expirationDate = $expirationDate;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
     }
 
     /**

@@ -29,3 +29,4 @@ Tests/TestData/root_path
 /devops/ansible/roles/*/
 *.retry
 web/assets/vendor
+/src/Pyrex/NfoReader/

@@ -58,6 +58,9 @@ services:
         class: AppBundle\Service\MediaCreateReference
         arguments: ['@repository.media']
 
+    app.nfo_manager:
+        class: AppBundle\Service\NfoManager
+
     genre_stack:
         class: AppBundle\Service\GenreStack
         arguments:
@@ -98,3 +101,7 @@ services:
         class: AppBundle\Form\Type\NoUiSliderFilterType
         tags:
             - { name: form.type }
+
+    app.security_switch_user:
+        class: AppBundle\Service\SecuritySwitchUser
+        arguments: [ '@security.token_storage' ]

@@ -16,6 +16,9 @@
         <link rel="stylesheet"
               href="{{ asset('assets/vendor/bootstrap-material-design/dist/css/ripples.min.css') }}">
 
+        <link rel="stylesheet"
+              href="{{ asset('assets/vendor/flag-icon-css/css/flag-icon.min.css') }}">
+
             {% stylesheets filter="scssphp" output="css/main.css"
                 "../app/Resources/assets/sass/main.scss"
             %}
@@ -51,21 +54,28 @@
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="#">Dashboard</a></li>
                         <li><a href="#">Settings</a></li>
-                        <li><a href="#">Profile</a></li>
+                        {% if app.user|default(false) %}
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Language <span class="caret"></span></a>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ app.user.name }}</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Edit profil</a></li>
+                                <li><a href="{{ path('logout') }}">Logout</a></li>
+                                {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
+                                <li><a href="{{ path('home', {'_want_to_be_this_user': '_exit'}) }}">Back to {{ switchedUser.primaryUser.name }}</a></li>
+                                {% endif %}
+                            </ul>
+                        </li>
+                        {% endif %}
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                {% set flagCode = 'flag.'~app.request.locale %}
+                                <span class="flag-icon flag-icon-{{ flagCode|trans }}" ></span>
+                                </a>
                             <ul class="dropdown-menu">
                                 {% for langue in languages %}
                                     {% set langTr = 'language.' ~ langue %}
-                                    <li><a href="{{ path(app.request.attributes.get('_route'), { '_locale': langue }) }}">{{ langTr|trans }}</a></li>
+                                    <li><a href="{{ path(app.request.attributes.get('_route'),  app.request.attributes.get('_route_params')|merge({ '_locale': langue })) }}">{{ langTr|trans }}</a></li>
                                 {% endfor %}
-                                <li><a href="#">Action</a></li>
-                                <li><a href="#">Another action</a></li>
-                                <li><a href="#">Something else here</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li class="dropdown-header">Nav header</li>
-                                <li><a href="#">Separated link</a></li>
-                                <li><a href="#">One more separated link</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -101,12 +111,14 @@
                 {% endif %}
                 {% if app.user is defined and is_granted('ROLE_USER', app.user) %}
                         <li class="{{ left_menu_class('media_list') }}"><a href="{{ path('media_list') }}">{{ 'page.title.media_list'|trans }}</a></li>
+                        <li class="{{ left_menu_class('genre_list') }}"><a href="{{ path('genre_list') }}">{{ 'page.title.genre_list'|trans }}</a></li>
                         <li class="{{ left_menu_class('logout') }}"><a href="{{ path('logout') }}" >Logout</a></li>
                 {% else %}
                     <li class="{{ left_menu_class('login') }}"><a href="{{ path('login') }}" >Login</a></li>
                     <li class="{{ left_menu_class('register') }}"><a href="{{ path('register') }}" >Register</a></li>
 
                 {% endif %}
+                    <li><a href="{{ path('certification_cache_index') }}">Cache Test</a></li>
                 </ul>
             </div>
             <div class="col-lg-10 {{ cls|default('') }}">
@@ -116,7 +128,9 @@
         <div class="row">
             <div class="col-sm-12">
                 footer
-                {{ dump() }}
+                {{ dump(app.user) }}
+                {{ dump(switchedUser.primaryUser) }}
+                {{ dump(app.request.locale) }}
             </div>
         </div>
     </div>

@@ -13,6 +13,8 @@ use DeejayPoolBundle\Entity\FranchisePoolItem;
 use DeejayPoolBundle\Entity\SvItem;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  * Media.
@@ -37,6 +39,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
  */
 class Media extends \Pyrex\CoreModelBundle\Entity\Media
 {
+    use TimestampableEntity;
+
     const PROVIDER_DIGITAL_DJ_POOL = 1;
     const PROVIDER_AV_DISTRICT     = 2;
     const PROVIDER_FRP_AUDIO       = 3;
@@ -62,13 +66,6 @@ class Media extends \Pyrex\CoreModelBundle\Entity\Media
     ];
 
     /**
-     * @return array
-     */
-    public static function getProviders()
-    {
-        return self::$providerMapCodeToId;
-    }
-    /**
      * @var string
      *
      * @ORM\Column(type="text", nullable=true)
@@ -92,6 +89,21 @@ class Media extends \Pyrex\CoreModelBundle\Entity\Media
      * @Groups({"media-read"})
      */
     protected $providerId;
+
+    /**
+     * @var string
+     * @Gedmo\Slug(fields={"artist", "title"}, unique=true)
+     * @ORM\Column(type="string", length=128, unique=true)
+     */
+    protected $slug;
+
+    /**
+     * @return array
+     */
+    public static function getProviders()
+    {
+        return self::$providerMapCodeToId;
+    }
 
     /**
      * Get downloadlink.
@@ -150,7 +162,6 @@ class Media extends \Pyrex\CoreModelBundle\Entity\Media
 
     /**
      * @todo refactor into subClass (audio implementation)
-     *
      * @param $sampleItem
      *
      * @return int|null
@@ -247,5 +258,13 @@ class Media extends \Pyrex\CoreModelBundle\Entity\Media
         $key = self::$providerMapIdToClass[$provider];
 
         return $key;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
     }
 }

@@ -61,3 +61,19 @@ services:
         class: AppBundle\DataFixtures\Processor\UserProcessor
         arguments: ["@security.password_encoder"]
         tags: [ { name: hautelook_alice.alice.processor } ]
+
+    app.local_listener:
+        class: AppBundle\EventListener\LocalListener
+        arguments:
+            - '@router'
+            - '%locales%'
+            - '%%kernel.default_locale%'
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, priority: 15 }
+
+    app.switch_user_listener:
+        class: AppBundle\EventListener\SwitchUserListener
+        arguments:
+            - '@?logger'
+        tags:
+            - { name: kernel.event_listener, event: security.switch_user, method: onSwitchUser }

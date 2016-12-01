@@ -3,6 +3,7 @@ media_filter:
     artist: Artist
     bpm: bpm
     year: Year
+    genres: Genre
     filter: Filter
 
 

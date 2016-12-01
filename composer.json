@@ -49,7 +49,9 @@
         "stof/doctrine-extensions-bundle": "^1.2",
         "knplabs/knp-paginator-bundle": "^2.5",
         "lexik/form-filter-bundle": "~5.0",
-        "patchwork/jsqueeze": "^2.0"
+        "patchwork/jsqueeze": "^2.0",
+        "friendsofsymfony/http-cache-bundle": "~1.0",
+        "hwi/oauth-bundle": "~0.5"
 
     },
     "scripts": {

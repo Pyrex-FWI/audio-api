@@ -149,7 +149,6 @@ abstract class AbstractCoreRepository extends EntityRepository implements Pagina
                 $query = $filterBuilder->getQuery();
             }
         }
-        dump($query->getDQL());
 
         return $this->paginator->paginate(
             $query,

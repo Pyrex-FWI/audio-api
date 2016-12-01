@@ -89,3 +89,6 @@ RabbitMQ
 - http://echoprint.me
 
 php bin/console hautelook_alice:doctrine:fixtures:load -vvv -n
+
+
+generate your self ssl cert

@@ -45,12 +45,6 @@ class RadioHit
      * @var ArrayCollection<Genre>
      **/
     protected $genres;
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="created", type="datetime")
-     */
-    private $created;
 
     /**
      * Get id.

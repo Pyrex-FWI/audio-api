@@ -6,6 +6,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  * Genre
@@ -15,6 +17,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  */
 class Genre
 {
+    use TimestampableEntity;
 
     /**
      * @var integer
@@ -39,6 +42,13 @@ class Genre
      * @Groups({"genre-read"})
      **/
     private $medias;
+
+    /**
+     * @var string
+     * @Gedmo\Slug(fields={"name"}, unique=true)
+     * @ORM\Column(type="string", length=128, unique=true)
+     */
+    protected $slug;
 
     public function __construct($name = null)
     {
@@ -93,5 +103,17 @@ class Genre
         return $this;
     }
 
+    /**
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    public function __toString()
+    {
+        return $this->name;
+    }
 
 }

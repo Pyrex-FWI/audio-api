@@ -14,6 +14,7 @@ use Pyrex\CoreModelBundle\Entity\Deejay;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -24,7 +25,7 @@ use Symfony\Component\HttpFoundation\Request;
  * Class SecurityController
  * @author Christophe Pyree <christophe.pyree@gmail.com>
  * @package CertificationBundle\Controller
- * @Route()
+ * @Route("/")
  */
 class AuthentificationController extends Controller
 {
@@ -52,6 +53,10 @@ class AuthentificationController extends Controller
             ->add(
                 '_password',
                 PasswordType::class
+            )
+            ->add(
+                '_remember_me',
+                CheckboxType::class
             )
             ->add(
                 'valider',

@@ -9,6 +9,8 @@
     <input type="text" id="username" name="_username" value="{{ last_username }}" />
     <label for="password">Password:</label>
     <input type="password" id="password" name="_password" />
+    <input type="checkbox" id="remember_me" name="_remember_me" checked />
+    <label for="remember_me">Keep me logged in</label>
     {#
     If you want to control the URL the user
     is redirected to on success (more details below)
@@ -20,4 +22,12 @@
 {{ form_start(form) }}
 {{ form_widget(form) }}
 {{ form_end(form) }}
+
+    {#% for owner in hwi_oauth_resource_owners() %}
+        <a href="{{ hwi_oauth_login_url(owner) }}">{{ owner | trans({}, 'HWIOAuthBundle') }}</a> <br />
+    {% endfor %#}
+
+    <a href="{#{ path('hwi_oauth_service_redirect', {'service': 'facebook' }) }#}">
+        <span>Facebook</span>
+    </a>
 {% endblock %}

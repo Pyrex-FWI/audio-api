@@ -1,4 +1,11 @@
 {% extends '::base.html.twig' %}
+{% block title %}
+    {% if app.request.attributes.get('_route') == 'media_list_by_genre_year' %}
+        {{ pageTitle|trans({'%genre%' : app.request.attributes.get('genre').name , '%year%': app.request.attributes.get('_route_params')['year']}) }}
+    {% else %}
+        {{ pageTitle|trans }}
+    {% endif %}
+{% endblock %}
 {% block stylesheets %}
 {{ parent() }}
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/vendor/nouislider/distribute/nouislider.css')}}">
@@ -56,7 +63,7 @@
                         <td>
                             <span class="amplitude-action glyphicon glyphicon-play amplitude-play" amplitude-song-index="{{ loop.index0 }}"></span>
                             <span class="hide amplitude-action glyphicon glyphicon-pause amplitude-pause" amplitude-song-index="{{ loop.index0 }}"></span>
-                            <a href="{{ path('app_media_edit', {id:media.id}) }}" >{{ media.id }}</a>
+                            <a href="{{ path('media_slug', {slug:media.slug}) }}" >{{ media.id }}</a>
                         </td>
                         <td>{{ media.artist }}</td>
                         <td>{{ media.title }}</td>

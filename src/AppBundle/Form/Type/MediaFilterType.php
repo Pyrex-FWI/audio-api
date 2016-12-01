@@ -11,10 +11,13 @@ namespace AppBundle\Form\Type;
 
 
 use Lexik\Bundle\FormFilterBundle\Filter\FilterOperands;
+use Lexik\Bundle\FormFilterBundle\Filter\Form\Type\ChoiceFilterType;
+use Lexik\Bundle\FormFilterBundle\Filter\Form\Type\EntityFilterType;
 use Lexik\Bundle\FormFilterBundle\Filter\Form\Type\NumberFilterType;
 use Lexik\Bundle\FormFilterBundle\Filter\Form\Type\NumberRangeFilterType;
 use Lexik\Bundle\FormFilterBundle\Filter\Form\Type\TextFilterType;
 use Lexik\Bundle\FormFilterBundle\Filter\Query\QueryInterface;
+use Pyrex\CoreModelBundle\Entity\Genre;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -43,7 +46,16 @@ class MediaFilterType extends AbstractType
             ->add(
                 'artist',
                 TextFilterType::class,
-                [ 'condition_pattern' => FilterOperands::STRING_CONTAINS]
+                [ 'condition_pattern' => FilterOperands::STRING_CONTAINS ]
+            )
+            ->add(
+                'genres',
+                EntityFilterType::class,
+                [
+                    'class'         => Genre::class,
+                    'choice_label'  => 'name',
+                    'multiple'      => true,
+                ]
             )
             ->add(
                 'bpm',
@@ -55,7 +67,7 @@ class MediaFilterType extends AbstractType
             )
             ->add(
                 'year',
-                NumberRangeFilterType::class
+                NumberFilterType::class
             )
             ->add('filter', SubmitType::class)
             ;

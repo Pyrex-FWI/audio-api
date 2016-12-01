@@ -3,6 +3,10 @@ namespace AppBundle\Tests\Async;
 
 use AppBundle\Entity\Media;
 use Faker\Generator;
+use OldSound\RabbitMqBundle\Command\PurgeConsumerCommand;
+use OldSound\RabbitMqBundle\RabbitMq\Consumer;
+use OldSound\RabbitMqBundle\RabbitMq\Producer;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use AppBundle\FileDumper\FileDumperWriter;
@@ -18,7 +22,8 @@ class WorkflowTest extends KernelTestCase
     private $container;
     /** @var FileDumperWriter */
     private $fileDumper;
-
+    /** @var  Application */
+    private $application;
     private $testconf;
 
     protected function setUp()
@@ -26,17 +31,36 @@ class WorkflowTest extends KernelTestCase
         static::bootKernel();
         $this->container    = static::$kernel->getContainer();
         $this->testConf = $this->container->getParameter('collection.paths')['test'];
+        $this->application = new Application(self::$kernel);
+        $this->application->add(new PurgeConsumerCommand());
     }
 
     /**
      * @test
+     */
+    public function start()
+    {
+        /** @var Consumer $mediaIndexerConsumer */
+        $mediaIndexerConsumer = $this->container->get('old_sound_rabbit_mq.media_create_media_reference_consumer');
+        $mediaIndexerConsumer->purge();
+        /** @var Consumer $mediaIndexerConsumer */
+        $mediaIndexerConsumer = $this->container->get('old_sound_rabbit_mq.media_read_tag_consumer');
+        $mediaIndexerConsumer->purge();
+
+        $mediaIndexerConsumer = $this->container->get('old_sound_rabbit_mq.media_update_tag_consumer');
+        $mediaIndexerConsumer->purge();
+
+    }
+    /**
+     * @test
+     * @depends start
      * @return
      */
     public function produceFileIndex()
     {
-        $mediaIndexerConsumer = $this->container->get('old_sound_rabbit_mq.media_create_media_reference_consumer');
-        $mediaIndexerConsumer->purge();
-        $fileData   = \AppBundle\Tests\FileDumper\FileDumperTest::writeTestDumpFile('/tmp/workflow_test.txt', $this->testConf['paths'][0], $this->testConf['provider']);
+
+        $fileData   = \AppBundle\Tests\FileDumper\FileDumperTest::writeTestDumpFile('/tmp/workflow_test.txt', $this->testConf['paths'][0], $this->testConf['provider'], 400);
+        /** @var Producer $mediaIndexer */
         $mediaIndexer = $this->container->get('old_sound_rabbit_mq.media_create_media_reference_producer');
         $mediaIndexer->setContentType('application/json');
         $reader     = new FileDumperReader('/tmp/workflow_test.txt');
@@ -60,6 +84,6 @@ class WorkflowTest extends KernelTestCase
     public function consumerFileIndex()
     {
         $mediaIndexerConsumer = $this->container->get('old_sound_rabbit_mq.media_create_media_reference_consumer');
-        $mediaIndexerConsumer->consume(20);
+        $mediaIndexerConsumer->consume(400);
     }
 }
