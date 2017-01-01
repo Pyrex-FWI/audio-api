@@ -9,19 +9,13 @@
 
 namespace AppBundle\Form\Type;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class NoUiSliderFilterType
+ * Class NoUiSliderFilterType.
+ *
  * @author Christophe Pyree <christophe.pyree@gmail.com>
- * @package AppBundle\Form\Type
  */
 class NoUiSliderFilterType extends AbstractType
 {

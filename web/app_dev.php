@@ -17,7 +17,7 @@ if (isset($_SERVER['HTTP_CLIENT_IP'])
 }
 
 /**
- * @var Composer\Autoload\ClassLoader $loader
+ * @var Composer\Autoload\ClassLoader
  */
 $loader = require __DIR__.'/../app/autoload.php';
 Debug::enable();
@@ -25,7 +25,7 @@ Debug::enable();
 $kernel = new AppKernel('dev', true);
 $kernel->loadClassCache();
 
-//$kernel = new AppCache($kernel);
+$kernel = new AppCache($kernel);
 
 $request = Request::createFromGlobals();
 $response = $kernel->handle($request);

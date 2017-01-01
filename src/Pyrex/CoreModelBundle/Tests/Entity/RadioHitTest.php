@@ -2,13 +2,11 @@
 
 namespace Pyrex\CoreModelBundle\Tests\Entity;
 
-
 use Pyrex\CoreModelBundle\Tests\EntityBase;
 
 class RadioHitTest extends EntityBase
 {
-
-    public function  testGenreMethods()
+    public function testGenreMethods()
     {
         $radioHit = self::getRadioHitInstance();
         $genre = self::getGenreInstance('Genre');

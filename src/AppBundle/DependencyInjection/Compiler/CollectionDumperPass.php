@@ -18,8 +18,8 @@ class CollectionDumperPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $fPaths     = $container->getParameter('collection.paths');
-        $findCmd    = $container->getParameter('find.command');
+        $fPaths = $container->getParameter('collection.paths');
+        $findCmd = $container->getParameter('find.command');
         $outputPath = $container->getParameter('kernel.cache_dir');
 
         if (!$container->hasDefinition('app.command.collection_dumper')) {
@@ -30,7 +30,7 @@ class CollectionDumperPass implements CompilerPassInterface
 
         if ($fPaths && $findCmd && $outputPath) {
             foreach ($fPaths as $name => $bag) {
-                $name     = 'filedumper.writer.'.$name;
+                $name = 'filedumper.writer.'.$name;
                 $fdWriter = (new Definition(
                     'AppBundle\\FileDumper\\FileDumperWriter',
                     [$name, $bag['provider'], $findCmd, $bag['paths'], $bag['match'], $outputPath]

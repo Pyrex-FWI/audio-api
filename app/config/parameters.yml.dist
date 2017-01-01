@@ -103,3 +103,11 @@ parameters:
 
     rb.pid_file: /run/supervisord.pid
     rb.sock_file: /run/supervisord.sock
+    gmail_adress: fake@mail.fr
+    fb_client_id: fakeId
+    fb_client_secret: fakeSecret
+    locales:
+        - fr
+        - en
+    locale_regex: 'fr|en'
+    locale: fr

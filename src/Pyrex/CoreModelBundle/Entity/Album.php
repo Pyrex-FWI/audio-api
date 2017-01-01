@@ -2,6 +2,7 @@
 /**
  * @author: Pyrex-Fwi
  */
+
 namespace Pyrex\CoreModelBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -9,7 +10,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
- * Album
+ * Album.
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="Pyrex\CoreModelBundle\Repository\AlbumRepository")
@@ -19,7 +20,7 @@ class Album
     use TimestampableEntity;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -36,6 +37,7 @@ class Album
 
     /**
      * @todo set url instead blob data
+     *
      * @var string
      *
      * @ORM\Column(name="cover", type="blob")
@@ -50,9 +52,9 @@ class Album
     protected $slug;
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -60,9 +62,10 @@ class Album
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
+     *
      * @return Album
      */
     public function setName($name)
@@ -73,9 +76,9 @@ class Album
     }
 
     /**
-     * Get name
+     * Get name.
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -83,23 +86,25 @@ class Album
     }
 
     /**
-     * Set cover
+     * Set cover.
      *
      * @param string $cover
+     *
      * @return Album
      */
     public function setCover($cover)
     {
         // @codeCoverageIgnoreStart
         $this->cover = $cover;
+
         return $this;
         // @codeCoverageIgnoreEnd
     }
 
     /**
-     * Get cover
+     * Get cover.
      *
-     * @return string 
+     * @return string
      */
     public function getCover()
     {

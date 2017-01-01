@@ -5,18 +5,13 @@ imports:
     - { resource: bundles/old_sound_rabbit_mq.yml }
     - { resource: services_consumers.yml }
     - { resource: bundles/rabbit_mq_supervisor.yml }
-    - { resource: "@CertificationBundle/Resources/config/services.yml" }
-    - { resource: "@PyrexAdminBundle/Resources/config/services.yml" }
-    #- { resource: services_dunglas_api.yml }
     #- { resource: "@AppBundle/Resources/config/services.yml" }
     #- { resource: "@ApiPlatformCoreBundle/Resources/config/config.yml" }
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-    locale: fr
-    locales: [ fr, en ]
-    locale_regex: 'fr|en'
+    #locale: fr
 framework:
     #esi:             ~
     secret:          "%secret%"
@@ -55,6 +50,7 @@ twig:
     globals:
         languages: '%locales%'
         switchedUser: "@app.security_switch_user"
+        fb_client_id : "%fb_client_id%"
 # Assetic Configuration
 assetic:
     debug:          "%kernel.debug%"
@@ -193,14 +189,17 @@ lexik_form_filter:
         doctrine_dbal: false
         doctrine_mongodb: false
 
-#hwi_oauth:
+hwi_oauth:
 #    connect:
 #        confirmation: true
 #        registration_form_handler: my_registration_form_handler
 #        registration_form: deejay_new_registration_form
-#    firewall_names: [admin_area]
-#    resource_owners:
-#        facebook:
-#            type:                facebook
-#            client_id:           %fb_client_id%
-#            client_secret:       %fb_client_secret%
+    firewall_names: [admin_area]
+    resource_owners:
+        facebook:
+            type:                facebook
+            client_id:           %fb_client_id%
+            client_secret:       %fb_client_secret%
+            scope: "email,public_profile"
+#    connect:
+#        registration_form_handler: deejay_hwioauth_form_handler

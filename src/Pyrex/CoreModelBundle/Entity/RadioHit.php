@@ -127,6 +127,7 @@ class RadioHit
     {
         return $this->created;
     }
+
     /**
      * Constructor.
      */

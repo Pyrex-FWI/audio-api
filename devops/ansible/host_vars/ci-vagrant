@@ -1,0 +1,7 @@
+---
+jenkins_http_port: 7070
+gitlab_external_url: "https://gitlab.sapar-audio:8443/"
+#gitlab_redirect_http_to_https: "true"
+#gitlab_ssl_certificate: "/home/vagrant/mysitename.crt"
+#gitlab_ssl_certificate_key: "/home/vagrant/mysitename.key"
+#gitlab_git_data_dir: "/home/git/Pyrex-FWI"

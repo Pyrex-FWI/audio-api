@@ -22,7 +22,7 @@ class PyrexDupeExtension extends Extension implements PrependExtensionInterface
     public function load(array $configs, ContainerBuilder $container)
     {
         $configuration = new Configuration();
-        $config        = $this->processConfiguration($configuration, $configs);
+        $config = $this->processConfiguration($configuration, $configs);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
@@ -52,9 +52,9 @@ class PyrexDupeExtension extends Extension implements PrependExtensionInterface
             return;
         }
 
-        $configs       = ['pyrex_dupe' => $configs['pyrex_dupe']];
+        $configs = ['pyrex_dupe' => $configs['pyrex_dupe']];
         $configuration = new Configuration();
-        $config        = $this->processConfiguration($configuration, $configs);
+        $config = $this->processConfiguration($configuration, $configs);
 
         //Register new connection
         $sqlite = [
@@ -62,7 +62,7 @@ class PyrexDupeExtension extends Extension implements PrependExtensionInterface
                 'connections' => [
                     $config['database']['local_entity_manager_name'] => [
                         'driver' => $config['database']['driver'],
-                        'path'   => $config['database']['path'],
+                        'path' => $config['database']['path'],
                     ],
                 ],
             ],
@@ -76,15 +76,14 @@ class PyrexDupeExtension extends Extension implements PrependExtensionInterface
                 'entity_managers' => [
                     $config['database']['local_entity_manager_name'] => [
                         'connection' => $config['database']['local_entity_manager_name'],
-                        'mappings'   => [
+                        'mappings' => [
                             'PyrexDupeBundle' => [
-                                'type'   => 'annotation',
-                                'dir'    => '%kernel.root_dir%/../src/Pyrex/DupeBundle/Entity',
+                                'type' => 'annotation',
+                                'dir' => '%kernel.root_dir%/../src/Pyrex/DupeBundle/Entity',
                                 'prefix' => 'Pyrex\DupeBundle\Entity',
                             ],
                         ],
                     ],
-
                 ],
             ],
         ];

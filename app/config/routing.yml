@@ -1,17 +1,17 @@
-#hwi_oauth_redirect:
-#    resource: "@HWIOAuthBundle/Resources/config/routing/redirect.xml"
-#    prefix:   /redirect
-#
-#hwi_oauth_connect:
-#    resource: "@HWIOAuthBundle/Resources/config/routing/connect.xml"
-#    prefix:   /connect
-#
+hwi_oauth_redirect:
+    resource: "@HWIOAuthBundle/Resources/config/routing/redirect.xml"
+    prefix:   /oauth/redirect
+
+hwi_oauth_connect:
+    resource: "@HWIOAuthBundle/Resources/config/routing/connect.xml"
+    prefix:   /oauth/connect
+
 #hwi_oauth_login:
 #    resource: "@HWIOAuthBundle/Resources/config/routing/login.xml"
-#    prefix:   /login
+#    prefix:   /oauth/login
 
-#facebook_login:
-#    path: /connect/check-facebook
+facebook_check:
+    path: /oauth/connect/check-facebook
 
 logout:
     path: /admin/logout
@@ -20,7 +20,7 @@ logout:
         _locale: '%locale_regex%'
 
 certification:
-    resource: "@CertificationBundle/Controller/"
+    resource: "@AppBundle/Controller/Certification/"
     type:     annotation
     prefix:   /{_locale}/certification
     requirements:
@@ -30,13 +30,5 @@ app:
     resource: "@AppBundle/Controller/"
     type:     annotation
     prefix:  /{_locale}/
-    requirements:
-        _locale: '%locale_regex%'
-
-
-pyrex_admin:
-    resource: "@PyrexAdminBundle/Controller/"
-    type:     annotation
-    prefix:   /{_locale}/
     requirements:
         _locale: '%locale_regex%'

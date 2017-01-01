@@ -11,10 +11,10 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 
 abstract class AbstractCommand extends ContainerAwareCommand
 {
-    /** @var  \DeejayPoolBundle\Provider\ProviderManager */
+    /** @var \DeejayPoolBundle\Provider\ProviderManager */
     protected $manager;
 
-    /** @var  PoolProviderInterface */
+    /** @var PoolProviderInterface */
     protected $provider;
 
     /** @var InputInterface */
@@ -23,7 +23,7 @@ abstract class AbstractCommand extends ContainerAwareCommand
     /**     * @var OutputInterface */
     protected $output;
 
-    /** @var  ProgressBar */
+    /** @var ProgressBar */
     protected $progressBar;
 
     /** @var EventDispatcher */
@@ -38,7 +38,7 @@ abstract class AbstractCommand extends ContainerAwareCommand
      */
     public function init(InputInterface $input, OutputInterface $output)
     {
-        $this->input  = $input;
+        $this->input = $input;
         $this->output = $output;
     }
 

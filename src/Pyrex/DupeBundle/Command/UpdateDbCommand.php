@@ -16,7 +16,7 @@ class UpdateDbCommand extends AbstractCommand
     {
         $this->setName('dupe:update:db')->setDescription('Update Database dupe')
             //->addArgument('provider', InputArgument::REQUIRED, 'Provider (like avd or ddp')
-            ->setHelp(<<<EOF
+            ->setHelp(<<<'EOF'
 <info>%command.name%</info>
 php app/console deejay:pool:status av_district
 EOF

@@ -14,11 +14,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 
-
 /**
- * Class MediaController
+ * Class MediaController.
+ *
  * @author Christophe Pyree <christophe.pyree@gmail.com>
- * @package AppBundle\Controller
  * @Route("/media")
  * @Cache(public="true", maxage="3600", smaxage="3600")
  */
@@ -27,6 +26,7 @@ class MediaController extends Controller
     /**
      * @Route("/", name="media_list")
      * @Template()
+     *
      * @return Response
      */
     public function indexAction(Request $request)
@@ -40,14 +40,17 @@ class MediaController extends Controller
             'filterForm' => $filterForm->createView(),
         ];
     }
+
     /**
      * @Route("/{genre}/{year}", name="media_list_by_genre_year", defaults={"year"= null}, requirements={"year"="\d{4}"})
      * @Route("/{year}/{genre}", name="media_list_by_year_genre", defaults={"year"= null}, requirements={"year"="\d{4}"})
      * @ParamConverter(name="genre", options={"repository_method"="findOneBySlug"})
      * @Template("AppBundle:Media:index.html.twig")
+     *
      * @param Request $request
      * @param Genre   $genre
-     * @param integer $year
+     * @param int     $year
+     *
      * @return Response
      */
     public function indexByGenreYearAction(Request $request, Genre $genre = null, $year = null)
@@ -76,17 +79,17 @@ class MediaController extends Controller
      * @Route("/edit/{slug}", name="media_slug")
      * @Route("/edit/{genreSlug}/{year}/{slug}", name="media_genre_year_slug")
      * @Template()
+     *
      * @return Response
      */
-    public function editAction(Request $request, Media $media, $genreSlug = null, $year)
+    public function editAction(Request $request, Media $media, $genreSlug, $year)
     {
         $form = $this->get('form.factory')->create(EditMediaType::class, $media);
         $form->handleRequest($request);
 
         return [
-            'form'  => $form->createView(),
+            'form' => $form->createView(),
             'media' => $media,
         ];
     }
-
 }

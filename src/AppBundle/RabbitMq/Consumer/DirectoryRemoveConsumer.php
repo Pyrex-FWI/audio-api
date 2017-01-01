@@ -20,11 +20,12 @@ class DirectoryRemoveConsumer implements ConsumerInterface
      */
     private $logger;
 
-    /** @var  EventDispatcherInterface */
+    /** @var EventDispatcherInterface */
     private $eventDispatcher;
+
     public function __construct(LoggerInterface $logger, EventDispatcherInterface $eventDispatcher)
     {
-        $this->logger          = $logger;
+        $this->logger = $logger;
         $this->eventDispatcher = $eventDispatcher;
     }
 
@@ -39,7 +40,7 @@ class DirectoryRemoveConsumer implements ConsumerInterface
             return;
         }
 
-        $fs       = new \SplFileInfo($msg->body);
+        $fs = new \SplFileInfo($msg->body);
         $dirEvent = new DirectoryEvent($fs);
 
         /** @var TempDir $tmpDirManager */
@@ -48,10 +49,10 @@ class DirectoryRemoveConsumer implements ConsumerInterface
             ->setTempDirectory($fs->getRealPath())
             ->setStrictMode(true);
         if ($tmpDirManager->readTempDirectoryMeta()) {
-            $year     = implode(' ,', $tmpDirManager->getTempDirectoryId3Years());
-            $genres   = implode(' ,', $tmpDirManager->getTempDirectoryId3Genres());
-            $artists  = implode(' ,', $tmpDirManager->getTempDirectoryId3Artists());
-            $albums   = implode(' ,', $tmpDirManager->getTempDirectoryId3Albums());
+            $year = implode(' ,', $tmpDirManager->getTempDirectoryId3Years());
+            $genres = implode(' ,', $tmpDirManager->getTempDirectoryId3Genres());
+            $artists = implode(' ,', $tmpDirManager->getTempDirectoryId3Artists());
+            $albums = implode(' ,', $tmpDirManager->getTempDirectoryId3Albums());
             $dirEvent = new DirectoryEvent($fs, $genres, $albums, $artists, $year);
         }
         $command = 'rm -rf '.escapeshellarg($fs->getRealPath());

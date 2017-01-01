@@ -10,20 +10,20 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class DatabaseImport
 {
-    /** @var  string */
+    /** @var string */
     private $dupeDumpFile;
-    /** @var  EventDispatcherInterface */
+    /** @var EventDispatcherInterface */
     private $eventDispatcher;
-    /** @var  LoggerInterface */
+    /** @var LoggerInterface */
     private $logger;
-    /** @var array  */
+    /** @var array */
     private $allowedExtensions = [];
 
     public function __construct($dupeDumpFile, EventDispatcherInterface $eventDispatcher, LoggerInterface $logger = null)
     {
-        $this->dupeDumpFile    = $dupeDumpFile;
+        $this->dupeDumpFile = $dupeDumpFile;
         $this->eventDispatcher = $eventDispatcher;
-        $this->logger          = $logger ? $logger : new NullLogger();
+        $this->logger = $logger ? $logger : new NullLogger();
     }
 
     public function read()
@@ -94,7 +94,7 @@ class DatabaseImport
 
         if ($this->getAllowedExtensions()) {
             $fileInfo = new \SplFileInfo($item);
-            $allowed  = in_array($fileInfo->getExtension(), $this->getAllowedExtensions());
+            $allowed = in_array($fileInfo->getExtension(), $this->getAllowedExtensions());
         }
 
         return $allowed;

@@ -1,4 +1,5 @@
 <?php
+
 ini_set('memory_limit', -1);
 set_time_limit(3600);
 
@@ -6,7 +7,7 @@ use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
 
 /**
- * Class AppKernel
+ * Class AppKernel.
  */
 class AppKernel extends Kernel
 {
@@ -32,15 +33,12 @@ class AppKernel extends Kernel
             new OldSound\RabbitMqBundle\OldSoundRabbitMqBundle(),
             new Bazinga\Bundle\FakerBundle\BazingaFakerBundle(),
             new Phobetor\RabbitMqSupervisorBundle\RabbitMqSupervisorBundle(),
-            new CertificationBundle\CertificationBundle(),
-            new Pyrex\AdminBundle\PyrexAdminBundle(),
             new \Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new \Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
             new Lexik\Bundle\FormFilterBundle\LexikFormFilterBundle(),
             new FOS\HttpCacheBundle\FOSHttpCacheBundle(),
-            //new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
+            new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
         ];
-
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
             $bundles[] = new Symfony\Bundle\DebugBundle\DebugBundle();

@@ -24,7 +24,7 @@
     ],
     "require": {
         "php": ">=5.5.9",
-        "symfony/symfony": "3.1.*",
+        "symfony/symfony": "3.2.*",
         "doctrine/orm": "^2.5",
         "doctrine/doctrine-bundle": "^1.6",
         "doctrine/doctrine-cache-bundle": "^1.2",
@@ -71,12 +71,12 @@
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget"
         ],
-        "fix-perm": "chown -R http app/logs && chown -R http  app/cache && chmod -R 777 app/logs && chmod -R 777  app/cache",
+        "fix-perm": "chown -R http app/logs && chown -R http  var/cache && chmod -R 777 app/logs && chmod -R 777  var/cache",
         "reset-db:test": [
-            "mysql -e 'create database IF NOT EXISTS sf_audio_dev;' -u travis"
+            "mysql -e 'create database IF NOT EXISTS sf_audio_test;' -u travis"
         ],
         "media-discriminator-field": [
-            "mysql  -u travis  -e 'ALTER TABLE `Media` ADD `provider` int(10) NOT NULL;' sf_audio_dev"
+            "mysql  -u travis  -e 'ALTER TABLE `Media` ADD `provider` int(10) NOT NULL;' sf_audio_test"
         ],
         "doctrine:reset:test": [
             "php bin/console doctrine:database:drop -vvv --env test --force && true",
@@ -86,12 +86,12 @@
         "ci:test": [
             "@reset-db:test",
             "composer doctrine:reset:test",
-            "vendor/bin/phpunit --debug -v --stop-on-failure --coverage-html app/cache/coverage"
+            "vendor/bin/phpunit --debug -v --stop-on-failure --coverage-html var/cache/coverage"
         ],
         "ci:test-travis": [
             "/usr/local/bin/eyeD3 'src/AppBundle/Tests/TestData/dir01/01.mp3'  --genre '56adde2bd657c' --release-year '1999' --orig-release-date='1999' && echo $?",
             "/usr/local/bin/eyeD3 'src/AppBundle/Tests/TestData/dir01/01.mp3' ",
-            "mysql -e 'create database IF NOT EXISTS sf_audio_dev;' -u travis",
+            "mysql -e 'create database IF NOT EXISTS sf_audio_test;' -u travis",
             "composer doctrine:reset:test",
             "vendor/bin/phpunit --debug -v --stop-on-failure --exclude-group travis-fail --coverage-html app/cache/coverage"
         ]

@@ -36,8 +36,8 @@ class Radio
     private $name;
 
     /**
-     *
      * @todo refactor in favour of hitPagesUrls
+     *
      * @var ArrayCollection
      *
      * @ORM\Column(name="hitPages", type="json_array")

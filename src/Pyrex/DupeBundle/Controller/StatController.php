@@ -26,15 +26,15 @@ class StatController extends Controller
         /** @var DupeGroupRepository $dupeGroupRepo */
         $dupeGroupRepo = $entityManager->getRepository('PyrexDupeBundle:DupeGroup');
         /** @var DupeFileRepository $dupeFileRepo */
-        $dupeFileRepo  = $entityManager->getRepository('PyrexDupeBundle:DupeFile');
-        $groupCount    = $dupeGroupRepo->count();
+        $dupeFileRepo = $entityManager->getRepository('PyrexDupeBundle:DupeFile');
+        $groupCount = $dupeGroupRepo->count();
         $dupeFileCount = $dupeFileRepo->count();
 
         return $this->render(
             'PyrexDupeBundle:Stat:overview.html.twig',
             array(
-                'groupCount'       => $groupCount,
-                'dupeFileCount'    => $dupeFileCount,
+                'groupCount' => $groupCount,
+                'dupeFileCount' => $dupeFileCount,
                 'fileDeletedCount' => $dupeFileRepo->deletedCount(),
             )
         );

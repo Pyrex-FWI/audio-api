@@ -7,7 +7,7 @@ use Symfony\Component\EventDispatcher\Event;
 
 class DupeGroupEvent extends Event
 {
-    /** @var  DupeGroup */
+    /** @var DupeGroup */
     private $dupeGroup;
 
     public function __construct(DupeGroup $dupeGroup)

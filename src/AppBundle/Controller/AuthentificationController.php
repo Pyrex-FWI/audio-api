@@ -1,15 +1,8 @@
 <?php
-/**
- * Copyright (c) 2016. Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
- * Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan. 
- * Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna. 
- * Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus. 
- * Vestibulum commodo. Ut rhoncus gravida arcu. 
- */
 
-namespace Pyrex\AdminBundle\Controller;
+namespace AppBundle\Controller;
 
-use Pyrex\AdminBundle\Form\Type\DeejayRegistrationType;
+use AppBundle\Form\Type\DeejayRegistrationType;
 use Pyrex\CoreModelBundle\Entity\Deejay;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -22,21 +15,22 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Class SecurityController
+ * Class SecurityController.
+ *
  * @author Christophe Pyree <christophe.pyree@gmail.com>
- * @package CertificationBundle\Controller
  * @Route("/")
  */
 class AuthentificationController extends Controller
 {
     /**
-     * @Route("/login", name="login")
+     * @Route(AppBundle\AppRouteBundle::LOGIN_PATH, name=AppBundle\AppRouteBundle::LOGIN_NAME)
+     *
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function loginAction(Request $request)
     {
-
         $authenticationUtils = $this->get('security.authentication_utils');
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError(); // last username entered by the user
@@ -64,14 +58,13 @@ class AuthentificationController extends Controller
             )
             ->getForm();
 
-
         return $this->render(
-            'PyrexAdminBundle:Authentification:login.html.twig',
+            'AppBundle:Authentification:login.html.twig',
             [
                 // last username entered by the user
                 'last_username' => $lastUsername,
-                'error'         => $error,
-                'form'          => $form->createView(),
+                'error' => $error,
+                'form' => $form->createView(),
             ]
         );
     }
@@ -79,7 +72,9 @@ class AuthentificationController extends Controller
     /**
      * @Route(path="/register" ,name="register")
      * @Template()
+     *
      * @param Request $request
+     *
      * @return array
      */
     public function registerAction(Request $request)
@@ -94,19 +89,21 @@ class AuthentificationController extends Controller
         }
 
         return [
-            'registrationForm'  => $registrationForm->createView(),
+            'registrationForm' => $registrationForm->createView(),
         ];
     }
 
     /**
      * @Route("/new_user_mail/{id}")
      * @Template()
+     *
      * @param Deejay $deejay
+     *
      * @return array
      */
     public function activeUserAction(Deejay $deejay)
     {
         $this->get('app.system_email')->newRegistrationMail($deejay);
-        dump($this->get('templating')->render('PyrexAdminBundle:Authentification:activeUser.html.twig', [ 'deejay' => $deejay ]));
+        dump($this->get('templating')->render('AppBundle:Authentification:activeUser.html.twig', ['deejay' => $deejay]));
     }
 }

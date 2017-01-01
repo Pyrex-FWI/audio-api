@@ -9,9 +9,9 @@ use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
- * Class AppExtension
+ * Class AppExtension.
+ *
  * @author Christophe Pyree <christophe.pyree@gmail.com>
- * @package AppBundle\DependencyInjection
  */
 class AppExtension extends Extension implements PrependExtensionInterface
 {
@@ -37,8 +37,8 @@ class AppExtension extends Extension implements PrependExtensionInterface
     public function load(array $configs, ContainerBuilder $container)
     {
         $configuration = new Configuration();
-        $config        = $this->processConfiguration($configuration, $configs);
-        $loader        = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $config = $this->processConfiguration($configuration, $configs);
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
 
         $this->buildIndexingWorkflow($config, $container);
@@ -58,7 +58,6 @@ class AppExtension extends Extension implements PrependExtensionInterface
      */
     private function buildIndexingWorkflow(array $config, ContainerBuilder $container)
     {
-
         $container->setParameter(
             'app.library.indexing.workflow.create_media_reference_before_read_tag',
             $config['library']['indexing_workflow']['create_media_reference_before_read_tag']

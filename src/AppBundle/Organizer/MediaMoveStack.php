@@ -7,7 +7,7 @@ use Deejay\Id3ToolBundle\Wrapper\Id3Manager;
 
 class MediaMoveStack
 {
-    /** @var  \SplFileInfo */
+    /** @var \SplFileInfo */
     private $fsys;
 
     private $origin;
@@ -17,18 +17,18 @@ class MediaMoveStack
     private $tagInfo;
 
     private $outPath;
-    /** @var  Media */
+    /** @var Media */
     private $media;
-    /** @var  Id3Manager */
+    /** @var Id3Manager */
     private $Id3ToolManager;
 
     private $tagIsReaded = false;
 
     public function __construct($outPath, Media $media, Id3Manager $Id3Tool)
     {
-        $this->media          = $media;
+        $this->media = $media;
         $this->Id3ToolManager = $Id3Tool;
-        $file                 = $this->media->getFullPath();
+        $file = $this->media->getFullPath();
         $this->setOrigin($this->media->getFullPath());
         if (!is_file($file)) {
             throw new \Exception(sprintf('File %s not exist', $file));
@@ -37,6 +37,7 @@ class MediaMoveStack
         $this->setOrigin($file);
         $this->outPath = $outPath;
     }
+
     /**
      * @return mixed
      */
@@ -71,7 +72,7 @@ class MediaMoveStack
             return $this;
         }
 
-        $this->finalPathFileParts [] = trim($part);
+        $this->finalPathFileParts[] = trim($part);
 
         return $this;
     }
@@ -80,6 +81,7 @@ class MediaMoveStack
     {
         return $this->finalPathFileParts;
     }
+
     /**
      * @param mixed $destination
      *
@@ -95,7 +97,7 @@ class MediaMoveStack
             DIRECTORY_SEPARATOR,
             $this->getFsys()->getBasename()
         );
-        $pattern     = '#('.DIRECTORY_SEPARATOR.')\1+#';
+        $pattern = '#('.DIRECTORY_SEPARATOR.')\1+#';
         $replacement = DIRECTORY_SEPARATOR;
 
         return preg_replace($pattern, $replacement, $destination);

@@ -11,8 +11,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Serializer\Exception\UnexpectedValueException;
 
 /**
- * Class MediaReaTagConsumer
- * @package AppBundle\RabbitMq\Consumer
+ * Class MediaReaTagConsumer.
  */
 class MediaReadTagConsumer implements ConsumerInterface
 {
@@ -24,17 +23,18 @@ class MediaReadTagConsumer implements ConsumerInterface
      */
     private $logger;
 
-    /** @var  EventDispatcherInterface */
+    /** @var EventDispatcherInterface */
     private $eventDispatcher;
 
     /**
      * MediaIndexerConsumer constructor.
+     *
      * @param LoggerInterface          $logger
      * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(LoggerInterface $logger, EventDispatcherInterface $eventDispatcher)
     {
-        $this->logger          = $logger;
+        $this->logger = $logger;
         $this->eventDispatcher = $eventDispatcher;
     }
 
@@ -45,11 +45,10 @@ class MediaReadTagConsumer implements ConsumerInterface
      */
     public function execute(AMQPMessage $msg)
     {
-        self::$count++;
+        ++self::$count;
 
         $data = $this->container->get('serializer')->decode($msg->body, 'json');
         $this->logger->info(self::$count.' - '.$data['pathName']);
-
 
         if (!file_exists($data['pathName'])) {
             $this->logger->info(sprintf('File %s not exist'), $data['file']);
@@ -70,10 +69,8 @@ class MediaReadTagConsumer implements ConsumerInterface
             }
         } catch (UnexpectedValueException $e) {
             $this->logger->error(sprintf('Serialization error for %s.', $data['pathName']), [$data]);
-
         } catch (\Exception $e) {
             $this->logger->error(sprintf('Unknow error for %s. %s', $data['pathName'], $e->getMessage()), [$data]);
-
         }
         gc_collect_cycles();
 

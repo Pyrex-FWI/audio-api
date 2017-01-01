@@ -10,6 +10,7 @@
 /**
  * @author: Pyrex-Fwi
  */
+
 namespace Pyrex\CoreModelBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -19,7 +20,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * Deejay
+ * Deejay.
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="Pyrex\CoreModelBundle\Repository\DeejayRepository")
@@ -28,13 +29,13 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class Deejay implements \Symfony\Component\Security\Core\User\AdvancedUserInterface, \Serializable
 {
-    const ROLE_USER     = 'ROLE_USER';
-    const ROLE_ADMIN    = 'ROLE_ADMIN';
+    const ROLE_USER = 'ROLE_USER';
+    const ROLE_ADMIN = 'ROLE_ADMIN';
 
     use TimestampableEntity;
     //use SoftDeleteableEntity;
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -66,7 +67,7 @@ class Deejay implements \Symfony\Component\Security\Core\User\AdvancedUserInterf
     /**
      * @var string
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     private $password;
     /**
@@ -106,13 +107,25 @@ class Deejay implements \Symfony\Component\Security\Core\User\AdvancedUserInterf
      *
      * @ORM\Column(type="string", options={"default"=null}, nullable=true)
      */
+    private $facebookAccessToken;
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", options={"default"=null}, nullable=true)
+     */
     private $googleId;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", options={"default"=null}, nullable=true)
+     */
+    private $googleAccessToken;
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -120,9 +133,10 @@ class Deejay implements \Symfony\Component\Security\Core\User\AdvancedUserInterf
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
+     *
      * @return Album
      */
     public function setName($name)
@@ -133,7 +147,7 @@ class Deejay implements \Symfony\Component\Security\Core\User\AdvancedUserInterf
     }
 
     /**
-     * Get name
+     * Get name.
      *
      * @return string
      */
@@ -165,6 +179,7 @@ class Deejay implements \Symfony\Component\Security\Core\User\AdvancedUserInterf
 
     /**
      * @param array $roles
+     *
      * @return $this
      */
     public function setRoles(array $roles)
@@ -176,6 +191,7 @@ class Deejay implements \Symfony\Component\Security\Core\User\AdvancedUserInterf
 
     /**
      * @param sstring $role
+     *
      * @return $this
      */
     public function addRole($role)
@@ -200,6 +216,7 @@ class Deejay implements \Symfony\Component\Security\Core\User\AdvancedUserInterf
 
     /**
      * @param string $password
+     *
      * @return $this
      */
     public function setPassword($password)
@@ -252,6 +269,7 @@ class Deejay implements \Symfony\Component\Security\Core\User\AdvancedUserInterf
 
     /**
      * @param string $email
+     *
      * @return Deejay
      */
     public function setEmail($email)
@@ -271,6 +289,7 @@ class Deejay implements \Symfony\Component\Security\Core\User\AdvancedUserInterf
 
     /**
      * @param string $plainPassword
+     *
      * @return Deejay
      */
     public function setPlainPassword($plainPassword)
@@ -299,14 +318,12 @@ class Deejay implements \Symfony\Component\Security\Core\User\AdvancedUserInterf
      */
     public function unserialize($serialized)
     {
-        list (
+        list(
             $this->id,
             $this->name,
             $this->password,
-            $this->enabled,
-            ) = unserialize($serialized);
+            $this->enabled) = unserialize($serialized);
     }
-
 
     /**
      * Checks whether the user's account has expired.
@@ -321,7 +338,7 @@ class Deejay implements \Symfony\Component\Security\Core\User\AdvancedUserInterf
     public function isAccountNonExpired()
     {
         if ($this->getExpirationDate()) {
-            return $this->getExpirationDate() < new \DateTime('now') ?  false : true;
+            return $this->getExpirationDate() < new \DateTime('now') ? false : true;
         }
 
         return true;
@@ -382,6 +399,7 @@ class Deejay implements \Symfony\Component\Security\Core\User\AdvancedUserInterf
 
     /**
      * @param bool $enabled
+     *
      * @return $this
      */
     public function setEnabled($enabled)
@@ -401,6 +419,7 @@ class Deejay implements \Symfony\Component\Security\Core\User\AdvancedUserInterf
 
     /**
      * @param \DateTime $expirationDate
+     *
      * @return Deejay
      */
     public function setExpirationDate($expirationDate)
@@ -427,5 +446,85 @@ class Deejay implements \Symfony\Component\Security\Core\User\AdvancedUserInterf
             self::ROLE_ADMIN,
             self::ROLE_USER,
         ];
+    }
+
+    /**
+     * @return string
+     */
+    public function getFacebookId()
+    {
+        return $this->facebookId;
+    }
+
+    /**
+     * @param string $facebookId
+     *
+     * @return Deejay
+     */
+    public function setFacebookId($facebookId)
+    {
+        $this->facebookId = $facebookId;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGoogleId()
+    {
+        return $this->googleId;
+    }
+
+    /**
+     * @param string $googleId
+     *
+     * @return Deejay
+     */
+    public function setGoogleId($googleId)
+    {
+        $this->googleId = $googleId;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFacebookAccessToken()
+    {
+        return $this->facebookAccessToken;
+    }
+
+    /**
+     * @param string $facebookAccessToken
+     *
+     * @return Deejay
+     */
+    public function setFacebookAccessToken($facebookAccessToken)
+    {
+        $this->facebookAccessToken = $facebookAccessToken;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGoogleAccessToken()
+    {
+        return $this->googleAccessToken;
+    }
+
+    /**
+     * @param string $googleAccessToken
+     *
+     * @return Deejay
+     */
+    public function setGoogleAccessToken($googleAccessToken)
+    {
+        $this->googleAccessToken = $googleAccessToken;
+
+        return $this;
     }
 }

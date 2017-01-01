@@ -19,9 +19,9 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class NoUiSliderType
+ * Class NoUiSliderType.
+ *
  * @author Christophe Pyree <christophe.pyree@gmail.com>
- * @package AppBundle\Form\Type
  */
 class NoUiSliderType extends AbstractType
 {
@@ -30,13 +30,14 @@ class NoUiSliderType extends AbstractType
 
     /**
      * NoUiSliderType constructor.
+     *
      * @param \Twig_Environment $twig
      * @param $eventDispatcher
      */
     public function __construct(\Twig_Environment $twig, EventDispatcherInterface $eventDispatcher)
     {
-        $this->twig             = $twig;
-        $this->eventDispatcher  = $eventDispatcher;
+        $this->twig = $twig;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -52,12 +53,12 @@ class NoUiSliderType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'compound'  => true,
+            'compound' => true,
             'start_min' => 0,
             'start_max' => 100,
             'range_min' => 0,
             'range_max' => 100,
-            'step'      => 1,
+            'step' => 1,
         ]);
     }
 
@@ -80,10 +81,10 @@ class NoUiSliderType extends AbstractType
         $view->vars['range_max'] = $options['range_max'];
         $view->vars['start_min'] = $options['start_min'];
         $view->vars['start_max'] = $options['start_max'];
-        $view->vars['step']      = $options['step'];
+        $view->vars['step'] = $options['step'];
 
-        $javascriptContent       = $this->twig->render('AppBundle:Form:NoUiSlider.js.twig', $view->vars);
-        $view->vars['js']        = $javascriptContent;
+        $javascriptContent = $this->twig->render('AppBundle:Form:NoUiSlider.js.twig', $view->vars);
+        $view->vars['js'] = $javascriptContent;
         /*$this->eventDispatcher->addListener('kernel.response', function($event) use ($javascriptContent) {
 
             $response = $event->getResponse();
@@ -97,6 +98,4 @@ class NoUiSliderType extends AbstractType
         });
         */
     }
-
-
 }

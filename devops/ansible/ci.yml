@@ -1,0 +1,43 @@
+---
+- hosts: ci-vagrant
+  become: yes
+  vars:
+    jenkins_http_port: 7070
+    jenkins_plugins:
+      - checkstyle
+      - cloverphp
+      - crap4j
+      - dry
+      - htmlpublisher
+      - jdepend
+      - plot
+      - pmd
+      - violations
+      - warnings
+      - xunit
+      - blueocean
+      - ssh-agent
+      - ssh
+      - ssh-slaves
+      - phing
+      - filesystem_scm
+
+  roles:
+    - { role: geerlingguy.jenkins, sudo: yes }
+    - { role: geerlingguy.gitlab, sudo: yes }
+
+  tasks:
+    #make this line agnostic
+    - lineinfile: dest=/home/vagrant/.profile line={{item}} state=present
+      with_items:
+          - 'PATH="$HOME/.config/composer/vendor/bin:$PATH"'
+    - composer: command=require arguments={{ item }} working_dir=/home/vagrant/.config/composer
+      with_items:
+        - "phpunit/phpunit"
+        - "squizlabs/php_codesniffer"
+        - "phploc/phploc"
+        - "pdepend/pdepend"
+        - "phpmd/phpmd"
+        - "sebastian/phpcpd"
+        - "theseer/phpdox"
+        - "phing/phing"

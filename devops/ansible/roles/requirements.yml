@@ -1,0 +1,38 @@
+# from galaxy
+- src: geerlingguy.apache
+
+- src: https://github.com/geerlingguy/ansible-role-php
+  version: master
+  name: geerlingguy.php
+
+- src: https://github.com/geerlingguy/ansible-role-apache-php-fpm
+  version: master
+  name: geerlingguy.apache-php-fpm
+
+- src: geerlingguy.varnish
+
+- src: geerlingguy.mysql
+
+- src: geerlingguy.git
+
+- src: geerlingguy.composer
+
+- src: https://github.com/geerlingguy/ansible-role-php-xdebug
+  version: master
+  name: geerlingguy.php-xdebug
+
+- src: futurice.supervisor
+
+- src: Stouts.rabbitmq
+
+- src: Stouts.mongodb
+
+- src: martinmicunda.nodejs
+
+- src: geerlingguy.jenkins
+
+- src: geerlingguy.gitlab
+#ansible-playbook devops/ansible/install.yml  -i devops/ansible/host
+#ansible-galaxy install -r devops/ansible/roles/requirements.yml  -p devops/ansible/roles/ --force
+
+#ansible-galaxy install -r devops/ansible/roles/requirements.yml  -p devops/ansible/roles/ --force && ansible-playbook devops/ansible/install.yml  -i devops/ansible/host

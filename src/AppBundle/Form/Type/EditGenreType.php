@@ -17,14 +17,14 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class GenreMediaType
+ * Class GenreMediaType.
+ *
  * @author Christophe Pyree <christophe.pyree@gmail.com>
- * @package AppBundle\Form\Type
  */
 class EditGenreType extends AbstractType
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -42,10 +42,8 @@ class EditGenreType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class'    => Genre::class
+                'data_class' => Genre::class,
             ]
         );
     }
-
-
 }

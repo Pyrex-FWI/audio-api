@@ -3,8 +3,7 @@
 namespace AppBundle\FileDumper;
 
 /**
- * Class FileDumperReader
- * @package AppBundle\FileDumper
+ * Class FileDumperReader.
  */
 class FileDumperReader implements \Iterator, \Countable
 {
@@ -15,16 +14,15 @@ class FileDumperReader implements \Iterator, \Countable
 
     /**
      * FileDumperReader constructor.
+     *
      * @param string $filePath
      */
     public function __construct($filePath)
     {
         $this->filePath = $filePath;
-        $this->handle   = fopen($filePath, 'r');
+        $this->handle = fopen($filePath, 'r');
     }
 
-    /**
-     */
     public function __destruct()
     {
         if ($this->handle) {
@@ -35,7 +33,7 @@ class FileDumperReader implements \Iterator, \Countable
     /**
      * Count elements of an object.
      *
-     * @link http://php.net/manual/en/countable.count.php
+     * @see http://php.net/manual/en/countable.count.php
      *
      * @return int The custom count as an integer.
      *             </p>
@@ -47,8 +45,8 @@ class FileDumperReader implements \Iterator, \Countable
         if (!$this->count) {
             $output = null;
             $return = null;
-            $match  = null;
-            $com    = (sprintf('wc -l %s', $this->filePath));
+            $match = null;
+            $com = (sprintf('wc -l %s', $this->filePath));
             exec($com, $output, $return);
             $output = (trim($output[0]));
             $patern = sprintf('#^(?P<lines>\d{1,8})#', $this->filePath);
@@ -64,9 +62,9 @@ class FileDumperReader implements \Iterator, \Countable
      * (PHP 5 &gt;= 5.0.0)<br/>
      * Return the current element.
      *
-     * @link http://php.net/manual/en/iterator.current.php
+     * @see http://php.net/manual/en/iterator.current.php
      *
-     * @return FileDumperRow|null Can return any type.
+     * @return FileDumperRow|null can return any type
      */
     public function current()
     {
@@ -76,9 +74,9 @@ class FileDumperReader implements \Iterator, \Countable
             if (count($matches) == 0) {
                 return;
             }
-            $file       = new \SplFileInfo($matches[1]);
-            $provider   = $matches[2];
-            $line       = trim($line);
+            $file = new \SplFileInfo($matches[1]);
+            $provider = $matches[2];
+            $line = trim($line);
             $lineObject = (new FileDumperRow($file, $provider));
 
             return $lineObject;
@@ -89,7 +87,7 @@ class FileDumperReader implements \Iterator, \Countable
      * (PHP 5 &gt;= 5.0.0)<br/>
      * Move forward to next element.
      *
-     * @link http://php.net/manual/en/iterator.next.php
+     * @see http://php.net/manual/en/iterator.next.php
      */
     public function next()
     {
@@ -99,9 +97,9 @@ class FileDumperReader implements \Iterator, \Countable
      * (PHP 5 &gt;= 5.0.0)<br/>
      * Return the key of the current element.
      *
-     * @link http://php.net/manual/en/iterator.key.php
+     * @see http://php.net/manual/en/iterator.key.php
      *
-     * @return int scalar on success, or null on failure.
+     * @return int scalar on success, or null on failure
      */
     public function key()
     {
@@ -112,7 +110,7 @@ class FileDumperReader implements \Iterator, \Countable
      * (PHP 5 &gt;= 5.0.0)<br/>
      * Checks if current position is valid.
      *
-     * @link http://php.net/manual/en/iterator.valid.php
+     * @see http://php.net/manual/en/iterator.valid.php
      *
      * @return bool The return value will be casted to boolean and then evaluated.
      *              Returns true on success or false on failure.
@@ -126,7 +124,7 @@ class FileDumperReader implements \Iterator, \Countable
      * (PHP 5 &gt;= 5.0.0)<br/>
      * Rewind the Iterator to the first element.
      *
-     * @link http://php.net/manual/en/iterator.rewind.php
+     * @see http://php.net/manual/en/iterator.rewind.php
      */
     public function rewind()
     {

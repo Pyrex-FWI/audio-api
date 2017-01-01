@@ -13,12 +13,12 @@ class DirectoryEvent extends \Symfony\Component\EventDispatcher\Event
 
     public function __construct(\SplFileInfo $dirName, $genreName = null, $albumName = null, $artist = null, $year = null)
     {
-        $this->dirName         = $dirName->getFilename();
+        $this->dirName = $dirName->getFilename();
         $this->oldRealPathName = $dirName->getRealPath();
-        $this->genreName       = $genreName;
-        $this->albumName       = $albumName;
-        $this->artist          = $artist;
-        $this->year            = $year;
+        $this->genreName = $genreName;
+        $this->albumName = $albumName;
+        $this->artist = $artist;
+        $this->year = $year;
     }
 
     /**
@@ -29,22 +29,16 @@ class DirectoryEvent extends \Symfony\Component\EventDispatcher\Event
         return $this->dirName;
     }
 
-    /**
-     */
     public function getGenreName()
     {
         return $this->genreName;
     }
 
-    /**
-     */
     public function getAlbumName()
     {
         return $this->albumName;
     }
 
-    /**
-     */
     public function getArtist()
     {
         return $this->artist;

@@ -11,11 +11,12 @@ use Symfony\Component\Security\Http\Event\SwitchUserEvent;
  */
 class SwitchUserListener
 {
-    /** @var  LoggerInterface */
+    /** @var LoggerInterface */
     private $logger;
 
     /**
      * SwitchUserListener constructor.
+     *
      * @param LoggerInterface $logger
      */
     public function __construct(LoggerInterface $logger)

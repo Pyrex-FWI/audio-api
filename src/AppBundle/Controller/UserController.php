@@ -1,8 +1,15 @@
 <?php
+/**
+ * Copyright (c) 2016. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+ * Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
+ * Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
+ * Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
+ * Vestibulum commodo. Ut rhoncus gravida arcu.
+ */
 
-namespace Pyrex\AdminBundle\Controller;
+namespace AppBundle\Controller;
 
-use Pyrex\AdminBundle\Form\Type\CreateDeejayType;
+use AppBundle\Form\Type\CreateDeejayType;
 use Pyrex\CoreModelBundle\Entity\Deejay;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -12,9 +19,9 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Class UserController
+ * Class UserController.
+ *
  * @author Christophe Pyree <christophe.pyree@gmail.com>
- * @package Pyrex\AdminBundle\Controller
  * @Route("/user")
  * @Security("has_role('ROLE_ADMIN')")
  */
@@ -22,12 +29,13 @@ class UserController extends Controller
 {
     /**
      * @Route("/", name="user_list")
+     *
      * @return array
      */
     public function indexAction()
     {
         return $this->render(
-            'PyrexAdminBundle:User:index.html.twig',
+            'AppBundle:User:index.html.twig',
             [
                 'users' => $this->get('repository.deejay')->findAll(),
             ]
@@ -36,7 +44,9 @@ class UserController extends Controller
 
     /**
      * @Route("/activate/{id}", name="user_activate")
+     *
      * @param Deejay $deejay
+     *
      * @return RedirectResponse
      */
     public function activateAction(Deejay $deejay)
@@ -58,6 +68,7 @@ class UserController extends Controller
      * @Route("/create", name="create_user")
      * @Template()
      * Todo: restrict to ROLE_ADMIN
+     *
      * @return array|RedirectResponse
      */
     public function createUserAction(Request $request)
@@ -73,7 +84,7 @@ class UserController extends Controller
         }
 
         return [
-            'form'  => $createDeejayForm->createView(),
+            'form' => $createDeejayForm->createView(),
         ];
     }
 
@@ -82,6 +93,7 @@ class UserController extends Controller
      * @param Deejay  $deejay
      * @Route("/edit/{id}", name="user_edit")
      * @Template()
+     *
      * @return array|RedirectResponse
      */
     public function editAction(Request $request, Deejay $deejay)
@@ -96,7 +108,7 @@ class UserController extends Controller
         }
 
         return [
-            'form'  => $createDeejayForm->createView(),
+            'form' => $createDeejayForm->createView(),
         ];
     }
 }

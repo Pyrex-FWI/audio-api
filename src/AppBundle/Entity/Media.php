@@ -42,27 +42,27 @@ class Media extends \Pyrex\CoreModelBundle\Entity\Media
     use TimestampableEntity;
 
     const PROVIDER_DIGITAL_DJ_POOL = 1;
-    const PROVIDER_AV_DISTRICT     = 2;
-    const PROVIDER_FRP_AUDIO       = 3;
-    const PROVIDER_FRP_VIDEO       = 4;
-    const PROVIDER_SMASHVISION     = 5;
-    const PROVIDER_MEDIA           = 100;
+    const PROVIDER_AV_DISTRICT = 2;
+    const PROVIDER_FRP_AUDIO = 3;
+    const PROVIDER_FRP_VIDEO = 4;
+    const PROVIDER_SMASHVISION = 5;
+    const PROVIDER_MEDIA = 100;
 
     public static $providerMapCodeToId = [
         'av_district' => self::PROVIDER_AV_DISTRICT,
-        'frp_video'   => self::PROVIDER_FRP_VIDEO,
-        'frp_audio'   => self::PROVIDER_FRP_AUDIO,
-        'ddp'         => self::PROVIDER_DIGITAL_DJ_POOL,
-        'sv'          => self::PROVIDER_SMASHVISION,
+        'frp_video' => self::PROVIDER_FRP_VIDEO,
+        'frp_audio' => self::PROVIDER_FRP_AUDIO,
+        'ddp' => self::PROVIDER_DIGITAL_DJ_POOL,
+        'sv' => self::PROVIDER_SMASHVISION,
     ];
 
     public static $providerMapIdToClass = [
         self::PROVIDER_DIGITAL_DJ_POOL => DigitalDjPoolMedia::class,
-        self::PROVIDER_AV_DISTRICT     => AvDistrictMedia::class,
-        self::PROVIDER_FRP_AUDIO       => FranchiseAudioMedia::class,
-        self::PROVIDER_FRP_VIDEO       => FranchiseVideoMedia::class,
-        self::PROVIDER_SMASHVISION     => SmashVidzMedia::class,
-        self::PROVIDER_MEDIA           => self::class,
+        self::PROVIDER_AV_DISTRICT => AvDistrictMedia::class,
+        self::PROVIDER_FRP_AUDIO => FranchiseAudioMedia::class,
+        self::PROVIDER_FRP_VIDEO => FranchiseVideoMedia::class,
+        self::PROVIDER_SMASHVISION => SmashVidzMedia::class,
+        self::PROVIDER_MEDIA => self::class,
     ];
 
     /**
@@ -150,6 +150,7 @@ class Media extends \Pyrex\CoreModelBundle\Entity\Media
 
         return $this;
     }
+
     /**
      * Get provider.
      *
@@ -162,6 +163,7 @@ class Media extends \Pyrex\CoreModelBundle\Entity\Media
 
     /**
      * @todo refactor into subClass (audio implementation)
+     *
      * @param $sampleItem
      *
      * @return int|null
@@ -210,7 +212,7 @@ class Media extends \Pyrex\CoreModelBundle\Entity\Media
         // @codeCoverageIgnoreStart
         $fileName = $this->getFileName();
         $provider = $this->getProvider();
-        $patern   = '/^(?P<providerId>\d{1,9})\_/';
+        $patern = '/^(?P<providerId>\d{1,9})\_/';
 
         if ($fileName && $provider && in_array($provider, $this->getProviders())) {
             if ($provider === self::PROVIDER_SMASHVISION) {

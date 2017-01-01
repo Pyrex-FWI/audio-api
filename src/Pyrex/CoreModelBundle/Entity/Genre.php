@@ -10,7 +10,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
- * Genre
+ * Genre.
  *
  * @ORM\Table(uniqueConstraints={@ORM\UniqueConstraint(name="name_idx", columns={"name"})}, options={"collate"="utf8mb4_unicode_ci", "charset"="utf8mb4"})
  * @ORM\Entity(repositoryClass="Pyrex\CoreModelBundle\Repository\GenreRepository")
@@ -20,7 +20,7 @@ class Genre
     use TimestampableEntity;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -57,9 +57,9 @@ class Genre
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -76,6 +76,7 @@ class Genre
 
     /**
      * @param string $name
+     *
      * @return $this
      */
     public function setName($name)
@@ -95,11 +96,13 @@ class Genre
 
     /**
      * @param mixed $medias
+     *
      * @return Genre
      */
     public function setMedias($medias)
     {
         $this->medias = $medias;
+
         return $this;
     }
 
@@ -115,5 +118,4 @@ class Genre
     {
         return $this->name;
     }
-
 }

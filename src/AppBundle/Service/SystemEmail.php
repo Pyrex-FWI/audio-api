@@ -2,20 +2,19 @@
 
 namespace AppBundle\Service;
 
-
 use Pyrex\CoreModelBundle\Entity\Deejay;
 use Symfony\Bridge\Twig\TwigEngine;
 
 class SystemEmail
 {
-
-    /** @var \Swift_Mailer  */
+    /** @var \Swift_Mailer */
     private $mailer;
-    /** @var TwigEngine  */
+    /** @var TwigEngine */
     private $twigEngine;
 
     /**
      * NewRegistrationEventListener constructor.
+     *
      * @param \Swift_Mailer $mailer
      * @param TwigEngine    $twigEngine
      */
@@ -30,7 +29,7 @@ class SystemEmail
      */
     public function newRegistrationMail(Deejay $deejay)
     {
-        $emailContent = $this->twigEngine->render('PyrexAdminBundle:Authentification:activeUser.html.twig', [ 'deejay' => $deejay ]);
+        $emailContent = $this->twigEngine->render('PyrexAdminBundle:Authentification:activeUser.html.twig', ['deejay' => $deejay]);
         $message = \Swift_Message::newInstance()
             ->setFrom('yemistikris@hotmail.fr')
             ->setTo('yemistikris@hotmail.fr')
@@ -41,5 +40,4 @@ class SystemEmail
             );
         $res = $this->mailer->send($message, $failures);
     }
-
 }

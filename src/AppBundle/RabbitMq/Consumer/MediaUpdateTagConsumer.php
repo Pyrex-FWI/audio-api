@@ -2,18 +2,14 @@
 
 namespace AppBundle\RabbitMq\Consumer;
 
-use AppBundle\Entity\Media;
-use Doctrine\Bundle\DoctrineBundle\Registry;
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
 use Psr\Log\LoggerInterface;
 use Sapar\Id3\Metadata\Id3Metadata;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
- * Class MediaUpdateTagConsumer
- * @package AppBundle\RabbitMq\Consumer
+ * Class MediaUpdateTagConsumer.
  */
 class MediaUpdateTagConsumer implements ConsumerInterface
 {
@@ -27,6 +23,7 @@ class MediaUpdateTagConsumer implements ConsumerInterface
 
     /**
      * MediaIndexerConsumer constructor.
+     *
      * @param LoggerInterface $logger
      */
     public function __construct(LoggerInterface $logger)
@@ -41,10 +38,10 @@ class MediaUpdateTagConsumer implements ConsumerInterface
      */
     public function execute(AMQPMessage $msg)
     {
-        self::$count++;
+        ++self::$count;
 
-        $serializer  = $this->container->get('serializer');
-        $data        = $serializer->decode($msg->body, 'json');
+        $serializer = $this->container->get('serializer');
+        $data = $serializer->decode($msg->body, 'json');
         $this->logger->info(self::$count.' - '.$data['pathName']);
 
         /** @var Id3Metadata $id3Metadata */

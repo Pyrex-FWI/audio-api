@@ -17,7 +17,7 @@ class FileOrganizerRuleCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $tagName      = 'organizer.rule';
+        $tagName = 'organizer.rule';
         $mediaFileOrg = 'app.media.organizer.manager';
 
         if (!$container->hasDefinition($mediaFileOrg)) {
@@ -25,7 +25,7 @@ class FileOrganizerRuleCompilerPass implements CompilerPassInterface
         }
 
         $providerManager = $container->getDefinition($mediaFileOrg);
-        $taggedServices  = $container->findTaggedServiceIds($tagName);
+        $taggedServices = $container->findTaggedServiceIds($tagName);
 
         foreach ($taggedServices as $id => $attributes) {
             $providerManager->addMethodCall(

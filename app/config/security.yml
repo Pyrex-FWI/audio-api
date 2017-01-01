@@ -1,7 +1,6 @@
 #/app/config/security.yml
 # http://symfony.com/doc/current/book/security.html
 security:
-
     # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
     providers:
         chain_provider:
@@ -18,7 +17,6 @@ security:
                 class: Pyrex\CoreModelBundle\Entity\Deejay
                 #property: email
                 #manager:
-
     encoders:
         Pyrex\CoreModelBundle\Entity\Deejay:
             algorithm: bcrypt
@@ -29,7 +27,6 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-
         admin_area:
             pattern: ^/
             #provider: sapar_db #Give the first declared provider
@@ -41,22 +38,23 @@ security:
                 lifetime: 604800 # 1 week in seconds
                 path: /
             form_login:
-                login_path: login
-                check_path: login
+                login_path: !php/const:AppBundle\AppRouteBundle::LOGIN_NAME
+                check_path: !php/const:AppBundle\AppRouteBundle::LOGIN_NAME
                 default_target_path: home
-#            oauth:
-#                resource_owners:
-#                    facebook:      "/connect/check-facebook"
-#                login_path:        login
-#                failure_path:      login
-#                use_forward:       false
-#                oauth_user_provider:
-#                    service: hwi_oauth.user.provider
+            oauth:
+                resource_owners:
+                    facebook:      !php/const:AppBundle\AppRouteBundle::OAUTH_FACEBOOK_CHECK_PATH
+                login_path:        !php/const:AppBundle\AppRouteBundle::LOGIN_NAME
+                failure_path:      !php/const:AppBundle\AppRouteBundle::LOGIN_NAME
+                use_forward:       false
+                oauth_user_provider:
+                    service: deejay_oauth_user_provider
             logout:
                 path: logout
-                target: login
+                target: !php/const:AppBundle\AppRouteBundle::LOGIN_NAME
                 #default_target_path: certification_admin_index
             # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
     access_control:
-        - { path: ^/((fr|en)/)?login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/((%locale_regex%)/)?(oauth/)?login/?$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/((%locale_regex%)/)?oauth/redirect/facebook$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/, roles: ROLE_USER }

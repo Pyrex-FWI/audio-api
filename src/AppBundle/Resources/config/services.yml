@@ -105,3 +105,22 @@ services:
     app.security_switch_user:
         class: AppBundle\Service\SecuritySwitchUser
         arguments: [ '@security.token_storage' ]
+
+    deejay_new_registration:
+        class: AppBundle\EventListener\NewRegistrationEventListener
+        arguments: [ '@mailer', '@app.system_email']
+
+    deejay_new_registration_form:
+        class: AppBundle\Form\Type\CreateDeejayType
+        arguments: []
+        tags:
+            - { name: form.type }
+
+    deejay_oauth_user_provider:
+        class: AppBundle\Security\Core\User\OAuthDeejayUserProvider
+        arguments: [ '@doctrine' ]
+
+    deejay_new_registration_form:
+        class: AppBundle\Form\Type\DeejayRegistrationType
+        tags:
+            - { name: form.type}

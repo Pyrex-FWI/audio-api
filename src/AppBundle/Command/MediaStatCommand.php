@@ -24,22 +24,20 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\VarDumper\VarDumper;
 
-/**
- *
- */
 class MediaStatCommand extends ContainerAwareCommand
 {
-    private $exist    = 0;
+    private $exist = 0;
     private $notExist = 0;
-    private $total    = 0;
-    /** @var  OutputInterface */
+    private $total = 0;
+    /** @var OutputInterface */
     private $output;
-    /** @var  InputInterface */
+    /** @var InputInterface */
     private $input;
-    /** @var  Registry */
+    /** @var Registry */
     private $doctrine;
 
     private $stats = [];
+
     /**
      * {@inheritdoc}
      */
@@ -49,7 +47,7 @@ class MediaStatCommand extends ContainerAwareCommand
             ->setName('media:stats')
             ->setDescription('Build statistic from database')
             ->addOption('provider', null, InputArgument::OPTIONAL, 'Get statistic for specific provider')
-                  ->setHelp(<<<EOF
+                  ->setHelp(<<<'EOF'
 The <info>%command.name%</info> command greets somebody or everybody:
 
 <info>php %command.full_name%</info>
@@ -62,8 +60,8 @@ EOF
 
     private function init(InputInterface $input, OutputInterface $output)
     {
-        $this->output   = $output;
-        $this->input    = $input;
+        $this->output = $output;
+        $this->input = $input;
         $this->doctrine = $this->getContainer()->get('doctrine');
     }
 
@@ -94,6 +92,7 @@ EOF
 
         return $query->getSingleScalarResult();
     }
+
     /**
      * @param $provider
      *
@@ -149,10 +148,10 @@ EOF
         $providers = $this->input->getOption('provider') ? (array) $this->input->getOption('provider') : Media::getProviders();
 
         foreach ($providers as $provider) {
-            $this->stats[$provider]['items']         = $this->getTotalItems($provider);
-            $this->stats[$provider]['noFileName']    = $this->getItemsWithoutFileName($provider);
-            $this->stats[$provider]['exist']         = $this->getExitItems($provider);
-            $this->stats[$provider]['version']       = $this->getVersions($provider);
+            $this->stats[$provider]['items'] = $this->getTotalItems($provider);
+            $this->stats[$provider]['noFileName'] = $this->getItemsWithoutFileName($provider);
+            $this->stats[$provider]['exist'] = $this->getExitItems($provider);
+            $this->stats[$provider]['version'] = $this->getVersions($provider);
             $this->stats[$provider]['noReleaseDate'] = $this->getNoDated($provider);
         }
         VarDumper::dump($this->stats);

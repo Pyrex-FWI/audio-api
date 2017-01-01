@@ -5,11 +5,10 @@ namespace Pyrex\CoreModelBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\UniqueConstraint;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * Media
+ * Media.
  *
  * @ORM\Table(
  *      indexes={@ORM\Index(name="provider_filename", columns={"fileName"})},
@@ -19,9 +18,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
  */
 class Media
 {
-
-    const MEDIA_TYPE_AUDIO          = 1;
-    const MEDIA_TYPE_VIDEO          = 2;
+    const MEDIA_TYPE_AUDIO = 1;
+    const MEDIA_TYPE_VIDEO = 2;
     /**
      * @var string
      *
@@ -42,7 +40,6 @@ class Media
      *
      * @ORM\Column(type="text", nullable=true)
      * @Groups({"media-read"})
-     *
      */
     protected $fullPath;
     /**
@@ -50,7 +47,6 @@ class Media
      *
      * @ORM\Column(type="string", length=32, nullable=false)
      * @Groups({"media-read"})
-     *
      */
     protected $fullFilePathMd5;
     /**
@@ -58,7 +54,6 @@ class Media
      *
      * @ORM\Column(type="string", length=200, nullable=true)
      * @Groups({"media-read"})
-     *
      */
     protected $dirName;
     /**
@@ -90,7 +85,7 @@ class Media
      */
     protected $fileName;
     /**
-     * @var boolean
+     * @var bool
      *
      * @ORM\Column(type="boolean", nullable=false, options={"default":false})
      * @Groups({"media-read"})
@@ -98,6 +93,7 @@ class Media
     protected $exist = false;
     /**
      * @var bool
+     *
      * @todo remove property and associated method
      * @ORM\Column(type="boolean", nullable=false, options={"default":false})
      * @Groups({"media-read", "genre-read", "artist-read"})
@@ -118,7 +114,7 @@ class Media
      */
     protected $deletedAt;
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -131,6 +127,7 @@ class Media
      *      joinColumns={@ORM\JoinColumn(name="media_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="genre_id", referencedColumnName="id")}
      *      )
+     *
      * @var ArrayCollection<Genre>
      * @Groups({"media-read"})
      **/
@@ -141,24 +138,26 @@ class Media
      *      joinColumns={@ORM\JoinColumn(name="media_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="artist_id", referencedColumnName="id")}
      *      )
+     *
      * @var ArrayCollection<Artist>
      * @Groups({"media-read"})
      **/
     protected $artists;
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(type="integer", nullable=true)
      * @Groups({"media-read"})
      */
     protected $type;
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(type="integer", length=4, nullable=true)
      * @Groups({"media-read", "artist-read", "genre-read"})
      */
     protected $year;
+
     /**
      * Constructor.
      */
@@ -174,15 +173,15 @@ class Media
     public static function getTypes()
     {
         return [
-            'audio'         => self::MEDIA_TYPE_AUDIO,
-            'video'         => self::MEDIA_TYPE_VIDEO,
+            'audio' => self::MEDIA_TYPE_AUDIO,
+            'video' => self::MEDIA_TYPE_VIDEO,
         ];
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -191,6 +190,7 @@ class Media
 
     /**
      * @param $id
+     *
      * @return $this
      */
     public function setId($id)
@@ -236,6 +236,7 @@ class Media
 
     /**
      * @param int $bpm
+     *
      * @return Media
      */
     public function setBpm($bpm)
@@ -259,6 +260,7 @@ class Media
 
     /**
      * @param string $exist
+     *
      * @return $this
      */
     public function setExist($exist)
@@ -313,6 +315,7 @@ class Media
 
     /**
      * @param string $fullFilePathMd5
+     *
      * @return Media
      */
     public function setFullFilePathMd5($fullFilePathMd5)
@@ -323,8 +326,6 @@ class Media
 
         return $this;
     }
-
-
 
     /**
      * Get title.
@@ -353,9 +354,9 @@ class Media
     }
 
     /**
-     * Get type
+     * Get type.
      *
-     * @return integer
+     * @return int
      */
     public function getType()
     {
@@ -363,9 +364,10 @@ class Media
     }
 
     /**
-     * Set type
+     * Set type.
      *
-     * @param integer $type
+     * @param int $type
+     *
      * @return Media
      */
     public function setType($type)
@@ -405,6 +407,7 @@ class Media
 
     /**
      * @param Genre $genre
+     *
      * @return $this
      */
     public function addGenre(Genre $genre)
@@ -426,6 +429,7 @@ class Media
 
     /**
      * @param Genre $genre
+     *
      * @return $this
      */
     public function removeGenre(Genre $genre)
@@ -447,7 +451,9 @@ class Media
 
     /**
      * Set Genres.
+     *
      * @param ArrayCollection $genres
+     *
      * @return $this
      */
     public function setGenres(ArrayCollection $genres)
@@ -456,8 +462,10 @@ class Media
 
         return $this;
     }
+
     /**
      * @param Artist $artist
+     *
      * @return $this
      */
     public function addArtist(Artist $artist)
@@ -471,6 +479,7 @@ class Media
 
     /**
      * @param Artist $artist
+     *
      * @return $this
      */
     public function removeArtist(Artist $artist)
@@ -492,6 +501,7 @@ class Media
 
     /**
      * @param ArrayCollection $artists
+     *
      * @return $this
      */
     public function setArtists(ArrayCollection $artists)
@@ -535,6 +545,7 @@ class Media
 
     /**
      * @param string $fileName
+     *
      * @return $this
      */
     public function setFileName($fileName)
@@ -554,6 +565,7 @@ class Media
 
     /**
      * @param string $score
+     *
      * @return Media
      */
     public function setScore($score)
@@ -561,6 +573,7 @@ class Media
         if (filter_var($score, FILTER_VALIDATE_INT) || filter_var($score, FILTER_VALIDATE_FLOAT)) {
             $this->score = $score;
         }
+
         return $this;
     }
 
@@ -574,6 +587,7 @@ class Media
 
     /**
      * @param \DateTime $deletedAt
+     *
      * @return Media
      */
     public function setDeletedAt($deletedAt)
@@ -593,6 +607,7 @@ class Media
 
     /**
      * @param string $dirName
+     *
      * @return Media
      */
     public function setDirName($dirName)
@@ -622,6 +637,7 @@ class Media
 
     /**
      * @param int $year
+     *
      * @return Media
      */
     public function setYear($year)
@@ -634,7 +650,7 @@ class Media
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getTagged()
     {
@@ -645,15 +661,15 @@ class Media
 
     /**
      * @param bool $tagged
+     *
      * @return Media
      */
     public function setTagged($tagged)
     {
         // @codeCoverageIgnoreStart
         $this->tagged = $tagged;
-        
+
         return $this;
         // @codeCoverageIgnoreEnd
     }
-
 }

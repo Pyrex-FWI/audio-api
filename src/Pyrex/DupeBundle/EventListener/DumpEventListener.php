@@ -24,7 +24,7 @@ class DumpEventListener
     public function __construct(EntityManager $entityManager, Logger $logger)
     {
         $this->entityManager = $entityManager;
-        $this->logger        = $logger;
+        $this->logger = $logger;
         $this->entityManager->getConnection()->getConfiguration()->setSQLLogger(null);
     }
 
@@ -42,7 +42,7 @@ class DumpEventListener
     private function alreadySet(DupeGroup $dupeGroup)
     {
         /** @var ArrayCollection $dupeFiles */
-        $dupeFiles   = $dupeGroup->getDupeFiles();
+        $dupeFiles = $dupeGroup->getDupeFiles();
         $dupeFileIds = [];
         foreach ($dupeFiles as $dupeFile) {
             /* @var DupeFile $dupeFile */

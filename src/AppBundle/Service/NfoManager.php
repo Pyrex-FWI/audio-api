@@ -2,10 +2,6 @@
 
 namespace AppBundle\Service;
 
-use Pyrex\CoreModelBundle\Entity\Genre;
-use Doctrine\Bundle\DoctrineBundle\Registry;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityRepository;
 use Pyrex\NfoReader\Enslave;
 use Pyrex\NfoReader\Jah;
 use Pyrex\NfoReader\NfoReaderInterface;
@@ -46,6 +42,7 @@ class NfoManager
 
     /**
      * @param string $dirPathName
+     *
      * @return bool
      */
     public function containNfo($dirPathName)
@@ -57,6 +54,7 @@ class NfoManager
 
     /**
      * @param string $dirPathName
+     *
      * @return mixed
      */
     public function getGenre($dirPathName)

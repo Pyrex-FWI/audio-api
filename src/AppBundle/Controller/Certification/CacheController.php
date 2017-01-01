@@ -7,19 +7,27 @@
  * Vestibulum commodo. Ut rhoncus gravida arcu.
  */
 
-namespace CertificationBundle\Controller;
+namespace AppBundle\Controller\Certification;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Class CacheController.
+ *
+ * @author Christophe Pyree <christophe.pyree@gmail.com>
+ */
 class CacheController extends Controller
 {
     /**
-     * @Route("/cache")
+     * @Route("/cache", name="certification_cache_index")
+     *
+     * @return Response
      */
     public function indexAction()
     {
-        $response = $this->render('CertificationBundle:Cache:index.html.twig');
+        $response = $this->render('AppBundle:Certification:Cache/index.html.twig');
         // cache for 3600 seconds
         $response->setSharedMaxAge(3600);
         $response->headers->addCacheControlDirective('must-revalidate', true);

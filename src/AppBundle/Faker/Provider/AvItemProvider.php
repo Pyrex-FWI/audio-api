@@ -4,6 +4,7 @@
  * Date: 04/09/15
  * Time: 20:09.
  */
+
 namespace AppBundle\Faker\Provider;
 
 use Faker\Generator;

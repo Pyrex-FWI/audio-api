@@ -2,14 +2,12 @@
 
 namespace Pyrex\CoreModelBundle\Tests\Entity;
 
-
 use Pyrex\CoreModelBundle\Tests\EntityBase;
 use Doctrine\Common\Collections\ArrayCollection;
 
 class MediaTest extends EntityBase
 {
-
-    public function  testMediaMethods()
+    public function testMediaMethods()
     {
         $media = self::getMediaInstance();
         $genre = self::getGenreInstance('Genre');
@@ -58,9 +56,7 @@ class MediaTest extends EntityBase
         $this->assertEquals($media->getDirName(), 'tests');
         $media->getId();
         $this->assertEquals($media->getType(), 2);
-
     }
-
 
     public function testWrongBpm()
     {
@@ -69,7 +65,7 @@ class MediaTest extends EntityBase
     }
 
     /**
-     * @expectedException InvalidArgumentException
+     * @expectedException \InvalidArgumentException
      */
     public function testWrongType()
     {

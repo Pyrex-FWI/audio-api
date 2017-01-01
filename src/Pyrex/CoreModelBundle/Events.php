@@ -9,17 +9,15 @@
 
 namespace Pyrex\CoreModelBundle;
 
-
 final class Events
 {
     const NEW_DEEJAY_REGISTRATION = 'new_deejay_registration';
     const DEEJAY_ACCOUNT_ACTIVATION = 'new_deejay_registration';
-    
+
     /**
      * Events constructor.
      */
     private function __construct()
     {
     }
-    
 }

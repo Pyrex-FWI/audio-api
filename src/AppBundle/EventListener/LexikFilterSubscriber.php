@@ -16,7 +16,7 @@ class LexikFilterSubscriber implements EventSubscriberInterface
 
     public function sliderRangeFilter(GetFilterConditionEvent $event)
     {
-        $expr   = $event->getFilterQuery()->getExpr();
+        $expr = $event->getFilterQuery()->getExpr();
         $values = $event->getValues()['value'];
         $expression = $expr->andX();
         $parameters = [];
@@ -29,10 +29,9 @@ class LexikFilterSubscriber implements EventSubscriberInterface
             $expression->add($expr->lte($event->getField(), ':'.$maxParameterName));
             $parameters[$maxParameterName] = $values['max'];
         }
-        
+
         if ($expression->count()) {
             $event->setCondition($expression, $parameters);
         }
     }
-
 }

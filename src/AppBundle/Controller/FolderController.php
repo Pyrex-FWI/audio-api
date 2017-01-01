@@ -29,18 +29,18 @@ class FolderController extends Controller
      */
     public function getDirectories(Request $request)
     {
-        $wkd  = $this->safeWorkingDir($request->get('path') ? $request->get('path') : $this->getParameter('allowed_directories')[0]);
+        $wkd = $this->safeWorkingDir($request->get('path') ? $request->get('path') : $this->getParameter('allowed_directories')[0]);
         $dirs = iterator_to_array(Finder::create()
             ->directories()
             ->sortByName()
             ->in($wkd)->depth(0)->getIterator());
         $dirs = array_map(function (\SplFileInfo $item) {
             return [
-                'name'        => $item->getFilename(),
-                'pathName'    => $item->getRealPath(),
-                'expanded'    => false,
+                'name' => $item->getFilename(),
+                'pathName' => $item->getRealPath(),
+                'expanded' => false,
                 'childLoaded' => false,
-                'isDir'       => true,
+                'isDir' => true,
             ];
         }, $dirs);
 
@@ -57,7 +57,7 @@ class FolderController extends Controller
      */
     public function getContentDir(Request $request)
     {
-        $wkd   = $this->safeWorkingDir($request->get('path') ? $request->get('path') : null);
+        $wkd = $this->safeWorkingDir($request->get('path') ? $request->get('path') : null);
         $files = iterator_to_array(Finder::create()
             ->files()
             ->name('/(mp3|flac)$/')
@@ -65,9 +65,9 @@ class FolderController extends Controller
             ->in($wkd)->depth(0)->getIterator());
         $files = array_map(function (\SplFileInfo $item) {
             return [
-                'name'     => $item->getFilename(),
+                'name' => $item->getFilename(),
                 'pathName' => $item->getRealPath(),
-                'isDir'    => false,
+                'isDir' => false,
             ];
         }, $files);
 
@@ -85,7 +85,7 @@ class FolderController extends Controller
      */
     public function getDirMeta(Request $request)
     {
-        $wkd   = $this->safeWorkingDir($request->get('path') ? $request->get('path') : null);
+        $wkd = $this->safeWorkingDir($request->get('path') ? $request->get('path') : null);
         $files = iterator_to_array(Finder::create()
             ->files()
             ->name('/(mp3|flac)$/')
@@ -117,9 +117,9 @@ class FolderController extends Controller
      */
     public function setDirMeta(Request $request)
     {
-        $wkd   = $this->safeWorkingDir($request->get('path') ? $request->get('path') : null);
+        $wkd = $this->safeWorkingDir($request->get('path') ? $request->get('path') : null);
         $genre = $request->query->get('g');
-        $year  = $request->query->get('y');
+        $year = $request->query->get('y');
         $files = iterator_to_array(Finder::create()
             ->files()
             ->name('/mp3|flac/')
@@ -152,7 +152,7 @@ class FolderController extends Controller
      */
     public function moveAction(Request $request)
     {
-        $wkd    = $request->get('path');
+        $wkd = $request->get('path');
         $return = false;
         if ($wkd && is_dir($wkd)) {
             /** @var Producer $saparFolderMoverProducer */
@@ -195,10 +195,10 @@ class FolderController extends Controller
     public function ddpCopyFolderFileAction(Request $request)
     {
         $file = $request->get('file');
-        $ddj  = $this->getParameter('deejay_collection_path');
+        $ddj = $this->getParameter('deejay_collection_path');
         if ($file && is_file($file)) {
             $splFile = new \SplFileInfo($file);
-            $fs      = new Filesystem();
+            $fs = new Filesystem();
             $fs->copy($splFile->getRealPath(), $ddj.DIRECTORY_SEPARATOR.$splFile->getFilename());
         }
 

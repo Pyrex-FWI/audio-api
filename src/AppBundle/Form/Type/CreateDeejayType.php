@@ -7,27 +7,25 @@
  * Vestibulum commodo. Ut rhoncus gravida arcu.
  */
 
-namespace Pyrex\AdminBundle\Form\Type;
+namespace AppBundle\Form\Type;
 
 use Pyrex\CoreModelBundle\Entity\Deejay;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class CreateDeejayType
+ * Class CreateDeejayType.
+ *
  * @author Christophe Pyree <christophe.pyree@gmail.com>
- * @package AppBundle\Form\Type
  */
 class CreateDeejayType extends AbstractType
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -42,12 +40,12 @@ class CreateDeejayType extends AbstractType
                 'roles',
                 ChoiceType::class,
                 [
-                    'choices'       => Deejay::getAllowedRoles(),
-                    'choice_label'  => function ($value, $key, $index) {
+                    'choices' => Deejay::getAllowedRoles(),
+                    'choice_label' => function ($value, $key, $index) {
                         return $value;
                     },
-                    'expanded'  => true,
-                    'multiple'  => true,
+                    'expanded' => true,
+                    'multiple' => true,
                 ]
             )
             ->add('expirationDate')
@@ -63,11 +61,8 @@ class CreateDeejayType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class'    => Deejay::class
+                'data_class' => Deejay::class,
             ]
         );
     }
-
-
 }
-

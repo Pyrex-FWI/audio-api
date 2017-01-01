@@ -9,11 +9,11 @@ use Doctrine\ORM\EntityRepository;
 
 class GenreStack
 {
-    /** @var  Registry */
+    /** @var Registry */
     private $doctrine;
-    /** @var  EntityRepository */
+    /** @var EntityRepository */
     private $genreRepository;
-    /** @var  EntityManager */
+    /** @var EntityManager */
     private $eManager;
     /** @var Genre[] */
     protected $genres = [];
@@ -21,18 +21,19 @@ class GenreStack
 
     /**
      * GenreStack constructor.
+     *
      * @param Registry $doctrine
      */
     public function __construct(Registry $doctrine)
     {
-        $this->doctrine        = $doctrine;
+        $this->doctrine = $doctrine;
         $this->genreRepository = $this->doctrine->getRepository(\Pyrex\CoreModelBundle\Entity\Genre::class);
-        $this->eManager        = $this->doctrine->getManager();
+        $this->eManager = $this->doctrine->getManager();
     }
 
     private function loadGenres()
     {
-        $this->genres   = $this->genreRepository->findAll();
+        $this->genres = $this->genreRepository->findAll();
         $this->isLoaded = true;
     }
 

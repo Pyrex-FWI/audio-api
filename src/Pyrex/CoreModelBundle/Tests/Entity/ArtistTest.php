@@ -2,13 +2,11 @@
 
 namespace Pyrex\CoreModelBundle\Tests\Entity;
 
-
 use Pyrex\CoreModelBundle\Tests\EntityBase;
 
 class ArtistTest extends EntityBase
 {
-
-    public function  testGenreMethods()
+    public function testGenreMethods()
     {
         $artist = self::getArtistInstance();
         $media = self::getMediaInstance();

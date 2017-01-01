@@ -8,18 +8,18 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
 /**
- * Class Id3Manager
- * @package AppBundle\Id3
+ * Class Id3Manager.
  */
 class Id3Manager
 {
     /** @var Id3WrapperInterface[] */
     private $wrappers = [];
-    /** @var  LoggerInterface */
+    /** @var LoggerInterface */
     private $logger;
 
     /**
      * Id3Manager constructor.
+     *
      * @param LoggerInterface|null $logger
      */
     public function __construct(LoggerInterface $logger = null)

@@ -26,8 +26,8 @@ class ScriptController extends Controller
         $entityManager = $doctrine->getManager('pyrex_dupe');
         /** @var DupeFileRepository $dupeFileRepo */
         $dupeFileRepo = $entityManager->getRepository('PyrexDupeBundle:DupeFile');
-        $dupeFiles    = $dupeFileRepo->findBy(['deleteFlag' => true]);
-        $cmd          = [];
+        $dupeFiles = $dupeFileRepo->findBy(['deleteFlag' => true]);
+        $cmd = [];
         foreach ($dupeFiles as $file) {
             /* @var DupeFile $file */
             $cmd[] = sprintf('rm "%s"', $file->getPathFile());

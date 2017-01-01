@@ -25,17 +25,14 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
-/**
- *
- */
 class RemapLocalFileCommand extends ContainerAwareCommand
 {
     private $notExist;
     private $total = 0;
     private $inputDir;
-    /** @var  OutputInterface */
+    /** @var OutputInterface */
     private $output;
-    /** @var  InputInterface */
+    /** @var InputInterface */
     private $input;
 
     /**
@@ -50,7 +47,7 @@ class RemapLocalFileCommand extends ContainerAwareCommand
             //->addArgument('rules', InputArgument::REQUIRED)
             ->addArgument('inputDir', InputArgument::REQUIRED)
             ->addOption('dry', InputArgument::OPTIONAL)
-            ->setHelp(<<<EOF
+            ->setHelp(<<<'EOF'
 The <info>%command.name%</info> command greets somebody or everybody:
 
 <info>php %command.full_name%</info>
@@ -87,9 +84,9 @@ EOF
         $this->em = $doctrine->getManager();
         $this->em->getConnection()->getConfiguration()->setSQLLogger(null);
 
-        $files       = Finder::create()->in($this->inputDir)->name('/\.mp(3|4)$/')->files();
+        $files = Finder::create()->in($this->inputDir)->name('/\.mp(3|4)$/')->files();
         $this->total = $files->count();
-        $size        = 1000;
+        $size = 1000;
 
         $output->writeln($this->inputDir);
 
@@ -149,13 +146,14 @@ EOF
     private function showMissingSample()
     {
         $tableHelper = new Table($this->output);
-        $max         = 50 >= count($this->notExist) ? count($this->notExist) : 50;
+        $max = 50 >= count($this->notExist) ? count($this->notExist) : 50;
         for ($i = 0; $i < $max; ++$i) {
             $tableHelper->addRow([$this->notExist[$i]]);
         }
         $tableHelper->addRow(['Total', $this->total]);
         $tableHelper->render();
     }
+
     /**
      * @param InputInterface  $input
      * @param OutputInterface $output
@@ -165,7 +163,7 @@ EOF
     private function init(InputInterface $input, OutputInterface $output)
     {
         $this->inputDir = $input->getArgument('inputDir');
-        $this->output   = $output;
-        $this->input    = $input;
+        $this->output = $output;
+        $this->input = $input;
     }
 }

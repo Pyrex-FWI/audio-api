@@ -38,7 +38,7 @@ class AppEventSubscriberTest extends KernelTestCase
                 ->setReleaseDate($faker->dateTime);
         }
 
-        if ($provider === Media::PROVIDER_FRP_AUDIO  || $provider === Media::PROVIDER_FRP_VIDEO) {
+        if ($provider === Media::PROVIDER_FRP_AUDIO || $provider === Media::PROVIDER_FRP_VIDEO) {
             $item = new FranchisePoolItem();
             $item->setItemId($faker->id);
             $item->setArtist($faker->artist)
@@ -82,8 +82,8 @@ class AppEventSubscriberTest extends KernelTestCase
     {
         /** @var EventDispatcher $evtDispatch */
         $evtDispatch = static::$kernel->getContainer()->get('event_dispatcher');
-        /** @var  Registry $doctrine */
-        $doctrine  = static::$kernel->getContainer()->get('doctrine');
+        /** @var Registry $doctrine */
+        $doctrine = static::$kernel->getContainer()->get('doctrine');
         $providers = Media::getProviders();
         foreach ($providers as $provider) {
             if ($provider == Media::PROVIDER_DIGITAL_DJ_POOL) {
@@ -91,7 +91,7 @@ class AppEventSubscriberTest extends KernelTestCase
             }
 
             for ($i = 0; $i < 20; ++$i) {
-                $item  = self::createItem($provider);
+                $item = self::createItem($provider);
                 $exist = $doctrine->getRepository(Media::getProviderEntityClass($provider))->findOneBy(['providerId' => $item->getItemId()]);
                 if ($exist) {
                     $doctrine->getManager()->remove($exist);
@@ -111,7 +111,7 @@ class AppEventSubscriberTest extends KernelTestCase
     {
         /** @var EventDispatcher $evtDispatch */
         $evtDispatch = static::$kernel->getContainer()->get('event_dispatcher');
-        /** @var  Registry $doctrine */
+        /** @var Registry $doctrine */
         $doctrine = static::$kernel->getContainer()->get('doctrine');
 
         $items = [];
@@ -150,7 +150,7 @@ class AppEventSubscriberTest extends KernelTestCase
     public static function createFrpAudioItem()
     {
         /** @var Generator $faker */
-        $faker    = static::$kernel->getContainer()->get('faker');
+        $faker = static::$kernel->getContainer()->get('faker');
         $frpAudio = new FranchisePoolItem();
         $frpAudio->setItemId($faker->id);
         $frpAudio->setArtist($faker->artist)
@@ -169,7 +169,7 @@ class AppEventSubscriberTest extends KernelTestCase
     {
         /** @var Generator $faker */
         $faker = static::$kernel->getContainer()->get('faker');
-        $avd   = new AvdItem();
+        $avd = new AvdItem();
         $avd->setItemId($faker->id);
         $avd->setArtist($faker->artist)
             ->setTitle($faker->title)
@@ -189,9 +189,9 @@ class AppEventSubscriberTest extends KernelTestCase
     {
         /** @var EventDispatcher $evtDispatch */
         $evtDispatch = static::$kernel->getContainer()->get('event_dispatcher');
-        /** @var  Registry $doctrine */
-        $doctrine   = static::$kernel->getContainer()->get('doctrine');
-        $dirEvent   = new DirectoryEvent(new \SplFileInfo('/volume3/temp/Jus_Shane-Stronger-WEB-2015-JAH'), 'Dance Hall', 'Some album', 'Some artist', 2011);
+        /** @var Registry $doctrine */
+        $doctrine = static::$kernel->getContainer()->get('doctrine');
+        $dirEvent = new DirectoryEvent(new \SplFileInfo('/volume3/temp/Jus_Shane-Stronger-WEB-2015-JAH'), 'Dance Hall', 'Some album', 'Some artist', 2011);
         $getDeleted = function () use ($doctrine, $dirEvent) {
             return $doctrine->getRepository('\Pyrex\CoreModelBundle\Entity\DeletedRelease')->findByRawName($dirEvent->getDirName());
         };

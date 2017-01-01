@@ -71,11 +71,11 @@ class DupeFile
      */
     public function setPathFile($pathFile)
     {
-        $pathFile       = stripslashes($pathFile);
+        $pathFile = stripslashes($pathFile);
         $this->pathFile = $pathFile;
-        $this->id       = $this->generateId($pathFile);
-        $folder         = explode('/', $pathFile);
-        $length         = count($folder);
+        $this->id = $this->generateId($pathFile);
+        $folder = explode('/', $pathFile);
+        $length = count($folder);
         if ($length > 1) {
             $this->setParentFolder($folder[$length - 2]);
         }
@@ -152,6 +152,7 @@ class DupeFile
             return $e->getMessage();
         }
     }
+
     /**
      * @return int
      */

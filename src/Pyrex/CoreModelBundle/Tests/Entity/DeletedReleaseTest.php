@@ -2,13 +2,11 @@
 
 namespace Pyrex\CoreModelBundle\Tests\Entity;
 
-
 use Pyrex\CoreModelBundle\Tests\EntityBase;
 
 class DeletedReleaseTest extends EntityBase
 {
-
-    public function  testGenreMethods()
+    public function testGenreMethods()
     {
         $deletedRelease = self::getDeletedReleaseInstance();
         $now = new \DateTime('now');

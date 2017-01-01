@@ -18,7 +18,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode    = $treeBuilder->root('pyrex_dupe');
+        $rootNode = $treeBuilder->root('pyrex_dupe');
 
         $rootNode->children()->scalarNode('dupe_dump_file')/*->isRequired()*/->end();
 

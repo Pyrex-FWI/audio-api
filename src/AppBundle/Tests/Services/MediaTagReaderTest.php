@@ -9,26 +9,19 @@
 
 namespace AppBundle\Service;
 
-use AppBundle\Entity\Media;
-use AppBundle\Serializer\Normalizer\Id3MetadataNormalizer;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityManagerInterface;
 use Prophecy\Prophet;
-use Pyrex\CoreModelBundle\Repository\MediaRepository;
-use Sapar\Id3\Metadata\Id3Metadata;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Component\Serializer\Serializer;
 
 /**
- * Class MediaTagReaderTest
+ * Class MediaTagReaderTest.
+ *
  * @author Christophe Pyree <christophe.pyree@gmail.com>
- * @package AppBundle\Service
  */
 class MediaTagReaderTest extends KernelTestCase
 {
-
-    /** @var  Prophet */
+    /** @var Prophet */
     private $prophet;
+
     protected function setUp()
     {
         parent::setUp();
@@ -40,7 +33,5 @@ class MediaTagReaderTest extends KernelTestCase
      */
     public function createReferenceIfNotExist()
     {
-
     }
-
 }

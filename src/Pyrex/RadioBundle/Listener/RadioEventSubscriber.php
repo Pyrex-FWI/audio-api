@@ -11,7 +11,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Serializer\Serializer;
 
 /**
- * RadioEventSubscriber
+ * RadioEventSubscriber.
  */
 class RadioEventSubscriber implements EventSubscriberInterface
 {
@@ -24,9 +24,9 @@ class RadioEventSubscriber implements EventSubscriberInterface
 
     public function __construct(Registry $doctrine, Serializer $serializer, Logger $logger)
     {
-        $this->doctrine   = $doctrine;
+        $this->doctrine = $doctrine;
         $this->serializer = $serializer;
-        $this->logger     = $logger;
+        $this->logger = $logger;
     }
 
     /**

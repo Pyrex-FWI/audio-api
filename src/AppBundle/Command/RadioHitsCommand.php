@@ -19,16 +19,13 @@ use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-/**
- *
- */
 class RadioHitsCommand extends ContainerAwareCommand
 {
-    /** @var  OutputInterface */
+    /** @var OutputInterface */
     private $output;
-    /** @var  InputInterface */
+    /** @var InputInterface */
     private $input;
-    /** @var  Registry */
+    /** @var Registry */
     private $doctrine;
 
     /**
@@ -39,7 +36,7 @@ class RadioHitsCommand extends ContainerAwareCommand
         $this
             ->setName('radio:hits:fetch')
             ->setDescription('Retreive radio hits')
-                  ->setHelp(<<<EOF
+                  ->setHelp(<<<'EOF'
 The <info>%command.name%</info>
 <info>php %command.full_name%</info>
 
@@ -51,8 +48,8 @@ EOF
 
     private function init(InputInterface $input, OutputInterface $output)
     {
-        $this->output   = $output;
-        $this->input    = $input;
+        $this->output = $output;
+        $this->input = $input;
         $this->doctrine = $this->getContainer()->get('doctrine');
     }
 

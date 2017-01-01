@@ -1,6 +1,13 @@
 <?php
+/**
+ * Copyright (c) 2016. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+ * Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
+ * Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
+ * Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
+ * Vestibulum commodo. Ut rhoncus gravida arcu.
+ */
 
-namespace Pyrex\AdminBundle\Form\Type;
+namespace AppBundle\Form\Type;
 
 use Pyrex\CoreModelBundle\Entity\Deejay;
 use Symfony\Component\Form\AbstractType;
@@ -12,14 +19,14 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class DeejayRegistrationType
+ * Class DeejayRegistrationType.
+ *
  * @author Christophe Pyree <christophe.pyree@gmail.com>
- * @package AppBundle\Form\Type
  */
 class DeejayRegistrationType extends AbstractType
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -34,11 +41,11 @@ class DeejayRegistrationType extends AbstractType
                 'password',
                 RepeatedType::class,
                 [
-                    'type'              => PasswordType::class,
-                    'required'          => true,
-                    'invalid_message'   => 'The password fields must match.',
-                    'first_options'     => ['label' => 'Password'],
-                    'second_options'    => ['label' => 'Repeat password'],
+                    'type' => PasswordType::class,
+                    'required' => true,
+                    'invalid_message' => 'The password fields must match.',
+                    'first_options' => ['label' => 'Password'],
+                    'second_options' => ['label' => 'Repeat password'],
                 ]
             )
             ->add(
@@ -52,11 +59,8 @@ class DeejayRegistrationType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class'    => Deejay::class
+                'data_class' => Deejay::class,
             ]
         );
     }
-
-
 }
-

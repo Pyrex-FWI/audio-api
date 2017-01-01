@@ -176,7 +176,7 @@ class DupeGroup
         foreach ($this->dupeFiles as $file) {
             /* @var DupeFile $file */
             $fileInfo = new \SplFileInfo($file->getPathFile());
-            $ext[]    = $fileInfo->getExtension();
+            $ext[] = $fileInfo->getExtension();
         }
 
         $ext = array_unique($ext);

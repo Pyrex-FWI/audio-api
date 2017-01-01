@@ -14,6 +14,7 @@ class HomeController extends Controller
     /**
      * @Route("/", name="home")
      * @Template()
+     *
      * @return Response
      */
     public function indexAction()

@@ -9,21 +9,21 @@
 
 namespace Pyrex\CoreModelBundle\Event;
 
-
 use Pyrex\CoreModelBundle\Entity\Deejay;
 
 /**
- * Class DeejayEventArgs
+ * Class DeejayEventArgs.
+ *
  * @author Christophe Pyree <christophe.pyree@gmail.com>
- * @package Pyrex\CoreModelBundle\Event
  */
 class DeejayEventArgs
 {
-    /** @var  Deejay */
+    /** @var Deejay */
     private $deejay;
 
     /**
      * DeejayEventArgs constructor.
+     *
      * @param Deejay $deejay
      */
     public function __construct(Deejay $deejay)

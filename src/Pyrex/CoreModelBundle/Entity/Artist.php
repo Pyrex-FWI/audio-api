@@ -9,7 +9,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
- * Artist
+ * Artist.
  *
  * @ORM\Table(uniqueConstraints={@ORM\UniqueConstraint(name="name_idx", columns={"name"})})
  * @ORM\Entity(repositoryClass="Pyrex\CoreModelBundle\Repository\ArtistRepository")
@@ -19,7 +19,7 @@ class Artist
     use TimestampableEntity;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -49,6 +49,7 @@ class Artist
 
     /**
      * Artist constructor.
+     *
      * @param null $name
      */
     public function __construct($name = null)
@@ -56,10 +57,11 @@ class Artist
         $this->setName($name);
         $this->medias = new ArrayCollection();
     }
+
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -76,11 +78,13 @@ class Artist
 
     /**
      * @param string $name
+     *
      * @return $this
      */
     public function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -94,11 +98,13 @@ class Artist
 
     /**
      * @param mixed $medias
+     *
      * @return Artist
      */
     public function setMedias($medias)
     {
         $this->medias = $medias;
+
         return $this;
     }
 
@@ -114,5 +120,4 @@ class Artist
     {
         return $this->slug;
     }
-
 }

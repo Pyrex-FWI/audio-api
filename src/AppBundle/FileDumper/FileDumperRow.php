@@ -4,7 +4,7 @@ namespace AppBundle\FileDumper;
 
 class FileDumperRow
 {
-    /** @var  \SplFileInfo */
+    /** @var \SplFileInfo */
     private $file;
 
     private $provider;
@@ -14,6 +14,7 @@ class FileDumperRow
         $this->setProvider($provider);
         $this->setFile($file);
     }
+
     /**
      * @return \SplFileInfo
      */

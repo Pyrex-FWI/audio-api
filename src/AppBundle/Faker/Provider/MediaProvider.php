@@ -4,6 +4,7 @@
  * Date: 04/09/15
  * Time: 20:09.
  */
+
 namespace AppBundle\Faker\Provider;
 
 use Faker\Provider\Base;
@@ -57,7 +58,7 @@ class MediaProvider extends Base
         'Zouk',
         'Rap',
         'Hip-Hop',
-        'Ethnic'
+        'Ethnic',
     ];
     protected static $title = [
         'About You',
@@ -101,7 +102,7 @@ class MediaProvider extends Base
 
     protected static $extensions = [
         'mp3',
-        'mp4'
+        'mp4',
     ];
 
     public static $trackFileNameFormats = '{{id}}_{{artist}}-{{title}}.{{mediaExtension}}';
@@ -115,6 +116,7 @@ class MediaProvider extends Base
     {
         return static::randomElement(static::$extensions);
     }
+
     /**
      * @example 'Rihanna'
      */

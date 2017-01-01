@@ -10,26 +10,22 @@
 namespace AppBundle\Service;
 
 use AppBundle\Entity\Media;
-use AppBundle\Serializer\Normalizer\Id3MetadataNormalizer;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Prophecy\Prophet;
 use Pyrex\CoreModelBundle\Repository\MediaRepository;
-use Sapar\Id3\Metadata\Id3Metadata;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Component\Serializer\Serializer;
 
 /**
- * Class MediaCreateReference
+ * Class MediaCreateReference.
+ *
  * @author Christophe Pyree <christophe.pyree@gmail.fr>
- * @package AppBundle\Service
  */
 class MediaCreateReferenceTest extends KernelTestCase
 {
-
-    /** @var  EntityManagerInterface */
+    /** @var EntityManagerInterface */
     private $entityManager;
-    /** @var  Prophet */
+    /** @var Prophet */
     private $prophet;
 
     protected function setUp()
@@ -44,7 +40,7 @@ class MediaCreateReferenceTest extends KernelTestCase
     public function createReferenceIfNotExist()
     {
         /* @var Media $media */
-        $media      = new Media();
+        $media = new Media();
         $media->setFullPath('toto');
 
         $mediaRepository = $this->prophet->prophesize(MediaRepository::class);
@@ -60,5 +56,4 @@ class MediaCreateReferenceTest extends KernelTestCase
         $result = $mediaCreateReference->createReferenceIfNotExist('toto');
         $this->assertEquals(Media::class, get_class($result));
     }
-
 }

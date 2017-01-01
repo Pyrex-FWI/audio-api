@@ -8,11 +8,9 @@ use PhpAmqpLib\Message\AMQPMessage;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Serializer\Exception\UnexpectedValueException;
 
 /**
- * Class MediaCreateReferenceConsumer
- * @package AppBundle\RabbitMq\Consumer
+ * Class MediaCreateReferenceConsumer.
  */
 class MediaCreateReferenceConsumer implements ConsumerInterface
 {
@@ -26,12 +24,13 @@ class MediaCreateReferenceConsumer implements ConsumerInterface
 
     /**
      * MediaIndexerConsumer constructor.
+     *
      * @param LoggerInterface          $logger
      * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(LoggerInterface $logger)
     {
-        $this->logger          = $logger;
+        $this->logger = $logger;
     }
 
     /**
@@ -41,7 +40,7 @@ class MediaCreateReferenceConsumer implements ConsumerInterface
      */
     public function execute(AMQPMessage $msg)
     {
-        self::$count++;
+        ++self::$count;
 
         $data = $this->container->get('serializer')->decode($msg->body, 'json');
         $this->logger->info(self::$count.' - '.$data['pathName']);

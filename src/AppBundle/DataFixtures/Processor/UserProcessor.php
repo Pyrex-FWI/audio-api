@@ -9,15 +9,14 @@
 
 namespace AppBundle\DataFixtures\Processor;
 
-
 use Nelmio\Alice\ProcessorInterface;
 use Pyrex\CoreModelBundle\Entity\Deejay;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
 
 /**
- * Class UserProcessor
+ * Class UserProcessor.
+ *
  * @author Christophe Pyree <christophe.pyree@gmail.com>
- * @package AppBundle\DataFixtures\ORM\Processor
  */
 class UserProcessor implements ProcessorInterface
 {
@@ -25,6 +24,7 @@ class UserProcessor implements ProcessorInterface
 
     /**
      * UserProcessor constructor.
+     *
      * @param $encoder
      */
     public function __construct(UserPasswordEncoder $encoder)

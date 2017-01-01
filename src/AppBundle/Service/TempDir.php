@@ -8,23 +8,23 @@ use Symfony\Component\Finder\SplFileInfo;
 
 class TempDir
 {
-    /** @var  \SplFileInfo */
+    /** @var \SplFileInfo */
     private $tempDirectory;
-    /** @var  \SplFileInfo */
+    /** @var \SplFileInfo */
     private $rootDirectory;
-    /** @var  SplFileInfo[] */
+    /** @var SplFileInfo[] */
     private $directoryFiles;
-    /** @var  bool */
+    /** @var bool */
     private $strictMode = false;
-    /** @var bool  */
+    /** @var bool */
     private $countFilesFromSvf = false;
-    private $errors            = [];
+    private $errors = [];
 
-    /** @var  id3Manager */
+    /** @var id3Manager */
     private $id3Manager;
-    private $tempDirectoryId3Genres  = [];
-    private $tempDirectoryId3Years   = [];
-    private $tempDirectoryId3Albums  = [];
+    private $tempDirectoryId3Genres = [];
+    private $tempDirectoryId3Years = [];
+    private $tempDirectoryId3Albums = [];
     private $tempDirectoryId3Artists = [];
 
     public function __construct(Id3Manager $id3Manager)
@@ -39,8 +39,8 @@ class TempDir
      */
     public function setTempDirectory($getTempDir)
     {
-        $this->errors         = [];
-        $this->tempDirectory  = new \SplFileInfo($getTempDir);
+        $this->errors = [];
+        $this->tempDirectory = new \SplFileInfo($getTempDir);
         $this->directoryFiles = (iterator_to_array(Finder::create()->depth('== 0')->in($this->getTempDirectory()->getRealPath())->files()->getIterator()));
 
         return $this;
@@ -68,26 +68,26 @@ class TempDir
 
     public function readTempDirectoryMeta()
     {
-        $genres       = [];
-        $years        = [];
-        $albums       = [];
-        $artists      = [];
+        $genres = [];
+        $years = [];
+        $albums = [];
+        $artists = [];
         $filesToCheck = ($this->id3Manager->keepReadablesFiles(array_keys($this->directoryFiles)));
         if (count($filesToCheck) == 0) {
             return false;
         }
-        $result   = $this->id3Manager->readMultipleTags($filesToCheck);
+        $result = $this->id3Manager->readMultipleTags($filesToCheck);
         $nbResult = count($result);
 
         for ($i = 0; $i < $nbResult; ++$i) {
-            $genres    = array_merge($genres, $this->id3Manager->getReaderWrapper()->eq($i)->getGenres());
-            $years[]   = $this->id3Manager->getReaderWrapper()->eq($i)->getYear();
-            $albums[]  = $this->id3Manager->getReaderWrapper()->eq($i)->getAlbum();
+            $genres = array_merge($genres, $this->id3Manager->getReaderWrapper()->eq($i)->getGenres());
+            $years[] = $this->id3Manager->getReaderWrapper()->eq($i)->getYear();
+            $albums[] = $this->id3Manager->getReaderWrapper()->eq($i)->getAlbum();
             $artists[] = $this->id3Manager->getReaderWrapper()->eq($i)->getArtist();
         }
-        $this->tempDirectoryId3Genres  = array_filter(array_unique($genres), 'strlen');
-        $this->tempDirectoryId3Years   = array_filter(array_unique($years), 'strlen');
-        $this->tempDirectoryId3Albums  = array_filter(array_unique($albums), 'strlen');
+        $this->tempDirectoryId3Genres = array_filter(array_unique($genres), 'strlen');
+        $this->tempDirectoryId3Years = array_filter(array_unique($years), 'strlen');
+        $this->tempDirectoryId3Albums = array_filter(array_unique($albums), 'strlen');
         $this->tempDirectoryId3Artists = array_filter(array_unique($artists), 'strlen');
 
         return true;

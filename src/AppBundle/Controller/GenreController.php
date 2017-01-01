@@ -18,9 +18,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Class GenreController
+ * Class GenreController.
+ *
  * @author Christophe Pyree <christophe.pyree@gmail.com>
- * @package AppBundle\Controller
  * @Route("/genre")
  */
 class GenreController extends Controller
@@ -28,11 +28,11 @@ class GenreController extends Controller
     /**
      * @Route("/", name="genre_list")
      * @Template()
+     *
      * @return Response
      */
     public function indexAction(Request $request)
     {
-
         $pagination = $this->get('repository.genre')->paginate($request);
 
         return [
@@ -44,6 +44,7 @@ class GenreController extends Controller
      * @Route("/edit/{id}", requirements={"id": "\d+"}, name="genre_id")
      * @Route("/edit/{slug}", name="genre_slug")
      * @Template()
+     *
      * @return Response
      */
     public function editAction(Request $request, Genre $genre)
@@ -52,9 +53,8 @@ class GenreController extends Controller
         $form->handleRequest($request);
 
         return [
-            'form'  => $form->createView(),
+            'form' => $form->createView(),
             'genre' => $genre,
         ];
     }
-
 }

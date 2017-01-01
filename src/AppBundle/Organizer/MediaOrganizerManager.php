@@ -3,6 +3,7 @@
  * Date: 06/09/15
  * Time: 11:56.
  */
+
 namespace AppBundle\Organizer;
 
 use AppBundle\Entity\Media;
@@ -15,7 +16,7 @@ class MediaOrganizerManager
 {
     /** @var array RuleInterface[] */
     private $rules = [];
-    /** @var  EventDispatcher */
+    /** @var EventDispatcher */
     protected $eventDispatcher;
     /**
      * @var Logger;
@@ -26,7 +27,7 @@ class MediaOrganizerManager
         $eventDispatcher,
         Logger $logger = null)
     {
-        $this->logger          = $logger ? $logger : new NullLogger();
+        $this->logger = $logger ? $logger : new NullLogger();
         $this->eventDispatcher = $eventDispatcher;
     }
 
@@ -83,7 +84,7 @@ class MediaOrganizerManager
                 $this->logger->warning(sprintf('Possible error because final part count doesn\'t equal rules count. %s -> %s',
                     $moveInstruc->getOrigin(), $moveInstruc->getFinalDestination()), [$moveInstruc, $media]);
             }
-            $fileNameOrg  = basename($moveInstruc->getOrigin());
+            $fileNameOrg = basename($moveInstruc->getOrigin());
             $fileNameDest = basename($moveInstruc->getFinalDestination());
             if ($fileNameOrg !== $fileNameDest) {
                 throw new \Exception(sprtinf('File name \'%s\' are modified in \'%s\' for %s file', $fileNameOrg, $fileNameDest, $moveInstruc->getOrigin()));

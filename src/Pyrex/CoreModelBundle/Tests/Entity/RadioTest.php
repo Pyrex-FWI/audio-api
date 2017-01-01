@@ -2,19 +2,17 @@
 
 namespace Pyrex\CoreModelBundle\Tests\Entity;
 
-
 use Pyrex\CoreModelBundle\Tests\EntityBase;
 
 class RadioTest extends EntityBase
 {
-
-    public function  testGenreMethods()
+    public function testGenreMethods()
     {
         $radio = self::getRadioInstance();
         $hitUrls = [
-            "http://someurl.com/toto/dld?dff=f",
-            "http://someurl.com/toto/dld?dff=f",
-            "http://someurl.com/toto/dld?dff=f",
+            'http://someurl.com/toto/dld?dff=f',
+            'http://someurl.com/toto/dld?dff=f',
+            'http://someurl.com/toto/dld?dff=f',
         ];
         $radio
             ->setName('NRJ')

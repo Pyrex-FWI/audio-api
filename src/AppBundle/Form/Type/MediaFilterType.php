@@ -9,14 +9,10 @@
 
 namespace AppBundle\Form\Type;
 
-
 use Lexik\Bundle\FormFilterBundle\Filter\FilterOperands;
-use Lexik\Bundle\FormFilterBundle\Filter\Form\Type\ChoiceFilterType;
 use Lexik\Bundle\FormFilterBundle\Filter\Form\Type\EntityFilterType;
 use Lexik\Bundle\FormFilterBundle\Filter\Form\Type\NumberFilterType;
-use Lexik\Bundle\FormFilterBundle\Filter\Form\Type\NumberRangeFilterType;
 use Lexik\Bundle\FormFilterBundle\Filter\Form\Type\TextFilterType;
-use Lexik\Bundle\FormFilterBundle\Filter\Query\QueryInterface;
 use Pyrex\CoreModelBundle\Entity\Genre;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -24,15 +20,16 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class MediaFilterType
+ * Class MediaFilterType.
+ *
  * @author Christophe Pyree <christophe.pyree@gmail.com>
- * @package AppBundle\Form\Type
  */
 class MediaFilterType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
      * @param array                $options
+     *
      * @return FormBuilderInterface
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -41,20 +38,20 @@ class MediaFilterType extends AbstractType
             ->add(
                 'title',
                 TextFilterType::class,
-                [ 'condition_pattern' => FilterOperands::STRING_CONTAINS]
+                ['condition_pattern' => FilterOperands::STRING_CONTAINS]
             )
             ->add(
                 'artist',
                 TextFilterType::class,
-                [ 'condition_pattern' => FilterOperands::STRING_CONTAINS ]
+                ['condition_pattern' => FilterOperands::STRING_CONTAINS]
             )
             ->add(
                 'genres',
                 EntityFilterType::class,
                 [
-                    'class'         => Genre::class,
-                    'choice_label'  => 'name',
-                    'multiple'      => true,
+                    'class' => Genre::class,
+                    'choice_label' => 'name',
+                    'multiple' => true,
                 ]
             )
             ->add(
@@ -81,10 +78,10 @@ class MediaFilterType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'csrf_protection'   => false,
+            'csrf_protection' => false,
             'validation_groups' => array('filtering'), // avoid NotBlank() constraint-related message,
-            'label_format'      => 'media_filter.%name%',
-            'translation_domain'=> 'forms',
+            'label_format' => 'media_filter.%name%',
+            'translation_domain' => 'forms',
         ));
     }
 }

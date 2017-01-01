@@ -3,6 +3,7 @@ php_enable_webserver: true
 php_enable_php_fpm: true
 php_packages:
   - php7.0
+  - php7.0-dev
   - php7.0-cli
   - php7.0-fpm
   - php7.0-mysql
@@ -12,6 +13,13 @@ php_packages:
   - php7.0-intl
   - php7.0-common
   - php-apcu
+  - php-curl
+
+index_prod: app
+index_dev: app_dev
+index_test: app_test
+dev_host: sapar-audio.dev
+test_host: sapar-audio.test
 
 apache_listen_port: 8000
 
@@ -29,13 +37,17 @@ apache_mods_enabled:
   - proxy_http.load
 mysql_root_password: sigipsr
 mysql_databases:
-- name: sf_audio_test
+- name: sf_audio_dev
   encoding: utf8mb4
   collation: utf8mb4_unicode_ci
 mysql_users:
-- name: sf_audio
+- name: sf_audio_dev
   host: "%"
-  password: sf_audio
+  password: sf_audio_dev
+  priv: "sf_audio_dev.*:ALL"
+- name: travis
+  host: "%"
+  password: ""
   priv: "sf_audio_test.*:ALL"
 
 
@@ -60,8 +72,8 @@ rabbitmq_plugins:                       # Ensure the plugins is installed
   - rabbitmq_management
 
 rabbitmq_users:                         # Ensure the users added
-  - user: guest
-    password: guest
+  - user: admin
+    password: admin
     vhost: /
     configure_priv: .*
     read_priv: .*

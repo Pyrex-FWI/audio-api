@@ -21,14 +21,11 @@ use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-/**
- *
- */
 class MediaExistenceCommand extends ContainerAwareCommand
 {
-    private $exist    = 0;
+    private $exist = 0;
     private $notExist = 0;
-    private $total    = 0;
+    private $total = 0;
     private $output;
 
     /**
@@ -39,7 +36,7 @@ class MediaExistenceCommand extends ContainerAwareCommand
         $this
             ->setName('media:update:existence')
             ->setDescription('Check if media referenced into database exist')
-                  ->setHelp(<<<EOF
+                  ->setHelp(<<<'EOF'
 The <info>%command.name%</info> command greets somebody or everybody:
 
 <info>php %command.full_name%</info>
@@ -57,17 +54,17 @@ EOF
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         /** @var Registry $doctrine */
-        $doctrine     = $this->getContainer()->get('doctrine');
+        $doctrine = $this->getContainer()->get('doctrine');
         $this->output = $output;
         /** @var EntityRepository $mediaRepository */
         $mediaRepository = $doctrine->getRepository('\AppBundle\Entity\Media');
         /** @var EntityManager $em */
         $em = $doctrine->getManager();
         $em->getConnection()->getConfiguration()->setSQLLogger(null);
-        $query       = $em->createQuery('SELECT COUNT(m.id) FROM \AppBundle\Entity\Media m');
+        $query = $em->createQuery('SELECT COUNT(m.id) FROM \AppBundle\Entity\Media m');
         $this->total = $query->getSingleScalarResult();
-        $from        = 0;
-        $size        = 1000;
+        $from = 0;
+        $size = 1000;
 
         $queryBuilder = $mediaRepository->createQueryBuilder('m');
         $queryBuilder->select('m');

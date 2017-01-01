@@ -20,11 +20,11 @@ class FileDumperWriter
     private $cmdPatern;
     /** @var   */
     private $outpuPatht;
-    /** @var array  */
+    /** @var array */
     private $paths = [];
-    /** @var  string. */
+    /** @var string. */
     private $filePatern;
-    /** @var  string Provider name. */
+    /** @var string Provider name. */
     private $provider;
 
     private $name;
@@ -41,9 +41,9 @@ class FileDumperWriter
      */
     public function __construct($name, $provider, $cmdPatern, $paths, $filePatern, $output)
     {
-        $this->name       = $name;
-        $this->provider   = $provider;
-        $this->cmdPatern  = $cmdPatern;
+        $this->name = $name;
+        $this->provider = $provider;
+        $this->cmdPatern = $cmdPatern;
         $this->outpuPatht = $output;
         $this->filePatern = $filePatern;
         $this->setPaths((array) $paths);

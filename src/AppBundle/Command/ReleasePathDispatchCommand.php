@@ -21,6 +21,7 @@ class ReleasePathDispatchCommand extends ContainerAwareCommand
 {
     const ARG_PATHS = 'paths';
     const ARG_OUTPATH = 'outpath';
+
     /**
      * {@inheritdoc}
      */
@@ -70,6 +71,7 @@ class ReleasePathDispatchCommand extends ContainerAwareCommand
 
         return is_array($paths) ? array_unique($resolved) : $resolved[0];
     }
+
     /**
      * {@inheritdoc}
      */

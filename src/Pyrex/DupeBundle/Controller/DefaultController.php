@@ -25,7 +25,7 @@ class DefaultController extends Controller
         /** @var EntityManager $entityManager */
         $entityManager = $doctrine->getManager('pyrex_dupe');
         $dupeGroupRepo = $entityManager->getRepository('PyrexDupeBundle:DupeGroup');
-        $groupId       = $dupeGroupRepo->find($groupId);
+        $groupId = $dupeGroupRepo->find($groupId);
 
         return $this->render('PyrexDupeBundle:Default:index.html.twig', array('group' => $groupId));
     }

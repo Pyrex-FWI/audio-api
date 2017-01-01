@@ -8,8 +8,6 @@ use AppBundle\Entity\Provider\DigitalDjPoolMedia;
 use AppBundle\Entity\Provider\FranchiseAudioMedia;
 use AppBundle\Entity\Provider\FranchiseVideoMedia;
 use AppBundle\Entity\Provider\SmashVidzMedia;
-use Doctrine\Common\Collections\ArrayCollection;
-use Pyrex\CoreModelBundle\Entity\Genre;
 use Pyrex\CoreModelBundle\Repository\GenreRepository;
 use Pyrex\CoreModelBundle\Repository\MediaRepository;
 use Sapar\Id3\Metadata\Id3Metadata;
@@ -17,17 +15,16 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\scalar;
 
 /**
- * Class Id3MetadataNormalizer
- * @package AppBundle\Serializer\Normalizer
+ * Class Id3MetadataNormalizer.
  */
 class Id3MetadataNormalizer extends AbstractNormalizer
 {
     const ORIGINAL_OBJECT = 'original_object';
 
-    /** @var  GenreRepository */
+    /** @var GenreRepository */
     private $genreRepository;
 
-    /** @var  MediaRepository */
+    /** @var MediaRepository */
     private $mediaRepository;
 
     /**
@@ -37,6 +34,7 @@ class Id3MetadataNormalizer extends AbstractNormalizer
     {
         $this->genreRepository = $genreRepository;
     }
+
     /**
      * @param MediaRepository $mediaRepository
      */
@@ -44,6 +42,7 @@ class Id3MetadataNormalizer extends AbstractNormalizer
     {
         $this->mediaRepository = $mediaRepository;
     }
+
     /**
      * Denormalizes data back into an object of the given class.
      *
@@ -58,8 +57,8 @@ class Id3MetadataNormalizer extends AbstractNormalizer
     {
         /** @var Media $media */
         $media = new Media();
-        if (isset($context[Id3MetadataNormalizer::ORIGINAL_OBJECT])) {
-            $media = $this->mediaRepository->find($context[Id3MetadataNormalizer::ORIGINAL_OBJECT]);
+        if (isset($context[self::ORIGINAL_OBJECT])) {
+            $media = $this->mediaRepository->find($context[self::ORIGINAL_OBJECT]);
         }
         $media->setTitle($data->getTitle());
         $media->setArtist($data->getArtist());

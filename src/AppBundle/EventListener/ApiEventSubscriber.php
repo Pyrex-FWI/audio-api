@@ -25,25 +25,26 @@ class ApiEventSubscriber implements EventSubscriberInterface
      * @var Registry
      */
     private $doctrine;
-    /** @var  Logger */
+    /** @var Logger */
     private $logger;
-    /** @var RequestStack  */
+    /** @var RequestStack */
     private $requestStack;
-    /** @var  Mediainfo */
+    /** @var Mediainfo */
     private $mediainfo;
-    /** @var  EntityManager */
+    /** @var EntityManager */
     private $eManager;
-    /** @var  EntityRepository */
+    /** @var EntityRepository */
     private $genreRepo;
-    /** @var  EntityRepository */
+    /** @var EntityRepository */
     private $mediaRepo;
-    /** @var \Doctrine\Common\Persistence\ObjectRepository  */
+    /** @var \Doctrine\Common\Persistence\ObjectRepository */
     private $artistRepo;
-    /** @var  GenreStack */
+    /** @var GenreStack */
     private $genreStack;
 
     /**
      * ApiEventSubscriber constructor.
+     *
      * @param Registry     $doctrine
      * @param RequestStack $requestStack
      * @param Mediainfo    $mediaInfo
@@ -51,14 +52,14 @@ class ApiEventSubscriber implements EventSubscriberInterface
      */
     public function __construct(Registry $doctrine, RequestStack $requestStack, Mediainfo $mediaInfo, Logger $logger)
     {
-        $this->doctrine      = $doctrine;
-        $this->eManager      = $doctrine->getManager();
-        $this->logger        = $logger;
-        $this->requestStack  = $requestStack;
-        $this->mediainfo     = $mediaInfo;
-        $this->genreRepo     = $this->eManager->getRepository(\Pyrex\CoreModelBundle\Entity\Genre::class);
-        $this->mediaRepo     = $this->eManager->getRepository(\AppBundle\Entity\Media::class);
-        $this->artistRepo    = $this->eManager->getRepository(\Pyrex\CoreModelBundle\Entity\Artist::class);
+        $this->doctrine = $doctrine;
+        $this->eManager = $doctrine->getManager();
+        $this->logger = $logger;
+        $this->requestStack = $requestStack;
+        $this->mediainfo = $mediaInfo;
+        $this->genreRepo = $this->eManager->getRepository(\Pyrex\CoreModelBundle\Entity\Genre::class);
+        $this->mediaRepo = $this->eManager->getRepository(\AppBundle\Entity\Media::class);
+        $this->artistRepo = $this->eManager->getRepository(\Pyrex\CoreModelBundle\Entity\Artist::class);
     }
 
     /**
@@ -68,6 +69,7 @@ class ApiEventSubscriber implements EventSubscriberInterface
     {
         $this->genreStack = $genreStack;
     }
+
     /**
      * {@inheritdoc}
      */
@@ -97,9 +99,9 @@ class ApiEventSubscriber implements EventSubscriberInterface
         }
 
         /** @var Paginator $items */
-        $items         = $event->getData();
+        $items = $event->getData();
         $entityManager = $this->doctrine->getManager();
-        $artistRepo    = $entityManager->getRepository('AppBundle\Entity\Artist');
+        $artistRepo = $entityManager->getRepository('AppBundle\Entity\Artist');
 
         foreach ($items->getIterator() as $media) {
             /* @var Media $media */
@@ -234,12 +236,12 @@ class ApiEventSubscriber implements EventSubscriberInterface
             /* @var Media $media */
             $mediaFiles[$media->getFullPath()] = $media;
         }
-        $mediaTags  = $this->mediainfo->readMultiple(array_keys($mediaFiles));
+        $mediaTags = $this->mediainfo->readMultiple(array_keys($mediaFiles));
         $mediaCount = count($mediaFiles);
-        $tagsCount  = count($mediaTags);
+        $tagsCount = count($mediaTags);
         for ($i = 0; $i < $tagsCount; ++$i) {
-            $tag     = $this->mediainfo->eq($i);
-            $genres  = $this->getOrCreateGenres($tag->getGenres());
+            $tag = $this->mediainfo->eq($i);
+            $genres = $this->getOrCreateGenres($tag->getGenres());
             $artists = $this->getOrCreateArtists($tag->getArtists());
             $mediaFiles[$tag->getFileName()]
                 ->setTitle($tag->getTitle())

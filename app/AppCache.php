@@ -2,8 +2,10 @@
 
 use Symfony\Bundle\FrameworkBundle\HttpCache\HttpCache;
 use Symfony\Component\HttpFoundation\Response;
+
 /**
- * Class AppCache
+ * Class AppCache.
+ *
  * @author Christophe Pyree <christophe.pyree@gmail.com>
  */
 class AppCache extends HttpCache
@@ -30,5 +32,4 @@ class AppCache extends HttpCache
 
         return $response;
     }
-
 }

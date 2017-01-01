@@ -14,11 +14,6 @@ namespace AppBundle\Command;
 use AppBundle\Entity\Media;
 use AppBundle\FileDumper\FileDumperReader;
 use AppBundle\FileDumper\FileDumperWriter;
-use Doctrine\Bundle\DoctrineBundle\Registry;
-use Doctrine\ORM\EntityRepository;
-use GuzzleHttp\Client;
-use GuzzleHttp\Pool;
-use GuzzleHttp\Psr7\Request;
 use OldSound\RabbitMqBundle\RabbitMq\Producer;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -38,13 +33,13 @@ class CollectionDumperCommand extends ContainerAwareCommand
 {
     /** @var LoggerInterface LoggerInterface */
     private $logger;
-    /** @var  OutputInterface */
+    /** @var OutputInterface */
     private $output;
-    /** @var  InputInterface */
+    /** @var InputInterface */
     private $input;
     /** @var FileDumperWriter[] */
     private $fileDumperWriters = [];
-    /** @var  ProgressBar */
+    /** @var ProgressBar */
     private $progressBar;
 
     /**
@@ -67,6 +62,7 @@ class CollectionDumperCommand extends ContainerAwareCommand
     {
         $this->fileDumperWriters[$fileDumperWriter->getName()] = $fileDumperWriter;
     }
+
     /**
      * {@inheritdoc}
      */
@@ -95,7 +91,7 @@ class CollectionDumperCommand extends ContainerAwareCommand
                 null
             )
             ->setHelp(
-                <<<EOT
+                <<<'EOT'
 Dump your collection via %ddp.console.collection_dumper.shell_command%
 EOT
             );
@@ -108,7 +104,7 @@ EOT
     {
         ini_set('memory_limit', '-1');
         gc_enable();
-        $this->input  = $input;
+        $this->input = $input;
         $this->output = $output;
 
         if ($this->input->getOption('info')) {
@@ -123,6 +119,7 @@ EOT
             $this->produceMsg();
         }
     }
+
     /**
      * Get all destination files name from FileDumper.
      *
@@ -139,7 +136,6 @@ EOT
         return $fileCollection;
     }
 
-
     /**
      * Find media and Write dump file.
      */
@@ -154,7 +150,6 @@ EOT
             $dumpWriter->run();
         }
     }
-
 
     /**
      * Show configuration information.
@@ -179,9 +174,9 @@ EOT
     {
         foreach ($this->getCollectionFileName() as $provider => $fp) {
             $reader = new FileDumperReader($fp);
-            $ctn    = $reader->count();
-            $i      = 0;
-            $stack  = [];
+            $ctn = $reader->count();
+            $i = 0;
+            $stack = [];
             $this->output->writeln(sprintf('Reading file \'<info>%s</info>\'', $fp));
             $this->output->writeln(sprintf('Try insert: <info>%s</info> media(s)', $ctn));
             $this->progressBar = new ProgressBar($this->output, $ctn);
@@ -190,9 +185,9 @@ EOT
             $mediaIndexer->setContentType('application/json');
             foreach ($reader as $line) {
                 $producerData = [
-                    'pathName'  => $line->getFile()->getPathname(),
-                    'provider'  => $line->getProvider(),
-                    'mediaRef'  => null,
+                    'pathName' => $line->getFile()->getPathname(),
+                    'provider' => $line->getProvider(),
+                    'mediaRef' => null,
                 ];
 
                 $stack[] = $line->getFile()->getPathname();

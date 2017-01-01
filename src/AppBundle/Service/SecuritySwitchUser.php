@@ -9,17 +9,16 @@
 
 namespace AppBundle\Service;
 
-
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Role\SwitchUserRole;
 
 class SecuritySwitchUser
 {
-
     private $storage;
 
     /**
      * SecuritySwitchUser constructor.
+     *
      * @param TokenStorage $storage
      */
     public function __construct(TokenStorage $storage)

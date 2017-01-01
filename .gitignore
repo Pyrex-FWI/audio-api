@@ -30,3 +30,4 @@ Tests/TestData/root_path
 *.retry
 web/assets/vendor
 /src/Pyrex/NfoReader/
+/.php_cs.cache

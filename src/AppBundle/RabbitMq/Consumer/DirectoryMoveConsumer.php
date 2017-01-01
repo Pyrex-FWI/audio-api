@@ -21,11 +21,12 @@ class DirectoryMoveConsumer implements ConsumerInterface
      */
     private $logger;
 
-    /** @var  EventDispatcherInterface */
+    /** @var EventDispatcherInterface */
     private $eventDispatcher;
+
     public function __construct(LoggerInterface $logger, EventDispatcherInterface $eventDispatcher)
     {
-        $this->logger          = $logger;
+        $this->logger = $logger;
         $this->eventDispatcher = $eventDispatcher;
     }
 
@@ -36,20 +37,20 @@ class DirectoryMoveConsumer implements ConsumerInterface
      */
     public function execute(AMQPMessage $msg)
     {
-        $kernel      = $this->container->get('kernel');
+        $kernel = $this->container->get('kernel');
         $application = new \Symfony\Bundle\FrameworkBundle\Console\Application($kernel);
         $application->setAutoExit(false);
         $fs = new \SplFileInfo($msg->body);
 
         $input = new ArrayInput(array(
-            'command'     => TempDirOrganizeCommand::NAME,
-            'temp-dir'    => $msg->body,
+            'command' => TempDirOrganizeCommand::NAME,
+            'temp-dir' => $msg->body,
             'root-output' => $this->container->getParameter('organize.temp.root_output'),
             //'-vvv'          => null,
             //'--dry-run'     => null
         ));
         // You can use NullOutput() if you don't need the output
-        $output   = new BufferedOutput();
+        $output = new BufferedOutput();
         $exitCode = false;
         $exitCode = $application->run($input, $output);
 
