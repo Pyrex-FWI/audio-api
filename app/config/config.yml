@@ -37,7 +37,7 @@ framework:
     assets: ~
     translator:
         fallback:
-            - %locale%
+            - '%locale%'
 
 # Twig Configuration
 twig:
@@ -146,7 +146,7 @@ swiftmailer:
     port: 587
     encryption: tls
     #auth_mode: plain
-    delivery_address: %gmail_adress%
+    delivery_address: '%gmail_adress%'
 #    delivery_whitelist:
 #        - %hotmail_adress%
     disable_delivery: true
@@ -198,8 +198,8 @@ hwi_oauth:
     resource_owners:
         facebook:
             type:                facebook
-            client_id:           %fb_client_id%
-            client_secret:       %fb_client_secret%
+            client_id:           '%fb_client_id%'
+            client_secret:       '%fb_client_secret%'
             scope: "email,public_profile"
 #    connect:
 #        registration_form_handler: deejay_hwioauth_form_handler
