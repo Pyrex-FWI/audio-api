@@ -157,4 +157,14 @@ abstract class AbstractCoreRepository extends EntityRepository implements Pagina
         );
     }
 
+    /**
+     * @return mixed
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function count()
+    {
+        return $this->createQueryBuilder('_c')->select('COUNT(_c.id)')->getQuery()->getSingleScalarResult();
+    }
+
 }

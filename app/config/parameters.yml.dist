@@ -5,8 +5,8 @@ parameters:
     database_host:     127.0.0.1
     database_port:     ~
     database_name:     sf_audio_dev
-    database_user:     root
-    database_password: ~
+    database_user:     dev
+    database_password: devpwd
     # You should uncomment this if you want use pdo_sqlite
     # database_path: "%kernel.root_dir%/data.db3"
 
@@ -103,3 +103,5 @@ parameters:
 
     rb.pid_file: /run/supervisord.pid
     rb.sock_file: /run/supervisord.sock
+
+    gmail_adress: "fake@gmail.com"

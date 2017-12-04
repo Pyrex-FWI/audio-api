@@ -1,55 +1,44 @@
-Vagrant.require_version ">= 1.5"
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
 
-# Check to determine whether we're on a windows or linux/os-x host,
-# later on we use this to launch ansible in the supported way
-# source: https://stackoverflow.com/questions/2108727/which-in-ruby-checking-if-program-exists-in-path-from-ruby
-def which(cmd)
-    exts = ENV['PATHEXT'] ? ENV['PATHEXT'].split(';') : ['']
-    ENV['PATH'].split(File::PATH_SEPARATOR).each do |path|
-        exts.each { |ext|
-            exe = File.join(path, "#{cmd}#{ext}")
-            return exe if File.executable? exe
-        }
-    end
-    return nil
-end
+require 'json'
+require 'yaml'
 
-Vagrant.configure("2") do |config|
-  config.vm.synced_folder "/Users/yemistikris/Documents/sapar-project/audio-api", "/var/www/html/audio",:owner => 'vagrant', :group => 'www-data', :mount_options => ["dmode=775","fmode=776"]
-  config.vm.synced_folder "/Users/yemistikris/Documents/sapar-project", "/sapar-project",:owner => 'vagrant', :group => 'www-data', :mount_options => ["dmode=775","fmode=766"]
-  config.vm.synced_folder "/Volumes/Extend/", "/Volumes/Extend/"
-  #config.vm.synced_folder "/Volumes/SSD_MAC/ddj", "/Volumes/SSD_MAC/ddj", type: "nfs"
+VAGRANTFILE_API_VERSION ||= "2"
+confDir = $confDir ||= File.expand_path("vendor/laravel/homestead", File.dirname(__FILE__))
 
-    config.vm.provider :virtualbox do |v|
-        v.name = "sapar-audio.dev"
-        v.customize [
-            "modifyvm", :id,
-            "--name", "sapar-audio.dev",
-            "--memory", 2048,
-            "--natdnshostresolver1", "on",
-            "--cpus", 2,
-        ]
-        #v.gui = true
-    end
+homesteadYamlPath = File.expand_path("Homestead.yaml", File.dirname(__FILE__))
+homesteadJsonPath = File.expand_path("Homestead.json", File.dirname(__FILE__))
+afterScriptPath = "after.sh"
+aliasesPath = "aliases"
 
-    config.vm.box = "bento/ubuntu-16.04"
-    config.vm.box_check_update = true
-    config.vm.network :private_network, ip: "10.10.10.10"
-    config.ssh.forward_agent = true
-    #config.ssh.private_key_path = "~/.ssh/id_rsa"
-    #config.ssh.username = "yemistikris"
+require File.expand_path(confDir + '/scripts/homestead.rb')
 
-    # If ansible is in your path it will provision from your HOST machine
-    # If ansible is not found in the path it will be instaled in the VM and provisioned from there
-    if which('ansible-playbook')
-        config.vm.provision "ansible" do |ansible|
-            ansible.playbook = "devops/ansible/install.yml"
-            #ansible.inventory_path = "devops/hosts"
-            ansible.limit = 'all'
+Vagrant.require_version '>= 1.9.0'
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+    if File.exist? aliasesPath then
+        config.vm.provision "file", source: aliasesPath, destination: "/tmp/bash_aliases"
+        config.vm.provision "shell" do |s|
+            s.inline = "awk '{ sub(\"\r$\", \"\"); print }' /tmp/bash_aliases > /home/vagrant/.bash_aliases"
         end
-    else
-        config.vm.provision :shell, path: "ansible/windows.sh", args: ["sapar.dev"]
     end
 
-    #config.vm.synced_folder "./", "/vagrant", type: "nfs"
+    if File.exist? homesteadYamlPath then
+        settings = YAML::load(File.read(homesteadYamlPath))
+    elsif File.exist? homesteadJsonPath then
+        settings = JSON.parse(File.read(homesteadJsonPath))
+    else
+        abort "Homestead settings file not found in #{confDir}"
+    end
+
+    Homestead.configure(config, settings)
+
+    if File.exist? afterScriptPath then
+        config.vm.provision "shell", path: afterScriptPath, privileged: false
+    end
+
+    if defined? VagrantPlugins::HostsUpdater
+        config.hostsupdater.aliases = settings['sites'].map { |site| site['map'] }
+    end
 end

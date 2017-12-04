@@ -50,4 +50,16 @@ class DeejayRepository extends AbstractCoreRepository implements UserLoaderInter
             }
         }
     }
+
+    public function generateActivationToken(Deejay $deejay, \DateInterval $dateInterval = null)
+    {
+        if (!$dateInterval) {
+            $dateInterval = new \DateInterval('PT01H');
+        }
+
+        $now = (new \DateTime())->add($dateInterval);
+
+        $deejay->setActivationToken(bin2hex(random_bytes(15)));
+        $deejay->setActivationTokenDate($now);
+    }
 }

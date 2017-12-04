@@ -1,0 +1,13 @@
+{% extends '::base.html.twig' %}
+{%  set cls = 'user-registration' %}
+{% block body %}
+    <p>
+        Votre enregistrement à bien été enregistré. Aussi, afin d'activer votre compte, merci de cliquer sur le lien d'activation contenu
+        dans le mail qui vous a été envoyé.
+    </p>
+    {% if not deejay.enabled %}
+    <p>
+        <a name="confirmationResendLink" class="confirmation-resend" href="{{ path('registration_confirmation_resend') }}">Cliquez ici</a> si vous n'avez pas reçu votre email d'activation.
+    </p>
+    {% endif %}
+{% endblock %}

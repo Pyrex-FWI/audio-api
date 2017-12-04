@@ -58,5 +58,7 @@ security:
                 #default_target_path: certification_admin_index
             # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
     access_control:
-        - { path: ^/((fr|en)/)?login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: '^/((fr|en)/)?(login|register|login\-form)$', roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: '^/((fr|en)/)?user/register(/confirmation(/resend)?)?$', roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: '^/((fr|en)/)?user/activate/*', roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/, roles: ROLE_USER }

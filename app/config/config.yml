@@ -18,7 +18,8 @@ parameters:
     locales: [ fr, en ]
     locale_regex: 'fr|en'
 framework:
-    #esi:             ~
+    ide: 'phpstorm://open?url=file://%%f&line=%%l'
+    esi: { enabled: true }
     secret:          "%secret%"
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
@@ -37,6 +38,7 @@ framework:
         # http://symfony.com/doc/current/reference/configuration/framework.html#handler-id
         handler_id:  ~
         #save_path:   "%kernel.root_dir%/../var/sessions/%kernel.environment%"
+        name: 'audio'
     fragments:       ~
     http_method_override: true
     assets: ~
@@ -146,14 +148,14 @@ swiftmailer:
     host:      "%mailer_host%"
     username:  "%mailer_user%"
     password:  "%mailer_password%"
-    #spool:     { type: memory }
-    port: 587
+    spool:     { type: memory }
+    #port: 587
     encryption: tls
     #auth_mode: plain
-    delivery_address: %gmail_adress%
+#    delivery_address: %gmail_adress%
 #    delivery_whitelist:
 #        - %hotmail_adress%
-    disable_delivery: true
+    disable_delivery: false
 
 deejay_pool:
     franchise_pool_audio:
@@ -185,7 +187,7 @@ app:
             create_media_reference_before_read_tag: false
 
 monolog:
-    channels: ['consumer', 'producer', 'ID3_READER' ]
+    channels: ['consumer', 'producer', 'id3_reader' ]
 
 lexik_form_filter:
     listeners:
@@ -204,3 +206,9 @@ lexik_form_filter:
 #            type:                facebook
 #            client_id:           %fb_client_id%
 #            client_secret:       %fb_client_secret%
+sonata_block:
+    default_contexts: [cms]
+    blocks:
+        # enable the SonataAdminBundle block
+        sonata.admin.block.admin_list:
+            contexts: [admin]

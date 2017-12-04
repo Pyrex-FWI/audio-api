@@ -24,7 +24,7 @@
     ],
     "require": {
         "php": ">=5.5.9",
-        "symfony/symfony": "3.1.*",
+        "symfony/symfony": "~3.4",
         "doctrine/orm": "^2.5",
         "doctrine/doctrine-bundle": "^1.6",
         "doctrine/doctrine-cache-bundle": "^1.2",
@@ -51,8 +51,10 @@
         "lexik/form-filter-bundle": "~5.0",
         "patchwork/jsqueeze": "^2.0",
         "friendsofsymfony/http-cache-bundle": "~1.0",
-        "hwi/oauth-bundle": "~0.5"
-
+        "hwi/oauth-bundle": "~0.5",
+        "leafo/scssphp": "^0.6.7",
+        "sonata-project/admin-bundle": "^3.23",
+        "sonata-project/doctrine-orm-admin-bundle": "^3.1"
     },
     "scripts": {
         "post-install-cmd": [
@@ -79,9 +81,10 @@
             "mysql  -u travis  -e 'ALTER TABLE `Media` ADD `provider` int(10) NOT NULL;' sf_audio_dev"
         ],
         "doctrine:reset:test": [
-            "php bin/console doctrine:database:drop -vvv --env test --force && true",
-            "php bin/console doctrine:database:create -vvv --env test && true",
-            "php bin/console doctrine:schema:update -vvv --env test --force && true"
+            "php bin/console doctrine:database:drop -vvv --env test -n --force --if-exists && true",
+            "php bin/console doctrine:database:create -vvv --env test -n --if-not-exists && true",
+            "php bin/console doctrine:schema:update -vvv --env test -n --force && true",
+            "php bin/console hautelook_alice:fixtures:load -n --env test && true"
         ],
         "ci:test": [
             "@reset-db:test",
@@ -99,7 +102,7 @@
     "require-dev": {
         "sensio/generator-bundle"   : "~3.0",
         "symfony/phpunit-bridge": "^3.0",
-        "phpunit/phpunit"           : "~5.2",
+        "phpunit/phpunit"           : "~6.0",
         "willdurand/faker-bundle": "@stable",
         "behat/behat": "~3.0",
         "behat/symfony2-extension": "~2.1",
@@ -108,7 +111,8 @@
         "behat/mink-browserkit-driver": "~1.3",
         "hautelook/alice-bundle": "^1.3",
         "doctrine/data-fixtures": "^1.2",
-        "mikey179/vfsStream": "^1.6"
+        "mikey179/vfsStream": "^1.6",
+        "laravel/homestead": "^6.2"
 
     },
     "extra": {

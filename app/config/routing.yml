@@ -1,18 +1,3 @@
-#hwi_oauth_redirect:
-#    resource: "@HWIOAuthBundle/Resources/config/routing/redirect.xml"
-#    prefix:   /redirect
-#
-#hwi_oauth_connect:
-#    resource: "@HWIOAuthBundle/Resources/config/routing/connect.xml"
-#    prefix:   /connect
-#
-#hwi_oauth_login:
-#    resource: "@HWIOAuthBundle/Resources/config/routing/login.xml"
-#    prefix:   /login
-
-#facebook_login:
-#    path: /connect/check-facebook
-
 logout:
     path: /admin/logout
     prefix:   /{_locale}/
@@ -36,7 +21,14 @@ app:
 
 pyrex_admin:
     resource: "@PyrexAdminBundle/Controller/"
+    #resource: "%kernel.project_dir%/src/Pyrex/AdminBundle/Controller/"
     type:     annotation
     prefix:   /{_locale}/
+    defaults:  { _locale: "fr" }
     requirements:
         _locale: '%locale_regex%'
+
+admin_area:
+    resource: "@SonataAdminBundle/Resources/config/routing/sonata_admin.xml"
+    prefix:   /{_locale}/sonata/admin
+    defaults:  { _locale: "fr" }

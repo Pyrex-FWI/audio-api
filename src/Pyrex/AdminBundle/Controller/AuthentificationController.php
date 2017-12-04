@@ -9,104 +9,82 @@
 
 namespace Pyrex\AdminBundle\Controller;
 
-use Pyrex\AdminBundle\Form\Type\DeejayRegistrationType;
-use Pyrex\CoreModelBundle\Entity\Deejay;
+use Pyrex\AdminBundle\Form\Type\LoginType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\FormType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Bundle\TwigBundle\TwigEngine;
+use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 /**
  * Class SecurityController
  * @author Christophe Pyree <christophe.pyree@gmail.com>
  * @package CertificationBundle\Controller
- * @Route("/")
+ * @Route(path="/", service="app.authentification_controller")
  */
-class AuthentificationController extends Controller
+class AuthentificationController
 {
+    /**
+     * @var AuthenticationUtils
+     */
+    private $authenticationUtils;
+    /**
+     * @var FormFactory
+     */
+    private $formFactory;
+    /**
+     * @var TwigEngine
+     */
+    private $twig;
+
+    public function __construct(
+        AuthenticationUtils $authenticationUtils,
+        FormFactory $formFactory,
+        TwigEngine $twig
+    )
+    {
+        $this->authenticationUtils = $authenticationUtils;
+        $this->formFactory = $formFactory;
+        $this->twig = $twig;
+    }
+
     /**
      * @Route("/login", name="login")
      * @param Request $request
+     * @Cache(expires="+2 minute", public=true)
+     * @Template()
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function loginAction(Request $request)
     {
+    }
 
-        $authenticationUtils = $this->get('security.authentication_utils');
-        // get the login error if there is one
-        $error = $authenticationUtils->getLastAuthenticationError(); // last username entered by the user
-        $lastUsername = $authenticationUtils->getLastUsername();
+    /**
+     * @Route("/login-form", name="login-form")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function loginFormAction(Request $request)
+    {
+        $error = $this->authenticationUtils->getLastAuthenticationError();
+        $lastUsername = $this->authenticationUtils->getLastUsername();
 
-        $form = $this->get('form.factory')->createNamedBuilder(null, FormType::class)
-            ->add(
-                '_username',
-                TextType::class,
+        $form = $this->formFactory->createNamed(null, LoginType::class);
+        $form->get('_username')->setData($lastUsername);
+
+        return new Response(
+            $this->twig->render(
+                'PyrexAdminBundle:Authentification:login-form.html.twig',
                 [
-                    'data' => $lastUsername,
+                    // last username entered by the user
+                    'last_username' => $lastUsername,
+                    'error'         => $error,
+                    'form'          => $form->createView(),
                 ]
             )
-            ->add(
-                '_password',
-                PasswordType::class
-            )
-            ->add(
-                '_remember_me',
-                CheckboxType::class
-            )
-            ->add(
-                'valider',
-                SubmitType::class
-            )
-            ->getForm();
-
-
-        return $this->render(
-            'PyrexAdminBundle:Authentification:login.html.twig',
-            [
-                // last username entered by the user
-                'last_username' => $lastUsername,
-                'error'         => $error,
-                'form'          => $form->createView(),
-            ]
         );
-    }
-
-    /**
-     * @Route(path="/register" ,name="register")
-     * @Template()
-     * @param Request $request
-     * @return array
-     */
-    public function registerAction(Request $request)
-    {
-        $deejay = new Deejay();
-        $registrationForm = $this->get('form.factory')->create(DeejayRegistrationType::class, $deejay);
-        $registrationForm->handleRequest($request);
-        if ($registrationForm->isSubmitted() && $registrationForm->isValid()) {
-            $deejay->setPassword($this->get('security.password_encoder')->encodePassword($deejay, $deejay->getPassword()));
-            $deejay->addRole('ROLE_USER');
-            $this->get('repository.deejay')->save($deejay);
-        }
-
-        return [
-            'registrationForm'  => $registrationForm->createView(),
-        ];
-    }
-
-    /**
-     * @Route("/new_user_mail/{id}")
-     * @Template()
-     * @param Deejay $deejay
-     * @return array
-     */
-    public function activeUserAction(Deejay $deejay)
-    {
-        $this->get('app.system_email')->newRegistrationMail($deejay);
-        dump($this->get('templating')->render('PyrexAdminBundle:Authentification:activeUser.html.twig', [ 'deejay' => $deejay ]));
     }
 }

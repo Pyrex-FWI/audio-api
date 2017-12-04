@@ -77,3 +77,20 @@ services:
             - '@?logger'
         tags:
             - { name: kernel.event_listener, event: security.switch_user, method: onSwitchUser }
+
+    abstract_controller:
+        class: Symfony\Bundle\FrameworkBundle\Controller\Controller
+        abstract: true
+        autowire: true
+
+    app.user_controller:
+        class: Pyrex\AdminBundle\Controller\UserController
+        autowire: true
+
+    app.authentification_controller:
+        class: Pyrex\AdminBundle\Controller\AuthentificationController
+        autowire: true
+
+    app.registration_controller:
+        class: Pyrex\AdminBundle\Controller\RegistrationController
+        autowire: true

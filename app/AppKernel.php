@@ -39,6 +39,12 @@ class AppKernel extends Kernel
             new Lexik\Bundle\FormFilterBundle\LexikFormFilterBundle(),
             new FOS\HttpCacheBundle\FOSHttpCacheBundle(),
             //new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
+            new Sonata\CoreBundle\SonataCoreBundle(),
+            new Sonata\BlockBundle\SonataBlockBundle(),
+            new Knp\Bundle\MenuBundle\KnpMenuBundle(),
+
+            // And finally, the storage and SonataAdminBu
+            new Sonata\AdminBundle\SonataAdminBundle(),
         ];
 
 

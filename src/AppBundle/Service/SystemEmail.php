@@ -30,11 +30,31 @@ class SystemEmail
      */
     public function newRegistrationMail(Deejay $deejay)
     {
+        if ($deejay->isEnabled()) {
+            return;
+        }
+
         $emailContent = $this->twigEngine->render('PyrexAdminBundle:Authentification:activeUser.html.twig', [ 'deejay' => $deejay ]);
         $message = \Swift_Message::newInstance()
             ->setFrom('yemistikris@hotmail.fr')
-            ->setTo('yemistikris@hotmail.fr')
+            ->setTo($deejay->getEmail())
             ->setSubject(sprintf('New deejay (%s) has registered', $deejay->getName()))
+            ->setBody(
+                $emailContent,
+                'text/html'
+            );
+        $res = $this->mailer->send($message, $failures);
+    }
+    /**
+     * @param Deejay $deejay
+     */
+    public function newRegistrationConfirmationMail(Deejay $deejay)
+    {
+        $emailContent = $this->twigEngine->render('PyrexAdminBundle:Authentification:activeUser.html.twig', [ 'deejay' => $deejay ]);
+        $message = \Swift_Message::newInstance()
+            ->setFrom('yemistikris@hotmail.fr')
+            ->setTo($deejay->getEmail())
+            ->setSubject(sprintf('Hey deejay (%s), Your account has been confirmed', $deejay->getName()))
             ->setBody(
                 $emailContent,
                 'text/html'

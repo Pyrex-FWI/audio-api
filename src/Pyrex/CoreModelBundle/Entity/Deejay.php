@@ -17,6 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * Deejay
@@ -44,24 +45,24 @@ class Deejay implements \Symfony\Component\Security\Core\User\AdvancedUserInterf
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=128, unique=true)
+     * @ORM\Column(name="name", type="string", length=128, unique=true, nullable=true, options={"default":null})
      */
     private $name;
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank()
+     * @Assert\Email()
      * @ORM\Column(type="string", length=255, unique=true)
      */
     private $email;
 
     /**
      * @var array
-     * @Assert\Choice(callback="getAllowedRoles")
+     * @Assert\Callback({"Pyrex\CoreModelBundle\Entity\Deejay", "validRoles"})
      * @ORM\Column(type="array")
      */
-    private $roles;
+    private $roles = [];
 
     /**
      * @var string
@@ -107,7 +108,24 @@ class Deejay implements \Symfony\Component\Security\Core\User\AdvancedUserInterf
      * @ORM\Column(type="string", options={"default"=null}, nullable=true)
      */
     private $googleId;
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     * @var string
+     */
+    private $salt;
 
+    /**
+     * @ORM\Column(type="string", length=40, unique=true, nullable=true)
+     * @var
+     */
+    private $activationToken;
+
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     * @var \DateTime
+     */
+    private $activationTokenDate;
 
     /**
      * Get id
@@ -218,7 +236,7 @@ class Deejay implements \Symfony\Component\Security\Core\User\AdvancedUserInterf
      */
     public function getSalt()
     {
-        return null;
+        return $this->salt;
     }
 
     /**
@@ -428,4 +446,59 @@ class Deejay implements \Symfony\Component\Security\Core\User\AdvancedUserInterf
             self::ROLE_USER,
         ];
     }
+
+    public static function validRoles($object, ExecutionContextInterface $executionContext, $payload)
+    {
+        foreach ($object as $role) {
+            if (!in_array($role, self::getAllowedRoles())) {
+                $executionContext->buildViolation('Le role de l\'utilisateurs est incorrect')
+                    ->atPath('roles')
+                    ->addViolation();
+            }
+        }
+    }
+
+    public function setSalt($string)
+    {
+        $this->salt = $string;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getActivationToken()
+    {
+        return $this->activationToken;
+    }
+
+    /**
+     * @param mixed $activationToken
+     * @return Deejay
+     */
+    public function setActivationToken($activationToken)
+    {
+        $this->activationToken = $activationToken;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getActivationTokenDate()
+    {
+        return $this->activationTokenDate;
+    }
+
+    /**
+     * @param \DateTime $activationTokenDate
+     * @return Deejay
+     */
+    public function setActivationTokenDate($activationTokenDate)
+    {
+        $this->activationTokenDate = $activationTokenDate;
+
+        return $this;
+    }
+
 }

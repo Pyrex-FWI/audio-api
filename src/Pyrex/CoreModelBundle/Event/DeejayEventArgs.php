@@ -10,6 +10,7 @@
 namespace Pyrex\CoreModelBundle\Event;
 
 
+use Doctrine\Common\EventArgs;
 use Pyrex\CoreModelBundle\Entity\Deejay;
 
 /**
@@ -17,7 +18,7 @@ use Pyrex\CoreModelBundle\Entity\Deejay;
  * @author Christophe Pyree <christophe.pyree@gmail.com>
  * @package Pyrex\CoreModelBundle\Event
  */
-class DeejayEventArgs
+class DeejayEventArgs extends EventArgs
 {
     /** @var  Deejay */
     private $deejay;

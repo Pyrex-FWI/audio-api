@@ -1,0 +1,5 @@
+deejay_registration_type:
+    success_flash_message: Un mail de confirmation vous a été envoyé.
+    activation_resend: Un nouvel mail de confirmation a été envoyé.
+
+
